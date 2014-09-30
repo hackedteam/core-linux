@@ -1,0 +1,3795 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.6" />
+<title>The X Input Extension 2.x</title>
+<style type="text/css">
+/* Shared CSS for AsciiDoc xhtml11 and html5 backends */
+
+/* Default font. */
+body {
+  font-family: Georgia,serif;
+}
+
+/* Title font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+h5 {
+  font-size: 1.0em;
+}
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+ul > li     { color: #aaa; }
+ul > li > * { color: black; }
+
+pre {
+  padding: 0;
+  margin: 0;
+}
+
+#author {
+  color: #527bbd;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+#email {
+}
+#revnumber, #revdate, #revremark {
+}
+
+#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+  margin-right: 10%;
+  color: #606060;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid #dddddd;
+  border-left: 4px solid #f0f0f0;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid #dddddd;
+  border-left: 5px solid #f0f0f0;
+  background: #f8f8f8;
+  padding: 0.5em;
+}
+
+div.quoteblock, div.verseblock {
+  padding-left: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 10%;
+  border-left: 5px solid #f0f0f0;
+  color: #888;
+}
+
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock > pre.content {
+  font-family: inherit;
+  font-size: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 3px solid #dddddd;
+}
+
+div.exampleblock > div.content {
+  border-left: 3px solid #dddddd;
+  padding-left: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+.footnote, .footnoteref {
+  font-size: 0.8em;
+}
+
+span.footnote, span.footnoteref {
+  vertical-align: super;
+}
+
+#footnotes {
+  margin: 20px 0 20px 0;
+  padding: 7px 0 0 0;
+}
+
+#footnotes div.footnote {
+  margin: 0 0 5px 0;
+}
+
+#footnotes hr {
+  border: none;
+  border-top: 1px solid silver;
+  height: 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 20%;
+  min-width: 100px;
+}
+
+div.colist td {
+  padding-right: 0.5em;
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+div.colist td img {
+  margin-top: 0.3em;
+}
+
+@media print {
+  #footer-badges { display: none; }
+}
+
+#toc {
+  margin-bottom: 2.5em;
+}
+
+#toctitle {
+  color: #527bbd;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+
+/*
+ * xhtml11 specific
+ *
+ * */
+
+tt {
+  font-family: monospace;
+  font-size: inherit;
+  color: navy;
+}
+
+div.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead, p.table.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overriden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+/*
+ * html5 specific
+ *
+ * */
+
+.monospaced {
+  font-family: monospace;
+  font-size: inherit;
+  color: navy;
+}
+
+table.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+thead, p.tableblock.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.tableblock {
+  margin-top: 0;
+}
+table.tableblock {
+  border-width: 3px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #527bbd;
+  border-collapse: collapse;
+}
+th.tableblock, td.tableblock {
+  border-width: 1px;
+  padding: 4px;
+  border-style: solid;
+  border-color: #527bbd;
+}
+
+table.tableblock.frame-topbot {
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+table.tableblock.frame-sides {
+  border-top-style: hidden;
+  border-bottom-style: hidden;
+}
+table.tableblock.frame-none {
+  border-style: hidden;
+}
+
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+
+
+/*
+ * manpage specific
+ *
+ * */
+
+body.manpage h1 {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-top: 2px solid silver;
+  border-bottom: 2px solid silver;
+}
+body.manpage h2 {
+  border-style: none;
+}
+body.manpage div.sectionbody {
+  margin-left: 3em;
+}
+
+@media print {
+  body.manpage div#toc { display: none; }
+}
+</style>
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([2-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="article">
+<div id="header">
+<h1>The X Input Extension 2.x</h1>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph"><div class="title">This is a work in progress!</div><p>Authors:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Peter Hutterer (Red Hat) &lt;<a href="mailto:peter.hutterer@redhat.com">peter.hutterer@redhat.com</a>&gt;
+</p>
+</li>
+<li>
+<p>
+Daniel Stone (Collabora Ltd.) &lt;<a href="mailto:daniel@fooishbar.org">daniel@fooishbar.org</a>&gt;
+</p>
+</li>
+<li>
+<p>
+Chase Douglas (Canonical, Ltd.) &lt;<a href="mailto:chase.douglas@canonical.com">chase.douglas@canonical.com</a>&gt;
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="history">1. History</h2>
+<div class="sectionbody">
+<div class="ulist"><ul>
+<li>
+<p>
+v2.2, ??: Multitouch support added
+</p>
+</li>
+<li>
+<p>
+v2.1, December 2011: new raw event behaviour, smooth scrolling support
+  added
+</p>
+</li>
+<li>
+<p>
+v2.0, October 2009: Initial release of XI2 protocol
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="intro-xi20">2. Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The X Input Extension version 2.0 (XI2) is the second major release of the X
+Input Extension.</p></div>
+<div class="paragraph"><p>XI2 provides a number of enhancements over version 1.5, including:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+use of XGE and GenericEvents. GenericEvents are of flexible length with a
+  minimum length of 32 bytes.
+</p>
+</li>
+<li>
+<p>
+explicit device hierarchy of master and slave devices. See Section
+<a href="#hierachy">The Master/Slave device hierarchy</a>.
+</p>
+</li>
+<li>
+<p>
+use of multiple independent master devices (Multi-Poiner X or MPX).
+</p>
+</li>
+<li>
+<p>
+the ability for devices to change capabilities at runtime.
+</p>
+</li>
+<li>
+<p>
+raw device events
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>XI2&#8217;s intent is to replace both core input processing and prior versions of
+the X Input Extension. Historically, the majority of applications employed the
+core protocol requests and events to handle user input. The core protocol does
+not provide information about which device generated the event. The X Input
+Extension version up to 1.5 requires the differentiation between core and
+extended devices. Extended devices may not be core devices and thus cannot be
+used on applications employing the core protocol. XI2 addresses both of these
+issues by enabling devices to be both extended and core devices and providing
+device information in each event (with the exception of core events).</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_changes_in_version_2_1">3. Changes in version 2.1</h2>
+<div class="sectionbody">
+<div class="ulist"><ul>
+<li>
+<p>
+RawEvents are sent regardless of the grab state.
+</p>
+</li>
+<li>
+<p>
+Addition of the ScrollClass for smooth scrolling
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_changes_in_version_2_2">4. Changes in version 2.2</h2>
+<div class="sectionbody">
+<div class="ulist"><ul>
+<li>
+<p>
+Multitouch support added
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_notations_used_in_this_document">5. Notations used in this document</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Notation for requests:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>┌───
+    Name of request
+        name of request field:       type of request field
+        name of request field:       type of request field
+        ▶
+        name of reply field:         type of reply field
+└───</tt></pre>
+</div></div>
+<div class="paragraph"><p>Notation for events:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>┌───
+    Name of event
+        name of field:               type of field
+        name of field:               type of field
+└───</tt></pre>
+</div></div>
+<div class="paragraph"><p>Complex fields are specified in the following notation:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>name of field:                  COMPLEXFIELDTYPE</tt></pre>
+</div></div>
+<div class="paragraph"><p>or, if multiple of these fields exist:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>name of field:                  LISTofCOMPLEXFIELDTYPE</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>COMPLEXFIELDTYPE:  { name of subfield:   type of subfield,
+                     name of subfield:   type of subfield }</tt></pre>
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_interoperability_between_version_1_x_and_2_0">6. Interoperability between version 1.x and 2.0</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>There is little interaction between 1.x and 2.x versions of the X Input
+Extension. Clients are requested to avoid mixing XI1.x and XI2 code as much as
+possible. Several direct incompatibilities are observable:</p></div>
+<div class="sect2">
+<h3 id="interop-xi1-limitations">6.1. Limitations resulting from different variable ranges</h3>
+<div class="paragraph"><p>XI2 provides a larger range for some fields than XI1. As a result, XI1 clients
+may not receive data an XI2 client receives.
+These fields include:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+devices with a deviceid of greater than 127 are invisible to XI1 clients.
+</p>
+</li>
+<li>
+<p>
+key events and key grabs featuring larger than 255 can only be sent to XI2
+  clients.
+</p>
+</li>
+<li>
+<p>
+no subpixel information is available to XI1 clients. If motion events are in
+  a subpixel range only, the server may omit these events and an XI 1.x client
+  will not receive events until the pixel boundary is crossed.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="interop-xi1-grabs">6.2. Blocking of grabs</h3>
+<div class="paragraph"><p>XI1 grabs are different to XI2 grab and a device may not be grabbed through an
+XI2 grab if an XI1 grab is currently active on this device or vice versa.
+Likewise, a keycode or button already grabbed by an XI 1.x or XI2 client may
+not be grabbed with the same modifier combination by an XI2 or XI 1.x client,
+respectively.</p></div>
+</div>
+<div class="sect2">
+<h3 id="interop-xi1-device-list">6.3. Invisibility of Master Devices</h3>
+<div class="paragraph"><p>XI 1.x was not designed with support for multiple master devices. As a
+result, only the first master pointer and master keyboard are visible to XI
+1.x clients; all other master devices are invisible and cannot be accessed
+from XI 1.x calls.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_smooth_scrolling">6.4. Smooth scrolling</h3>
+<div class="paragraph"><p>Historically, X implemented scrolling events by using button press events:
+button 4 was one “click” of the scroll wheel upwards, button 5 was downwards,
+button 6 was one unit of scrolling left, and button 7 was one unit of scrolling
+right.  This was sufficient for scroll wheel mice, but not for touchpads which
+are able to provide scrolling events through multi-finger drag gestures, or
+simply dragging your finger along a designated strip along the side of the
+touchpad.</p></div>
+<div class="paragraph"><p>Newer X servers may provide scrolling information through valuators to
+provide clients with more precision than the legacy button events. This
+scrolling information is part of the valuator data in device events.
+Scrolling events do not have a specific event type.</p></div>
+<div class="paragraph"><p>Valuators for axes sending scrolling information must have one
+ScrollClass for each scrolling axis. If scrolling valuators are present on a
+device, the server must provide two-way emulation between these valuators
+and the legacy button events for each delta unit of scrolling.</p></div>
+<div class="paragraph"><p>One unit of scrolling in either direction is considered to be equivalent to
+one button event, e.g. for a unit size of 1.0, -2.0 on an valuator type
+Vertical sends two button press/release events for button 4. Likewise, a
+button press event for button 7 generates an event on the Horizontal
+valuator with a value of +1.0. The server may accumulate deltas of less than
+one unit of scrolling.</p></div>
+<div class="paragraph"><p>Any server providing this behaviour marks emulated button or valuator events
+with the XIPointerEmulated flag for DeviceEvents, and the XIRawEmulated flag
+for raw events, to hint at applications which event is a hardware event.</p></div>
+<div class="paragraph"><p>If more than one scroll valuator of the same type is present on a device,
+the valuator marked with Preferred for the same scroll direction is used to
+convert legacy button events into scroll valuator events. If no valuator is
+marked Preferred or more than one valuator is marked with Preferred for this
+scroll direction, this should be considered a driver bug and the behaviour
+is implementation-dependent.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="hierachy">7. The Master/Slave device hierarchy</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>XI2 introduces a device hierarchy split up into so-called Master Devices (MD)
+and Slave Devices (SD).</p></div>
+<div class="sect2">
+<h3 id="hierachy-master">7.1. Master devices</h3>
+<div class="paragraph"><p>An MD is a virtual device created and managed by the server. MDs may send core
+events and XI events. However, an MD does not represent a physical device and
+relies on SDs for event generation. MDs come in two forms: as master pointers
+or as master keyboards. A master pointer is represented by a visible cursor on
+the screen. A master keyboard is represented by a keyboard focus.</p></div>
+<div class="paragraph"><p>Each master pointer is paired with the respective master keyboard and vice
+versa, and this pairing is constant for the lifetime of both input devices.
+Clients can use this pairing behaviour to implement input paradigms that
+require pointer and keyboard interation (e.g. SHIFT + Click).</p></div>
+</div>
+<div class="sect2">
+<h3 id="hierachy-slave">7.2. Slave devices</h3>
+<div class="paragraph"><p>An SD is usually a physical device configured in the server. SDs are not
+represented by a cursor or keyboard focus and may be attached to a master
+pointer or master keyboard. SDs can only be attached to any master of the same
+type (e.g. a physical pointer device can be attached to any master pointer).</p></div>
+<div class="paragraph"><p>If an event is generated by an SD</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+if the SD is attached to a master pointer, it changes the position and/or
+  button state of the master pointer.
+</p>
+</li>
+<li>
+<p>
+if the SD is attached to a master keyboard, it sends events to this
+  keyboard&#8217;s focus window (if applicable) and/or changes the modifier state of
+  this keyboard.
+</p>
+</li>
+<li>
+<p>
+if the SD is not attached to an MD ("floating"), it does not change
+  any master device. The SD has its own (invisible) sprite and its own focus.
+  Both the sprite and the focus must be managed explicitly by the client
+  program.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="hierachy-dcce">7.3. Event processing for attached slave devices</h3>
+<div class="paragraph"><p>Whenever an SD changes its logical state,</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+the event is delivered as an XI event to any interested clients. If the
+  device is floating, event processing stops.
+  Otherwise, if the device is attached,
+</p>
+</li>
+<li>
+<p>
+the master device changes its classes to reflect the SD&#8217;s capabilities. All
+  interested clients are notified of this device change.
+</p>
+</li>
+<li>
+<p>
+then, the event is delivered as an XI event from the MD to any interested
+  clients. If the event has been delivered, event processing stops.
+  Otherwise,
+</p>
+</li>
+<li>
+<p>
+the event is delivered as a core event to any interested clients.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Given that W is the event window, and P the parent window of W, event delivery
+to P is only attempted if neither the XI event, nor the core event has been
+delivered on W. Once an event has been delivered as either XI or core event,
+event processing stops.</p></div>
+</div>
+<div class="sect2">
+<h3 id="clientpointer">7.4. The ClientPointer principle</h3>
+<div class="paragraph"><p>Many core protocol and some extension requests are ambiguous when multiple
+master devices are available (e.g. QueryPointer does not specify which pointer).
+The X server does not have the knowledge to chose the contextually correct
+master device. For each client, one master pointer is designated as this
+clients&#8217;s "ClientPointer". Whenever a client sends an ambiguous request (e.g.
+QueryPointer), the ClientPointer or the keyboard paired with the ClientPointer
+is chosen to provide the data for this request.</p></div>
+<div class="paragraph"><p>This ClientPointer may be explicitly assigned to a client with the
+SetClientPointer call. If no ClientPointer is set when a client issues an
+ambiguous request, the server choses one device as the ClientPointer. The
+method of chosing a ClientPointer from the available master pointers is
+implementation-specific.</p></div>
+<div class="paragraph"><p>If the master pointer currently set as ClientPointer for one or more clients is
+removed, the server may either unset the ClientPointer setting or change the
+ClientPointer to a different master pointer.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="multitouch">8. Touch device support</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>XI 2.2 introduces support for multi-touch devices. The traditional
+pointer/keyboard approach enforced by XI 2.0 with the master/slave device
+hierarchy is not always suitable for multi-touch devices that can provide a
+dynamic number of touchpoints per physical device; it is not known without
+client-specific interpretation whether the touchpoints must be considered
+separately or grouped together.</p></div>
+<div class="paragraph"><p>The additions in XI 2.2 aim to:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+support a dynamic number of simultaneous touch points,
+</p>
+</li>
+<li>
+<p>
+support devices that are both multi-touch and traditional pointer devices,
+</p>
+</li>
+<li>
+<p>
+allow touchpoints to be either grouped together or handled separately,
+</p>
+</li>
+<li>
+<p>
+while supporting pre-XI 2.2 clients through emulation of XI 2.x/XI 1.x and core
+</p>
+</li>
+<li>
+<p>
+be backwards-compatible to pre-XI 2.2 clients through emulation of XI 2.x/XI 1.x and core
+  pointer events.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Touch events are only available to clients supporting version 2.2 or later of
+the X Input Extension. Clients must use the XIQueryVersion request to announce
+support for this version. Touch devices may generate emulated pointer events
+alongside XI 2.2 touch events to support older clients; see Section
+<a href="#multitouch-processing">Touch event delivery</a>.</p></div>
+<div class="paragraph"><p>Touch event processing differs from normal event processing in a few ways.
+The most notable differences are that touch events are processed partially
+out-of-band from pointer and keyboard events, and that touch events may be
+sent to multiple clients simultaneously. For more details see Section
+<a href="#multitouch-processing">Touch event delivery</a>.</p></div>
+<div class="sect2">
+<h3 id="multitouch-lifecycle">8.1. Touch event sequences</h3>
+<div class="paragraph"><p>Touch input follows a three-stage cycle:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>begin - update - update - ... - end</tt></pre>
+</div></div>
+<div class="paragraph"><p>i.e. “begin” the sequence by touching the device, “update” the current
+touch location or properties any number of times, and finally “end” the
+sequence by ceasing to touch the device.  Within this document, the term
+"touch sequence" is used to describe the above sequence of events.
+In the protocol, the three stages are represented with the event
+types TouchBegin, TouchUpdate, and TouchEnd, respectively. A touch sequence
+always generates TouchBegin and TouchEnd events, and may also generate
+TouchUpdate events.  Clients must select for all three of these events
+simultaneously.</p></div>
+<div class="paragraph"><p>When a touch starts, clients are sent a TouchBegin event
+detailing the position of the touchpoint, as well as the
+initial properties of the touchpoint.  Note that the logical state of the
+device (as seen through the input protocol) may lag the physical state if event
+processing is affected by grabs.  Multiple touchpoints may be active on the
+same device at any time, potentially owned by and/or delivered to a different
+set of clients.</p></div>
+<div class="paragraph"><p>Whenever the touch position or any other property of the touchpoint changes,
+a TouchUpdate event is sent to all clients listening
+to events for that touchpoint with the updated information.</p></div>
+<div class="paragraph"><p>When the touch has physically ended, or a client will otherwise not receive
+any more events for a given touchpoint, a TouchEnd event will be sent to
+that client.</p></div>
+<div class="paragraph"><p>Passive touch grabs are similar to standard input event grabs in that they
+take precedence over event selections and are searched from the root window
+to the child window (as opposed to selections, which start their search at the
+child window and continue up to the root window).  When a touch grab activates,
+the client whose grab activates becomes the “owner” of this touch sequence,
+and must decide what to do with it, as per Section
+<a href="#multitouch-ownership">Ownership of touch sequences</a>.  See the
+<a href="#requests-passivegrabdevice">XIPassiveGrabDevice</a> request
+documentation for more information on passive grab activation.</p></div>
+<div class="paragraph"><p>Only one client may select for touch events from a given device on a window.</p></div>
+<div class="sect3">
+<h4 id="multitouch-ownership">8.1.1. Ownership of touch sequences</h4>
+<div class="paragraph"><p>Once a grabbing client becomes the owner of a touch, it must either “accept” or
+"reject" the touch sequence using the XIAllowEvents request. If a touch sequence
+is rejected, a TouchEnd event is sent to the rejecting client, and it will not
+receive any more events for this touch.  The server then looks to the next
+window in the stack for another passive grab, and attempts to pass ownership
+on to the next candidate for a passive grab (i.e. the next window towards
+the final child window with a matching grab), or to the first applicable
+event selection if there are no more grabs.</p></div>
+<div class="paragraph"><p>If a touch sequence is accepted by its owner, all other clients receive
+TouchEnd events, and the touch sequence is exclusively delivered to the
+owner from that point on.</p></div>
+<div class="paragraph"><p>If the touch sequence physically ends while the owner of the touch sequence
+has not yet accepted or rejected ownership, the owner receives a TouchEnd
+event and all other clients receive a TouchUpdate event with the
+TouchPendingEnd flag set. The owner must still accept or reject the sequence
+nonetheless. If the owner rejects the touch sequence, the server will still
+attempt to exhaust all other passive grabs and/or event selections looking
+for a final owner.</p></div>
+<div class="paragraph"><p>If the touch sequence has not physically ended yet and the owner of the
+touch sequence rejects, the owner receives a TouchEnd event and ownership is
+passed to the next client.</p></div>
+<div class="paragraph"><p>Clients may opt for touch events to be delivered before they become the
+owner of the touch sequence. In this case, the logical state of the device (as
+seen by means of the protocol) always matches the physical state of the device.
+Clients must use caution if they opt for this feature; any action taken must be
+undone if the touch sequence ends without the client becoming the owner.</p></div>
+<div class="paragraph"><p>To select for touch events regardless of ownership, a client must set the
+TouchOwnership event mask in addition to the
+TouchBegin, TouchUpdate and TouchEnd mask. When selected, a client will receive
+touch events as they occur on the device without delay. If and when the client
+becomes the owner of a touch sequence, a TouchOwnership event is sent to the
+client. If the client is the initial owner of the sequence, the TouchBegin is
+immediately followed by the TouchOwnership event. Otherwise, TouchUpdate events
+may preceed a TouchOwnership event. A client is not guaranteed to become the
+owner of any given touch sequence.</p></div>
+<div class="paragraph"><p>The server delivers touch events to all clients that have selected for
+TouchOwnership and to the current owner of the sequence in parallel.</p></div>
+<div class="paragraph"><p>If a client has selected for TouchOwnership and is not the current owner of
+the sequence and the current owner accepts the sequence, the client receives
+a TouchEnd event and no further events from this sequence are sent to this
+client.</p></div>
+<div class="paragraph"><p>If a client has selected for TouchOwnership and the physical touch ends
+before the current owner has accepted or rejected the sequence, the client
+receives a TouchUpdate event with the TouchPendingEnd flag set. No further
+TouchUpdate events will be sent for this sequence. If the current owner
+accepts the sequence, the client receives a TouchEnd event. Otherwise, if
+the current owner rejects the sequence, the client may become
+the owner of the touch sequence and receive a TouchOwnership event and a
+TouchEnd event.</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="multitouch-device-modes">8.2. Touch device modes</h3>
+<div class="paragraph"><p>Touch devices come in many different forms with varying capabilities. The
+following device modes are defined for this protocol:</p></div>
+<div class="paragraph"><p><em>DirectTouch</em>:
+    These devices map their input region to a subset of the screen region. Touch
+    events are delivered to window at the location of the touch. "direct"
+    here refers to the user manipulating objects at their screen location,
+    e.g. touching an object and physically moving it. An example
+    of a DirectTouch device is a touchscreen.</p></div>
+<div class="paragraph"><p><em>DependentTouch</em>:
+    These devices do not have a direct correlation between a touch location and
+    a position on the screen. Touch events are delivered according to the
+    location of the device&#8217;s cursor and often need to be interpreted
+    relative to the current position of that cursor. Such interactions are
+    usually the result of a gesture performed on the device, rather than
+    direct manipulation. An example of a DependentTouch device is a
+    trackpad.</p></div>
+<div class="paragraph"><p>A device is identified as only one of the device modes above at any time, and
+the touch mode may change at any time. If a device&#8217;s touch mode changes, an
+XIDeviceChangedEvent is generated.</p></div>
+</div>
+<div class="sect2">
+<h3 id="multitouch-processing">8.3. Touch event delivery</h3>
+<div class="paragraph"><p>For direct touch devices, the window set for event propagation is the set of
+windows from the root window to the topmost window lying at the co-ordinates
+of the touch.</p></div>
+<div class="paragraph"><p>For dependent devices, the window set for event propagation is the set of
+windows from the root window to the window that contains the device&#8217;s
+pointer. A dependent device may only have one window set at a time, for all
+touches. Any future touch sequence will use the same window set. The window set
+is cleared when all touch sequences on the device end.</p></div>
+<div class="paragraph"><p>A window set is calculated on TouchBegin and remains constant until the end
+of the sequence. Modifications to the window hierarchy, new grabs or changed
+event selection do not affect the window set.</p></div>
+<div class="sect3">
+<h4 id="_pointer_control_of_dependent_devices">8.3.1. Pointer control of dependent devices</h4>
+<div class="paragraph"><p>On a dependent device, the device may differ between a pointer-controlling
+touch and a non-pointer-controlling touch. For example, on a touchpad the
+first touch is pointer-controlling (i.e. serves only to move the visible
+pointer). Multi-finger gestures on a touchpad cause all touches to be
+non-pointer-controlling.</p></div>
+<div class="paragraph"><p>For pointer-controlling touches, no touch events are sent; the touch
+generates regular pointer events instead. Non-pointer-controlling touches
+send touch events. A touch may change from pointer-controlling to
+non-pointer-controlling, or vice versa.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+If a touch changes from pointer-controlling to non-pointer-controlling,
+ a new touch ID is assigned and a TouchBegin is sent for the last known
+ position of the touch. Further events are sent as TouchUpdate events, or as
+ TouchEnd event if the touch terminates.
+</p>
+</li>
+<li>
+<p>
+If a touch changes from non-pointer-controlling to pointer-controlling, a
+  TouchEnd is sent for that touch at the last known position of the touch.
+  Further events are sent as pointer events.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>The conditions to switch from pointer-controlling to non-pointer-controlling
+touch is implementation-dependent. A device may support touches that are
+both pointer-controlling and a touch event.</p></div>
+<div class="paragraph"><div class="title">Dependent touch example event sequence on a touchpad, touches are marked</div><p>when switching to pointer-controlling (pc) or to non-pointer-controlling (np)</p></div>
+<div class="tableblock">
+<table rules="all"
+width="50%"
+frame="border"
+cellspacing="0" cellpadding="4">
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+<thead>
+<tr>
+<th align="left" valign="top"> Finger 1 </th>
+<th align="left" valign="top"> Finger 2 </th>
+<th align="left" valign="top"> Event generated(touchid)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" valign="top"><p class="table">down</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table">Motion</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">move</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table">Motion</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">move</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table">Motion</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">(np)</p></td>
+<td align="left" valign="top"><p class="table">down</p></td>
+<td align="left" valign="top"><p class="table">TouchBegin(0), TouchBegin(1)</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">move</p></td>
+<td align="left" valign="top"><p class="table">&#8201;&#8212;&#8201;</p></td>
+<td align="left" valign="top"><p class="table">TouchUpdate(0)</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">&#8201;&#8212;&#8201;</p></td>
+<td align="left" valign="top"><p class="table">move</p></td>
+<td align="left" valign="top"><p class="table">TouchUpdate(1)</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">up</p></td>
+<td align="left" valign="top"><p class="table">(pc)</p></td>
+<td align="left" valign="top"><p class="table">TouchEnd(0), TouchEnd(1)</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table">move</p></td>
+<td align="left" valign="top"><p class="table">Motion</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">down</p></td>
+<td align="left" valign="top"><p class="table">(np)</p></td>
+<td align="left" valign="top"><p class="table">TouchBegin(2), TouchBegin(3)</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">move</p></td>
+<td align="left" valign="top"><p class="table">&#8201;&#8212;&#8201;</p></td>
+<td align="left" valign="top"><p class="table">TouchUpdate(2)</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">up</p></td>
+<td align="left" valign="top"><p class="table">(pc)</p></td>
+<td align="left" valign="top"><p class="table">TouchEnd(2), TouchEnd(3)</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table">up</p></td>
+<td align="left" valign="top"><p class="table">Motion</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">down</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table">Motion</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">(np)</p></td>
+<td align="left" valign="top"><p class="table">down</p></td>
+<td align="left" valign="top"><p class="table">TouchBegin(4), TouchBegin(5)</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">(pc)</p></td>
+<td align="left" valign="top"><p class="table">up</p></td>
+<td align="left" valign="top"><p class="table">TouchEnd(4), TouchEnd(5)</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">move</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table">Motion</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">up</p></td>
+<td align="left" valign="top"><p class="table"></p></td>
+<td align="left" valign="top"><p class="table">Motion</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="multitouch-emulation">8.3.2. Pointer emulation from multitouch events</h4>
+<div class="paragraph"><p>Touch sequences from direct touch devices may emulate pointer events. Only one
+touch sequence from a device may emulate pointer events at a time; which touch
+sequence emulates pointer events is implementation dependent.</p></div>
+<div class="paragraph"><p>Pointer events are emulated as follows:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+A TouchBegin event generates a pointer motion event to the location of the
+  touch with the same axis values of the touch event, followed by a button press
+  event for button 1.
+</p>
+</li>
+<li>
+<p>
+A TouchUpdate event generates a pointer motion event to the location of the
+  touch and/or to update axis values of the pointer device. The button state
+  as seen from the protocol includes button 1 set.
+</p>
+</li>
+<li>
+<p>
+A TouchEnd event generates a pointer motion event to the location of the touch
+  and/or to update the axis values if either have changed, followed by a button
+  release event for button 1. The button state as seen from the protocol
+  includes button 1 set.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>If a touch sequence emulates pointer events and an emulated pointer event
+triggers the activation of a passive grab, the grabbing client becomes the
+owner of the touch sequence.</p></div>
+<div class="paragraph"><p>The touch sequence is considered to have been accepted if</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+the grab mode is asynchronous, or
+</p>
+</li>
+<li>
+<p>
+the grab mode is synchronous and the device is thawed as a result of
+  AllowEvents with AsyncPointer or AsyncDevice
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Otherwise, if the button press is replayed by the client, the touch sequence
+is considered to be rejected.</p></div>
+<div class="paragraph"><p>Touch event delivery precedes pointer event delivery. A touch event emulating
+pointer events is delivered:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+as a touch event to the top-most window of the current window set if a
+  client has a touch grab on this window,
+</p>
+</li>
+<li>
+<p>
+otherwise, as a pointer event to the top-most window of the current window
+  set if a client has a pointer grab on this window,
+</p>
+</li>
+<li>
+<p>
+otherwise, to the next child window in the window set until a grab has been
+  found.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>If no touch or pointer grab on any window is active and the last window in the
+window set has been reached, the event is delivered:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+as a touch event to the window if a client has selected for touch events
+  on this window
+</p>
+</li>
+<li>
+<p>
+otherwise, as a pointer event to the window if a client has selected for
+  pointer events.
+</p>
+</li>
+<li>
+<p>
+otherwise, to the next parent window in the window set until a selection has
+  been found.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Emulated pointer events will have the PointerEmulated flag set. A touch
+event that emulates pointer events has the TouchEmulatingPointer flag set.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="glossary-notations">9. Notations used in this document</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Notation for requests:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>┌───
+    Name of request
+        name of request field:       type of request field
+        name of request field:       type of request field
+        ▶
+        name of reply field:         type of reply field
+└───</tt></pre>
+</div></div>
+<div class="paragraph"><p>Notation for events:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>┌───
+    Name of event
+        name of field:               type of field
+        name of field:               type of field
+└───</tt></pre>
+</div></div>
+<div class="paragraph"><p>Complex fields are specified in the following notation:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>name of field:                  COMPLEXFIELDTYPE</tt></pre>
+</div></div>
+<div class="paragraph"><p>or, if multiple of these fields exist:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>name of field:                  LISTofCOMPLEXFIELDTYPE</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>COMPLEXFIELDTYPE:  { name of subfield:   type of subfield,
+                     name of subfield:   type of subfield }</tt></pre>
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="glossary-datatypes">10. Data types</h2>
+<div class="sectionbody">
+<div class="literalblock">
+<div class="content">
+<pre><tt>BUTTONMASK
+        A binary mask defined as (1 &lt;&lt; button number).
+        A SETofBUTTONMASK is a binary OR of zero or more BUTTONMASK.</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>DEVICE { DEVICEID, AllDevices, AllMasterDevices }
+        A DEVICE specifies either a DEVICEID or AllDevices or
+        AllMasterDevices.</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>DEVICEID { CARD16 }
+        A DEVICEID is a numerical ID for a device currently available in the
+        server. The server may re-use a device ID after a device's removal.
+        The device IDs 0 and 1 are reserved.
+        AllDevices ........ 0
+        AllMasterDevices .. 1</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>DEVICEUSE { MasterPointer, MasterKeyboard, SlavePointer,
+            SlaveKeyboard, FloatingSlave }
+        A DEVICEUSE field specifies the current use of a device in the MD/SD
+        device hierarchy. See Section "The Master/Slave device hierarchy"
+        for more information.</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>EVENTMASK
+        An EVENTMASK is a binary mask defined as (1 &lt;&lt; event type).
+        A SETofEVENTMASK is a binary OR of zero or more EVENTMASK.</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>FP1616
+        Fixed point decimal in 16.16 format as one INT16 and one CARD16.
+        The INT16 contains the integral part, the CARD32 the decimal fraction
+        shifted by 16.</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>FP3232
+        Fixed point decimal in 32.32 format as one INT32 and one CARD32.
+        The INT32 contains the integral part, the CARD32 the decimal fraction
+        shifted by 32.</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>VALUATORMASK
+        A binary mask defined as (1 &lt;&lt; valuator number).
+        A SETofVALUATORMASK is a binary OR of zero or more VALUATORMASK.</tt></pre>
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="errors">11. Errors</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Errors are sent using core X error reports.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>Device
+        A value for a DEVICE argument does not specify a valid DEVICE.</tt></pre>
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="requests">12. Requests:</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The server does not guarantee that the length of a reply remains constant in
+future revisions of XI2. A client must always retrieve the exact length of the
+protocol reply from the connection, even if the reply is longer than defined
+for the XI2 version supported by the client.
+Additional bytes in a request may include data supported in later versions of
+XI2. Clients should ignore this data. Padding bytes in XI2 protocol requests
+are required to be 0.</p></div>
+<div class="sect2">
+<h3 id="requests-xi20">12.1. Requests introduced in version 2.0</h3>
+<div class="literalblock" id="requests-queryversion">
+<div class="content">
+<pre><tt>┌───
+    XIQueryVersion
+    major_version:          CARD16
+    minor_version:          CARD16
+    ▶
+    major_version:          CARD16
+    minor_version:          CARD16
+└───</tt></pre>
+</div></div>
+<div class="paragraph"><p>The client sends the highest supported version to the server and the
+server sends the highest version it supports, but no higher than the
+requested version. Major versions changes can introduce incompatibilities
+in existing functionality, minor version changes introduce only backward
+compatible changes.  It is the client&#8217;s responsibility to ensure that the
+server supports a version which is compatible with its expectations.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>major_version
+    Major XI2 version.
+minor_version
+    Minor XI2 version.</tt></pre>
+</div></div>
+<div class="paragraph"><p>If major_version is less than 2, a BadValue error occurs.</p></div>
+<div class="literalblock" id="requests-querydevice">
+<div class="content">
+<pre><tt>┌───
+    XIQueryDevice
+    DEVICE                  deviceid
+    ▶
+    num_devices:            CARD16
+    deviceinfo:             LISTofDEVICEINFO
+└───</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>DEVICEINFO { deviceid:              DEVICEID
+             use:                   DEVICEUSE
+             attachment:            DEVICEID
+             enabled:               BOOL
+             num_classes:           CARD16
+             name_len:              CARD16
+             name:                  LISTofCHAR8
+             classes:               LISTofCLASS }</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>CLASS { BUTTONCLASS, KEYCLASS, AXISCLASS, SCROLLCLASS, TOUCHCLASS }</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>BUTTONCLASS { type:                 ButtonClass
+              length:               CARD16
+              sourceid:             CARD16
+              buttons_len:          CARD16
+              state:                SETofBUTTONMASK
+              labels:               LISTofATOM }</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>KEYCLASS    { type:                 KeyClass
+              length:               CARD16
+              sourceid:             CARD16
+              num_keys:             CARD16
+              keys:                 LISTofCARD32 }</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>AXISCLASS   { type:                 AxisClass
+              length:               CARD16
+              sourceid:             CARD16
+              axisnumber:           CARD16
+              label:                ATOM
+              min:                  FP3232
+              max:                  FP3232
+              value:                FP3232
+              resolution:           CARD32
+              mode:                 CARD8 }</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>SCROLLCLASS* {type:                 ScrollClass
+              length:               CARD16
+              sourceid:             CARD16
+              axisnumber:           CARD16
+              scroll_type:          SCROLLTYPE
+              flags:                SETofSCROLLFLAGS
+              increment:            FP3232 }</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>SCROLLTYPE { Vertical, Horizontal }</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>SCROLLFLAGS { NoEmulation, Preferred }</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>TOUCHCLASS† { type:                 TouchClass
+              length:               CARD16
+              sourceid:             CARD16
+              mode:                 TOUCHMODE
+              num_touches:          CARD16
+              num_props:            CARD16
+              props:                LISTofATOM }</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>TOUCHMODE { DirectTouch, DependentTouch }</tt></pre>
+</div></div>
+<div class="ulist"><ul>
+<li>
+<p>
+since XI 2.1
+    † since XI 2.2
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>XIQueryDevice details information about the requested input devices.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>devices
+    The device to list. If devices is AllDevices, all enabled and
+    disabled devices are listed. If devices is AllMasterDevices, all
+    enabled and disabled master devices are listed. If devices is a
+    valid DEVICE, only this DEVICE is listed and num_devices is 1.
+num_devices
+    The number of deviceinfos returned.</tt></pre>
+</div></div>
+<div class="paragraph"><p>Each deviceinfo is detailed as follows:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>deviceid
+    The unique ID of the device. Device IDs may get re-used when a device
+    is removed.
+use
+    If the device is a master pointer, use is MasterPointer.
+    If the device is a master keyboard, use is MasterKeyboard.
+    If the device is a slave pointer, use is SlavePointer.
+    If the device is a slave keyboard, use is SlaveKeyboard.
+    If the device is a floating slave, use is FloatingSlave.
+attachment
+    If the device is a master pointer or a master keyboard, attachment
+    specifies the paired master keyboard, or the paired master pointer,
+    respectively.  If the device is a non-floating slave device
+    attachment specifies the master device this device is attached to.
+    If the device is a floating slave, attachment is undefined.
+enabled
+    Zero if the device is disabled, non-zero otherwise.
+num_classes
+    Number of classes provided.
+name_len
+    Length of the name in bytes not including padding.
+classes
+    Details the available classes provided by the device in an undefined
+    order.
+name
+    The device's name. padded to a multiple of 4 bytes.</tt></pre>
+</div></div>
+<div class="paragraph"><p>For all classes, type specifies the device class. Clients are required
+to ignore unknown device classes. The length field specifies the length
+of the class in 4 byte units.
+The following classes may occur only once: ButtonClass, KeyClass</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>ButtonClass:
+type
+    Always ButtonClass.
+length
+    Length in 4 byte units.
+sourceid
+    The device this class originates from.
+num_buttons
+    Number of buttons provided by the device.
+labels
+    List of Atoms specifying the label for each button. An Atom of None
+    specifies an unlabeled button. Buttons are listed in the device-native
+    order regardless of the current button mapping.
+state
+    The current button mask for this device after button mapping is
+    applied. Each bit representing a button is 1 if this button is
+    logically down, or 0 otherwise. State is a multiple of 4-byte units
+    and always contains at least num_buttons bits.</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>KeyClass:
+type
+    Always KeyClass.
+length
+    Length in 4 byte units.
+sourceid
+    The device this class originates from.
+num_keys
+    Number of keycodes provided by the device.
+keys
+    List of keycodes provided.</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>AxisClass:
+type
+    Always AxisClass.
+length
+    Length in 4 byte units.
+sourceid
+    The device this class originates from.
+axisnumber
+    Axis number of this axis. The axis number is in device-native
+    order and potential axis mappings are ignored.
+label
+    Atom specifying the axis name. An Atom of None specifies an unlabeled
+    axis.
+min
+    Minimum value.
+max
+    Minimum value.
+resolution
+    Resolution in counts/meter.
+mode
+    Relative or Absolute.
+value
+    Last published axis value (if mode is absolute).</tt></pre>
+</div></div>
+<div class="paragraph"><p>An axis in Relative mode may specify min and max as a hint to the
+client. If no min and max information is available, both must be 0.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>ScrollClass:
+type
+    Always ScrollClass.
+axisnumber
+    Axis number that is referred to. This axis number must be listed in
+    the ValuatorClassInfo.
+scroll_type:
+    Vertical for a vertical scrolling axis, Horizontal for a horizontal
+    scrolling axis.
+flags:
+    A set of flags that apply to this scroll axis.
+    NoEmulation: no legacy scroll button events are generated for events
+                 on this scrolling axis.
+    Preferred: This axis is the preferred axis for emulating valuator
+               events from legacy scroll button events.
+increment:
+    The valuator delta equivalent to one positive unit of scrolling.</tt></pre>
+</div></div>
+<div class="paragraph"><p>A ScrollClass may only exist if the device has at least one ValuatorClass
+and each axisnumber listed in any ScrollClass. Only one ScrollClass may
+exist per ValuatorClass.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>TouchClass:
+type
+    Always TouchClass.
+length
+    Length in 4 byte units.
+sourceid
+    The device this class originates from.
+mode
+    The device type of the touch device.  This mode may change at runtime.
+num_touches
+    The maximum number of simultaneous touchpoints the device may send.
+    If num_touches is 0, the number of supported touches is unknown or
+    unlimited.
+num_props:
+    The number of elements in props.
+props
+    A list of properties to denote extra information about the device.</tt></pre>
+</div></div>
+<div class="paragraph"><p>Devices with a TouchClass emit touch events with the same axes as pointer
+events.</p></div>
+<div class="literalblock" id="requests-selectevents">
+<div class="content">
+<pre><tt>┌───
+    XISelectEvents
+        window:         Window
+        num_masks:      CARD16
+        masks:          LISTofEVENTMASK</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>└───</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>EVENTMASK { deviceid:          DEVICE,
+            mask_len:          CARD16,
+            mask:              SETofEVENTMASK</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>window
+    The window to select the events on.
+num_masks
+    Number of items in masks.
+deviceid
+    Numerical deviceid, or AllDevices, or AllMasterDevices.
+mask_len
+    Length of mask in 4 byte units.
+mask
+    Event mask. An event mask for an event type T is defined as (1 &lt;&lt; T).</tt></pre>
+</div></div>
+<div class="paragraph"><p>XISelectEvents selects for XI2 events on window.</p></div>
+<div class="paragraph"><p>If num_masks is 0, a BadValue error occurs.</p></div>
+<div class="paragraph"><p>Each mask sets the (and overwrites a previous) event mask for the DEVICE
+specified through deviceid. The device AllDevices or
+AllMasterDevices is treated as a separate device by server. A client&#8217;s
+event mask is the union of AllDevices, AllMasterDevices and the
+per-device event mask.
+The removal of device from the server unsets the event masks for the
+device. If an event mask is set for AllDevices or AllMasterDevices, the
+event mask is not cleared on device removal and affects all future
+devices.</p></div>
+<div class="paragraph"><p>If mask_len is 0, the event mask for the given device is cleared.</p></div>
+<div class="paragraph"><p>The mask for XIHierarchyEvents may only be selected for XIAllDevices.
+Setting it for any other device results in a BadValue error.</p></div>
+<div class="paragraph"><p>A client selecting for any of XI_TouchBegin, XI_TouchUpdate, or XI_TouchEnd
+must select for all three events at the same time, else a BadValue error
+will be generated. A client selecting for XI_TouchOwnership must select for
+all three of the other touch events. If the selection for these touch events
+overlaps a current selection by another client (e.g. selecting for a
+specific device when another client has a selection for XIAllDevices), a
+BadAccess error occurs.</p></div>
+<div class="literalblock" id="requests-getselectedevents">
+<div class="content">
+<pre><tt>┌───
+    XIGetSelectedEvents
+        window:         Window
+        ▶
+        num_masks:      CARD16
+        masks:          LISTofEVENTMASK
+└───</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>window
+    The window to select the events on.
+num_masks
+    Number of items in masks.
+masks
+    Selected event masks by this client.</tt></pre>
+</div></div>
+<div class="paragraph"><p>Masks are returned on a per-device basis, with masks for AllDevices and
+AllMasterDevices returned separately. A client can calculate the
+effective mask for a device with a bitwise OR of the AllDevices, the
+AllMasterDevices and the device-specific mask.</p></div>
+<div class="paragraph"><p>If num_masks is 0, no events have been selected by this client on the
+given window.</p></div>
+<div class="literalblock" id="requests-querypointer">
+<div class="content">
+<pre><tt>┌───
+    XIQueryPointer
+        window:         Window
+        deviceid:       DEVICEID
+        ▶
+        root:           Window
+        child:          Window
+        root_x:         FP1616
+        root_y:         FP1616
+        win_x:          FP1616
+        win_y:          FP1616
+        same_screen:    BOOL
+        mods:           MODIFIERINFO
+        group:          GROUPINFO
+        buttons_len:    CARD16
+        buttons:        SETofBUTTONMASK
+└───</tt></pre>
+</div></div>
+<div class="paragraph"><p>Query a master pointer device for its current position.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>root
+    The root window the pointer is logically on.
+child
+    The child window of window that contains the pointer or None.
+root_x
+root_y
+    Pointer position relative to the root window's origin.
+win_x
+win_y
+    Pointer position relative to window or 0 if same_screen is false.
+same_screen
+    True if window is on the same screen as the pointer.
+mods
+    XKB modifier state on the paired device.
+group
+    XKB group state on the paired device.
+buttons_len
+    The length of buttons in 4 byte units.
+buttons
+    Button state.</tt></pre>
+</div></div>
+<div class="paragraph"><p>If the device is not a master pointer device or not a floating slave
+pointer, a BadDevice error results.</p></div>
+<div class="literalblock" id="requests-warppointer">
+<div class="content">
+<pre><tt>┌───
+    XIWarpPointer
+        src_win:         Window
+        dst_win:         Window
+        src_x:           FP1616
+        src_y:           FP1616
+        src_width:       INT16
+        src_height:      INT16
+        dst_x:           FP1616
+        dst_y:           FP1616
+        deviceid:        DEVICEID
+└───</tt></pre>
+</div></div>
+<div class="paragraph"><p>WarpPointer moves the pointer of deviceid as if the user had moved
+the pointer. WarpPointer can only be called for MasterPointer and
+FloatingSlave devices.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>src_win
+   If src_window is not None, the move only takes place if src_window
+   contains the pointer and the pointer is contained in the specified
+   rectangle of src_window.
+dst_win
+   If dst_win is None, this request moves the pointer by offsets
+   dst_x/dst_y relative to the current position of the pointer. If
+    dst_window is a window, this request moves the pointer to
+   dst_x/dst_y relative to dst_win's origin.
+src_x
+src_y
+src_width
+src_height
+   Specifies the source window rectangle.
+dst_x
+dst_y
+    The relative coordinates to move the pointer if dst_win is None, or
+    the absolute coordinates if dst_win is a window.
+deviceid
+    The device to warp.</tt></pre>
+</div></div>
+<div class="paragraph"><p>This request cannot be used to move the pointer outside the confine-to
+window of an active pointer grab. An attempt will only move the pointer as
+far as the closest edge of the confine-to window.</p></div>
+<div class="paragraph"><p>This request will generate events just as if the user had instantaneously
+moved the pointer.</p></div>
+<div class="literalblock" id="requests-changecursor">
+<div class="content">
+<pre><tt>┌───
+    XIChangeCursor
+        win:             Window
+        cursor:          Cursor
+        deviceid:        DEVICEID
+└───</tt></pre>
+</div></div>
+<div class="paragraph"><p>Change a master pointer&#8217;s cursor on the specified window.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>window
+    The window.
+cursor
+    The new cursor or None.
+deviceid
+    The master pointer device.</tt></pre>
+</div></div>
+<div class="paragraph"><p>Whenever device enters a window W, the cursor shape is selected in the
+following order:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+if the current window has a device cursor C(d) defined for device,
+  display this cursor C(d).
+</p>
+</li>
+<li>
+<p>
+otherwise, if the current window has a cursor C(w) defined in the core
+  protocol&#8217;s window attributes, display cursor C(w).
+</p>
+</li>
+<li>
+<p>
+repeat on parent window until a cursor has been found.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>The device cursor for a given window is reset once the window is destroyed
+or the device is removed, whichever comes earlier.</p></div>
+<div class="paragraph"><p>If deviceid does not specify a master pointer, a BadDevice error
+is returned.</p></div>
+<div class="literalblock" id="requests-changehierachy">
+<div class="content">
+<pre><tt>┌───
+    XIChangeHierarchy
+        num_changes:     CARD8
+        changes:         LISTofHIERARCHYCHANGES
+└───</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>HIERARCHYCHANGE { ADDMASTER, REMOVEMASTER, ATTACHSLAVE, DETACHSLAVE }</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>HIERARCHYCHANGETYPE { AddMaster, RemoveMaster, AttachSlave, DetachSlave }</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>CHANGEMODE { Float, Attach }</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>ADDMASTER { type:        HIERARCHYCHANGETYPE
+            length:      CARD16
+            name_len:    CARD16
+            send_core:   BOOL
+            enable:      BOOL
+            name:        LISTofCHAR8 }</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>REMOVEMASTER { type:            HIERARCHYCHANGETYPE
+               length:          CARD16
+               deviceid:        DEVICEID
+               return_mode:     CHANGEMODE
+               return_pointer:  DEVICEID
+               return_keyboard: DEVICEID }</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>ATTACHSLAVE   { type:        HIERARCHYCHANGETYPE
+                length:      CARD16
+                deviceid:    DEVICEID
+                master:      DEVICEID }</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>DETACHSLAVE { type:       HIERARCHYCHANGETYPE
+              length:     CARD16
+              deviceid:   DEVICEID }</tt></pre>
+</div></div>
+<div class="paragraph"><p>XIChangeHierarchy allows a client to modify the
+<a href="#hierachy">Master/Slave device hierarchy</a>.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>num_changes
+    The number of changes to apply to the current hierarchy.
+changes
+    The list of changes.</tt></pre>
+</div></div>
+<div class="paragraph"><p>The server processes the changes in the order received from the client and
+applies each requested change immediately. If an error occurs, processing
+stops at the current change and returns the number of successfully applied
+changes in the error.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>ADDMASTER creates a pair of master devices.
+type
+    Always AddMaster.
+length
+    Length in 4 byte units.
+name_len
+    Length of name in bytes.
+send_core
+    True if the device should send core events.
+enable
+    True if the device is to be enabled immediately.
+name
+    The name for the new master devices. The master pointer's name is
+    automatically appended with " pointer", the master keyboard's name is
+    automatically appended with " keyboard".</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>REMOVEMASTER removes an existing master device.
+type
+    Always RemoveMaster.
+length
+    Length in 4 byte units.
+deviceid
+    The device to remove.
+return_mode
+    Return mode for attached slave devices.
+    If return_mode is Float, all slave devices are set to floating.
+    If return_mode is Attach, slave pointers are attached to
+    return_pointer and slave keyboards are attached to
+    return_keyboard.
+return_pointer
+return_keyboard
+    The master pointer and master keyboard to attach slave devices to, if
+    return_mode is Attach. If return_mode is Float, return_pointer
+    and return_keyboard are undefined.</tt></pre>
+</div></div>
+<div class="paragraph"><p>Removing a master pointer removes the paired master keyboard and vice
+versa.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>ATTACHSLAVE attaches a slave device to a given master device.
+type
+    Always ChangeAttachment.
+length
+    Length in 4 byte units.
+deviceid
+    Deviceid of the slave device.
+master
+    The new master device to attach this slave device to.</tt></pre>
+</div></div>
+<div class="paragraph"><p>If any clients are selecting for touch events from the slave device, their
+selection will be canceled.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>DETACHSLAVE detaches a slave device from its current master device.
+type
+    Always ChangeAttachment.
+length
+    Length in 4 byte units.
+deviceid
+    Deviceid of the slave device.</tt></pre>
+</div></div>
+<div class="literalblock" id="requests-setclientpointer">
+<div class="content">
+<pre><tt>┌───
+    XISetClientPointer
+        win:             Window
+        deviceid:        DEVICEID
+└───</tt></pre>
+</div></div>
+<div class="paragraph"><p>Set the ClientPointer for the client owning win to the given device.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>win
+     Window or client ID.
+deviceid
+     The master pointer or master keyboard that acts as ClientPointer.</tt></pre>
+</div></div>
+<div class="paragraph"><p>Some protocol requests are ambiguous and the server has to choose a device
+to provide data for a request or a reply. By default, the server will
+choose a client&#8217;s ClientPointer device to provide the data, unless the
+client currently has a grab on another device. See section
+<a href="#clientpointer">The ClientPointer principle</a> for more details.</p></div>
+<div class="paragraph"><p>If win is None, the ClientPointer for this client is set to the given
+device. Otherwise, if win is a valid window, the ClientPointer for the
+client owning this window is set to the given device. Otherwise, if win is
+not a valid window but a client with the client mask equal to win exists,
+this client&#8217;s ClientPointer is set to the given device.</p></div>
+<div class="paragraph"><p>If deviceid does not specify a master pointer or master keyboard, a
+BadDevice error is returned.</p></div>
+<div class="paragraph"><p>If window does not specify a valid window or client ID and is not None, a
+BadWindow error is returned.</p></div>
+<div class="literalblock" id="requests-getclientpointer">
+<div class="content">
+<pre><tt>┌───
+    XIGetClientPointer
+        win:             Window
+        ▶
+        set:             BOOL
+        deviceid:        DEVICEID
+└───</tt></pre>
+</div></div>
+<div class="paragraph"><p>Query the ClientPointer for the client owning win.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>win
+    The window or client ID.
+set
+    True if the client has a ClientPointer set.
+deviceid
+    The master pointer that acts as a ClientPointer if set is True.</tt></pre>
+</div></div>
+<div class="paragraph"><p>No difference is made between a ClientPointer set explicitly through
+XISetClientPointer and a ClientPointer implicitly assigned by the server
+in response to an ambiguous request.</p></div>
+<div class="literalblock" id="requests-setfocus">
+<div class="content">
+<pre><tt>┌───
+    XISetFocus
+        focus:           Window
+        deviceid:        DEVICEID
+        time:            Time
+└───</tt></pre>
+</div></div>
+<div class="paragraph"><p>Set the focus for the given device to the given window. Future key events
+from this device are sent to this window.
+This request generates FocusIn and FocusOut events.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>focus
+    A viewable window or None.
+deviceid
+    The device to modify the focus window for.
+time
+    Specifies the time to change the focus or CurrentTime.</tt></pre>
+</div></div>
+<div class="paragraph"><p>If focus is None, key events from this device are discarded until a new
+focus window is set. If focus is a viewable window, key events from this
+device are sent to this window. If the window becomes unviewable, the
+window&#8217;s first viewable ancestor automatically becomes the focus window
+and FocusIn and FocusOut events are sent as if a client had changed the
+focus window.
+This is equivalent to RevertToParent in the core XSetInputFocus window.</p></div>
+<div class="paragraph"><p>This request has no effect if the specified time is earlier than the
+current last-focus-change time or is later than the current X server time.
+Otherwise, the last-focus-change time is set to the specified time.</p></div>
+<div class="literalblock" id="requests-getfocus">
+<div class="content">
+<pre><tt>┌───
+    XIGetFocus
+        deviceid:        DEVICEID
+        ▶
+        focus:           Window
+└───</tt></pre>
+</div></div>
+<div class="paragraph"><p>Return the current focus window for the given device.</p></div>
+<div class="literalblock" id="requests-grabdevice">
+<div class="content">
+<pre><tt>┌───
+    XIGrabDevice
+        deviceid:        DEVICEID
+        grab_window:     Window
+        owner_events:    BOOL
+        grab_mode:       { Synchronous, Asynchronous }
+        paired_device_mode: { Synchronous, Asynchronous }
+        time:            TIMESTAMP or CurrentTime
+        cursor:          Cursor
+        mask_len:        CARD16
+        masks:           SETofEVENTMASK
+        ▶
+        status:          Success, AlreadyGrabbed, Frozen, InvalidTime, NotViewable
+└───</tt></pre>
+</div></div>
+<div class="paragraph"><p>This request actively grabs control of the specified input device. Further
+input events from this device are reported only to the grabbing client.
+This request overides any previous active grab by this client for this
+device.  This request does not, however, affect the processing of XI 2.2
+touch events.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>deviceid
+    The device to grab.
+grab_window
+    Events are reported relative to the grab window.
+owner_events
+    Specifies whether event will be reported normally or relative to the
+    grab window.
+grab_mode
+    Specifies if this device will be frozen as a result of the grab.
+paired_device_mode
+    Specifies if the master device paired with this device will be frozen
+    as a result of the grab.
+time
+    A valid server time or CurrentTime.
+cursor
+    The cursor to display for the duration of the grab or None.
+mask_len
+    Length of mask in 4 byte units.
+mask
+    Event mask. An event mask for an event type T is defined as (1 &lt;&lt; T).
+status
+    Success or the reason why the grab could not be established.</tt></pre>
+</div></div>
+<div class="paragraph"><p>The masks parameter specifies which events the client wishes to receive
+while the device is grabbed.</p></div>
+<div class="paragraph"><p>If owner-events is False, input events generated from this device are
+reported with respect to grab-window, and are only reported if selected by
+being included in the event-list.  If owner-events is True, then if a
+generated event would normally be reported to this client, it is reported
+normally, otherwise the event is reported with respect to the grab-window,
+and is only reported if selected by being included in the event-list. For
+either value of owner-events, unreported events are discarded.</p></div>
+<div class="paragraph"><p>If grab-mode is Asynchronous, device event processing continues normally.
+If the device is currently frozen by this client, then processing of
+device events is resumed. If grab-mode is Synchronous, the state of the
+grabbed device (as seen by means of the protocol) appears to freeze,
+and no further device events are generated by the server until the
+grabbing client issues a releasing XIAllowEvents request or until the
+device grab is released. Actual device input events are not lost while the
+device is frozen; they are simply queued for later processing.</p></div>
+<div class="paragraph"><p>If the device is a slave device, the paired-device-mode is ignored.
+Otherwise, if this device is a master device and paired-device-mode is
+Asynchronous, event processing is unaffected by activation of the grab. If
+this device is a master device and paired-device-mode is Synchronous, the
+state of the master device paired with this device (as seen by means of the
+protocol) appears to freeze, and no further events are generated by the
+server until the grabbing client issues a releasing XIAllowEvents request
+or until the device grab is released. Actual events are not lost while the
+devices are frozen; they are simply queued for later processing.</p></div>
+<div class="paragraph"><p>If the cursor is not None and the device is a master pointer device, the
+cursor will be displayed until the device is ungrabbed.</p></div>
+<div class="paragraph"><p>This request fails and returns:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>AlreadyGrabbed: If the device is actively grabbed by some other client.
+NotViewable: If grab-window is not viewable.
+InvalidTime: If the specified time is earlier than the last-grab-time for
+             the specified device or later than the current X server time.
+             Otherwise, the last-grab-time for the specified device is set
+             to the specified time and CurrentTime is replaced by the
+             current X server time.
+Frozen: If the device is frozen by an active grab of another client.</tt></pre>
+</div></div>
+<div class="paragraph"><p>To release a grab of a device, use XIUngrabDevice.</p></div>
+<div class="literalblock" id="requests-ungrabdevice">
+<div class="content">
+<pre><tt>┌───
+    XIUngrabDevice
+        deviceid:        DEVICEID
+        time:            TIMESTAMP or CurrentTime
+└───</tt></pre>
+</div></div>
+<div class="paragraph"><p>This request releases the device if this client has it actively grabbed
+(from either XIGrabDevice or  XIPassiveGrabDevice) and
+releases any queued events. If any devices were frozen by the grab,
+XIUngrabDevice thaws them.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>deviceid
+    The device to grab.
+time
+    A valid server time or CurrentTime.</tt></pre>
+</div></div>
+<div class="paragraph"><p>The request has no effect if the specified time is earlier than the
+last-device-grab time or is later than the current server time.
+This request generates FocusIn and FocusOut events.
+An XIUngrabDevice is performed automatically if the event window for an
+active device grab becomes not viewable.</p></div>
+<div class="literalblock" id="requests-allowevents">
+<div class="content">
+<pre><tt>┌───
+    XIAllowEvents:
+        deviceid:        DEVICEID
+        time:            TIMESTAMP or CurrentTime
+        event_mode:      { AsyncDevice, SyncDevice,
+                           AsyncPairedDevice, SyncPairedDevice,
+                           ReplayDevice, AsyncPair, SyncPair, AcceptTouch*,
+                           RejectTouch* }
+        touchid*:        CARD32
+        grab_window*:    Window
+└───</tt></pre>
+</div></div>
+<div class="ulist"><ul>
+<li>
+<p>
+since XI 2.2
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>The XIAllowEvents request releases some queued events if the client
+has caused a device to freeze. It also is used to handle touch grab and
+ownership processing.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>deviceid
+    The device to grab.
+time
+    A valid server time or CurrentTime.
+event_mode
+    Specifies whether a device is to be thawed and events are to be
+    replayed, or how to handle a grabbed touch sequence.
+touchid
+    The ID of the touch sequence to accept or reject. The value is undefined
+    for event modes other than AcceptTouch and RejectTouch.
+grab_window
+    The window on which to accept or reject a touch sequence grab. The value
+    is undefined for event modes other than AcceptTouch and RejectTouch.</tt></pre>
+</div></div>
+<div class="paragraph"><p>The request has no effect if the specified time is earlier than the last-grab
+time of the most recent active grab for the client, or if the specified time is
+later than the current X server time. The time parameter must be CurrentTime for
+requests with event modes of AcceptTouch and RejectTouch.</p></div>
+<div class="paragraph"><p>When event-mode is AcceptTouch, a BadValue error occurs if the touch ID is
+invalid. A BadAccess error occurs if this client is not the current or potential
+owner of the specified touch ID.</p></div>
+<div class="paragraph"><p>The following describes the processing that occurs depending on what constant
+you pass to the event-mode argument:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>AsyncDevice:
+    If the specified device is frozen by the client, event processing for that
+    device continues as usual. If the device is frozen multiple times  by the
+    client on behalf of multiple separate grabs, AsyncDevice thaws for
+    all.
+    AsyncDevice has no effect if the specified device is not frozen by the
+    client, but the device need not be grabbed by the client.
+SyncDevice:
+    If the specified device is frozen and actively grabbed by the client,
+    event processing for that device continues normally until the next
+    event is reported to the client. At this time, the specified device
+    again appears to freeze. However, if the reported event causes the
+    grab to be released, the specified device does not freeze.
+    SyncDevice has no effect if the specified device is not frozen by the
+    client or is not grabbed by the client.
+ ReplayDevice:
+    If the specified device is actively grabbed by the client and is frozen
+    as the result of an event having been sent to the client (either from
+    the activation of a XIGrabButton or from a previous XIAllowEvents with
+    mode SyncDevice, but not from a Grab), the grab is released and
+    that event is completely reprocessed.  This time, however, the request
+    ignores any passive grabs at or above (towards the root) the
+    grab-window of the grab just released.
+    The request has no effect if the specified device is not grabbed by
+    the client or if it is not frozen as the result of an event.
+ AsyncPairedDevice
+    If the paired master device is frozen by the client, event processing
+    for it continues as usual. If the paired device is frozen multiple
+    times by the client on behalf of multiple separate grabs,
+    AsyncPairedDevice thaws for all.
+    AsyncPairedDevice has no effect if the device is not frozen by the
+    client, but those devices need not be grabbed by the client.
+    AsyncPairedDevice has no effect if deviceid specifies a slave device.
+ SyncPairedDevice
+    If the paired master device is frozen by the client, event processing (for
+    the paired master device) continues normally until the next button or key
+    event is reported to the client for the grabbed device (button event for
+    the grabbed device, key or motion event for the device), at which time
+    the device again appears to freeze. However, if the reported event causes
+    the grab to be released, then the device does not freeze.
+    SyncPairedDevice has no effect if the specified device is not grabbed
+    by the client or if it is no frozen as the result of an event.
+    SyncPairedDevice has no effect if deviceid specifies a slave device.
+ SyncPair
+    If both the device and the paired master device are frozen by the
+    client, event processing (for both devices) continues normally until
+    the next XIButtonPress, XIButtonRelease, XIKeyPress, or XIKeyRelease
+    event is reported to the client for a grabbed device (button event for
+    a pointer, key event for a keyboard), at which time the devices again
+    appear to freeze. However, if the reported event causes the grab to be
+    released, then the devices do not freeze (but if the other device is
+    still grabbed, then a subsequent event for it will still cause both
+    devices to freeze).
+    SyncPair has no effect unless both the device and the paired master
+    device are frozen by the client. If the device or paired master device
+    is frozen twice by the client on behalf of two separate grabs,
+    SyncPair thaws for both (but a subsequent freeze for SyncPair will
+    only freeze each device once).
+    SyncPair has no effect if deviceid specifies a slave device.
+ AsyncPair
+    If the device and the paired master device are frozen by the client,
+    event processing for both devices continues normally. If a device is
+    frozen twice by the client on behalf of two separate grabs, AsyncBoth
+    thaws for both. AsyncPair has no effect unless both the device and the
+    paired master device frozen by the client.
+    AsyncPair has no effect if deviceid specifies a slave device.
+ AcceptTouch
+    The client is deemed to have taken control of the touch sequence once it
+    owns the sequence. TouchEnd events will be sent to all clients listening
+    to the touch sequence that have either grabbed the touch sequence on a
+    child window of the grab_window or have received events for the touch
+    sequence through event selection. These clients will no longer receive
+    any TouchUpdate events.
+ RejectTouch
+    The client is no longer interested in the touch sequence, and will
+    receive a TouchEnd event. If the client is the current owner of the
+    sequence, ownership will be passed on to the next listener.</tt></pre>
+</div></div>
+<div class="literalblock" id="requests-passivegrabdevice">
+<div class="content">
+<pre><tt>┌───
+    XIPassiveGrabDevice
+        deviceid:        DEVICE
+        detail:          CARD32
+        grab_type:       GRABTYPE
+        grab_window:     Window
+        cursor:          Cursor
+        owner_events:    Bool
+        grab_mode:       { Synchronous, Asynchronous, Touch* }
+        paired_device_mode: { Synchronous, Asynchronous }
+        num_modifiers:   INT16
+        mask_len:        CARD16
+        masks:           SETofEVENTMASK
+        modifiers:       CARD32 or GrabAnyModifier
+        ▶
+        num_modifiers_return:    INT16
+        modifiers_return:        GRABMODIFIERINFO
+└───</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>GRABTYPE         { GrabtypeButton, GrabtypeKeycode, GrabtypeEnter,
+                   GrabtypeFocusIn, GrabtypeTouchBegin }</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>GRABMODIFIERINFO {   status:    Access
+                     modifiers: CARD32 }</tt></pre>
+</div></div>
+<div class="ulist"><ul>
+<li>
+<p>
+since XI 2.2
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Establish an explicit passive grab for a button or keycode
+on the specified input device.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>cursor
+    The cursor to display for the duration of the grab. If grab_type
+    is not GrabtypeButton, this argument is ignored.
+deviceid
+    The device to establish the passive grab on or AllDevices or
+    AllMasterDevices.
+detail
+    The button number, or key symbol to grab for.
+    Must be 0 for GrabtypeEnter, GrabtypeFocusIn, and
+    GrabtypeTouchBegin.
+grab_type
+    The type of grab to establish.
+grab_window
+    Events are reported relative to the grab window.
+grab_mode
+    If grab-mode is Asynchronous, device event processing continues
+    normally.  If the device is currently frozen by this client, then
+    processing of device events is resumed. If grab-mode is
+    Synchronous, the state of the grabbed device (as seen by means of
+    the protocol) appears to freeze, and no further device events are
+    generated by the server until the grabbing client issues a
+    releasing XIAllowEvents request or until the device grab is
+    released. Actual device input events are not lost while the device
+    is frozen; they are simply queued for later processing. If grab_type
+    is GrabtypeTouchBegin, grab_mode must be set to Touch.
+mask_len
+    Length of mask in 4 byte units.
+mask
+    Event mask. An event mask for an event type T is defined as (1 &lt;&lt; T).
+modifiers
+    XKB modifier state to activate this passive grab.
+num_modifiers
+    Number of elements in modifiers.
+owner_events
+    Specifies whether event will be reported normally or relative to the
+    grab window.
+num_modifiers_return
+    Number of elements in modifiers_return
+modifiers_return
+    XKB modifier state that could not be grabbed.</tt></pre>
+</div></div>
+<div class="paragraph"><p>If owner-events is False, input events generated from this device are
+reported with respect to grab-window, and are only reported if
+selected by being included in the event-list.  If owner-events is
+True, then if a generated event would normally be reported to this
+client, it is reported normally, otherwise the event is reported
+with respect to the grab-window, and is only reported if selected
+by being included in the event-list. For either value of
+owner-events, unreported events are discarded.</p></div>
+<div class="paragraph"><p>If deviceid specifies a master pointer, the modifiers of the paired
+master keyboard are used. If deviceid specifies a slave pointer
+the modifiers of the master keyboard paired with the attached master
+pointers are used. If deviceid specifies a slave keyboard, the
+modifiers of the attached master keyboard are used. Note that
+activating a grab on a slave device detaches the device from its
+master. In this case, the modifiers after activation of the grab are
+from the slave device only and may be different to the modifier state
+when the grab was triggered.</p></div>
+<div class="paragraph"><p>In the future, if grab_type is GrabtypeButton or GrabtypeKeyboard, the
+device is actively grabbed if:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+the device is not grabbed, and
+</p>
+</li>
+<li>
+<p>
+the specified modifier keys are down, and
+</p>
+</li>
+<li>
+<p>
+the grab_type is GrabtypeButton and the button specified in detail
+          is logically pressed or the grab_type is GrabtypeKeycode and the
+          keycode specified in detail is logically pressed, and
+</p>
+</li>
+<li>
+<p>
+the grab_window contains the pointer, and
+</p>
+</li>
+<li>
+<p>
+a passive grab on the same button/keycode + modifier
+          combination does not exist on an ancestor of grab_window.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Otherwise, if grab_type is GrabtypeEnter or GrabtypeFocusIn, the
+device is actively grabbed if:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+the device is not actively grabbed, and
+</p>
+</li>
+<li>
+<p>
+the specified modifier keys are down, and
+</p>
+</li>
+<li>
+<p>
+the grab_type is GrabtypeEnter and the device&#8217;s pointer has moved
+          into grab_window or a descendant of grab_window, or the grab_type is
+          GrabtypeFocusIn and the device&#8217;s focus has been set to the
+          grab_window or a descendant of grab_window, and
+</p>
+</li>
+<li>
+<p>
+a passive grab of the same grab_type + modifier combination does not
+          does not exist on an ancestor of grab_window.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Otherwise, if grab_type is GrabtypeTouchBegin, a touch grab begins if:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+the device is not actively grabbed, and
+</p>
+</li>
+<li>
+<p>
+the specified modifier keys are down
+</p>
+</li>
+<li>
+<p>
+a touch begins in grab_window or a descendant of grab_window, and
+</p>
+</li>
+<li>
+<p>
+a passive grab of the same grab_type + modifier combination does not
+          does not exist on an ancestor of grab_window.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Ownership of the touch sequence is granted to the grabbing client if:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+a TouchBegin or pointer grab for an emulated touch sequence of a
+          direct touch device with the same modifier set does not exist on
+          an ancestor of grab_window, or all applicable grabs have released
+          ownership.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>A modifier of GrabAnyModifier is equivalent to issuing the request for
+all possible modifier combinations (including no modifiers). A client
+may request a grab for GrabAnyModifier and explicit modifier
+combinations in the same request.</p></div>
+<div class="paragraph"><p>A GrabtypeButton or GrabtypeKeyboard grab is released when all buttons
+or keycode are released, independent of the state of modifier keys.
+A GrabtypeEnter or GrabtypeFocusIn grab is released when the
+pointer or focus leaves the window and all of its descendants,
+independent of the state of modifier keys.
+A GrabtypeTouchBegin grab is released when the touch sequence ends or
+the client uses XIAllowEvents with mode RejectTouch.
+Note that the logical state of a device (as seen by means of the
+protocol) may lag the physical state if device event processing is
+frozen.</p></div>
+<div class="paragraph"><p>This request overrides all previous passive grabs by the same
+client on the same button/key/enter/focus in + modifier combinations
+on the same window.</p></div>
+<div class="paragraph"><p>If some other client already has issued a XIPassiveGrabDevice request
+with the same button or keycode and modifier combination, the
+failed modifier combinations is returned in modifiers_return. If some
+other client already has issued an XIPassiveGrabDevice request of
+grab_type XIGrabtypeEnter, XIGrabtypeFocusIn, XIGrabtypeTouchBegin, or
+XIGrabtypeTouchBeginInert with the same grab_window and the same
+modifier combination, the failed modifier combinations are returned
+in modifiers_return. If num_modifiers_return is zero, all passive
+grabs have been successful.</p></div>
+<div class="paragraph"><p>If a button grab or enter grab activates, EnterNotify and LeaveNotify
+events with mode Grab are generated as if the pointer were to suddenly
+warp from its current position some position in the grab_window.
+However, the pointer does not warp, and the pointer position is used
+as both the initial and final positions for the events.</p></div>
+<div class="paragraph"><p>If a keycode grab or focus grab activates, FocusIn and FocusOut events
+with mode Grab are generated as if the focus were to change from the
+current window to the grab_window.</p></div>
+<div class="paragraph"><p>If an enter or focus in grab activates, additional EnterNotify events
+with mode XIPassiveGrabNotify are generated as if the pointer or focus
+were to suddenly warp from its current position to some position in
+the grab window.  These events are sent to the grabbing client only
+and only if the grab event mask has selected for it. If such a passive
+grab deactivates, addional LeaveNotify events with mode
+XIPassiveUngrabNotify are generated and sent to the grabbing client
+before the grab deactivates.</p></div>
+<div class="paragraph"><p>For GrabtypeTouchBegin, grab_mode must be Touch or a BadValue error
+is generated.</p></div>
+<div class="paragraph"><p>See section <a href="#clientpointer">The ClientPointer principle</a> for additional notes
+on touch grabs, as they do not behave like traditional grabs: in
+particular, they do not freeze the device, and delivery of touch events
+continues even if the device is frozen due to a grab by another client.</p></div>
+<div class="literalblock" id="requests-passiveungrabdevice">
+<div class="content">
+<pre><tt>┌───
+    XIPassiveUngrabDevice
+        deviceid:        DEVICEID
+        detail:          CARD32
+        grab_type:       GRABTYPE
+        grab_window:     Window
+        num_modifiers:   INT16
+        modifiers:       MODIFIERINFO
+└───</tt></pre>
+</div></div>
+<div class="paragraph"><p>Release an explicit passive grab on the specified input device.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>deviceid
+    The device to establish the passive grab on.
+detail
+    The button number or key symbol to ungrab.
+    Must be 0 for GrabtypeEnter, GrabtypeFocusIn, and
+    GrabtypeTouchBegin.
+grab_type
+    The type of grab to establish.
+grab_window
+    Events are reported relative to the grab window.
+modifiers
+    XKB modifier state to activate this passive grab.
+num_modifiers
+    Number of elements in modifiers.</tt></pre>
+</div></div>
+<div class="paragraph"><p>This request has no effect if the client does not have a passive grab
+of the same type, same button or keycode (if applicable) and modifier
+combination on the grab_window.</p></div>
+<div class="literalblock" id="requests-listproperties">
+<div class="content">
+<pre><tt>┌───
+    XIListProperties
+        deviceid:        DEVICEID
+        ▶
+        num_properties:  INT16
+        properties:      LISTofATOM
+└───</tt></pre>
+</div></div>
+<div class="paragraph"><p>List the properties associated with the given device.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>deviceid
+    The device to list the properties for.
+num_atoms
+    Number of atoms in the reply
+atoms
+    All properties on the device.</tt></pre>
+</div></div>
+<div class="literalblock" id="requests-changeproperty">
+<div class="content">
+<pre><tt>┌───
+    XIChangeProperty
+        deviceid:        DEVICEID
+        property:        ATOM
+        type:            ATOM
+        format:          { 8, 16, 32 }
+        mode:            { Append, Prepend, Replace }
+        num_items:       CARD32
+        data:            LISTofINT8, or LISTofINT16, or LISTofINT32
+└───</tt></pre>
+</div></div>
+<div class="paragraph"><p>Change the given property on the given device.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>deviceid
+    The device to change the property on.
+property
+    The property to modify.
+type
+    The property's type.
+mode
+    One of Append, Prepend, or Replace
+num_items
+    Number of items following this request.
+data
+    Property data (nitems * format/8 bytes)</tt></pre>
+</div></div>
+<div class="paragraph"><p>The type is uninterpreted by the server. The format specifies whether
+the data should be viewed as a list of 8-bit, 16-bit, or 32-bit
+quantities so that the server can correctly byte-swap as necessary.</p></div>
+<div class="paragraph"><p>If the mode is Replace, the previous propert y value is discarded.  If
+the mode is Prepend or Append, then the type and format must match the
+existing property value (or a Match error results). If the property is
+undefined, it is treated as defined with the correct type and format
+with zero-length data. For Prepend, the data is tacked on to the
+beginning of the existing data, and for Append, it is tacked on to the
+end of the existing data.</p></div>
+<div class="paragraph"><p>The lifetime of a property is not tied to the storing client. Properties
+remain until explicitly deleted, until the device is removed, or
+until server reset.</p></div>
+<div class="paragraph"><p>A property cannot be deleted by setting nitems to zero. To delete a
+property, use XIDeleteProperty.</p></div>
+<div class="paragraph"><p>This request generates an XIPropertyEvent.</p></div>
+<div class="literalblock" id="requests-deleteproperty">
+<div class="content">
+<pre><tt>┌───
+    XIDeleteProperty
+        deviceid:        DEVICEID
+        property:        ATOM
+└───</tt></pre>
+</div></div>
+<div class="paragraph"><p>Deletes the given property on the given device.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>deviceid
+    The device to delete the property on.
+property
+    The property to delete.</tt></pre>
+</div></div>
+<div class="paragraph"><p>If the property is deleted, an XIPropertyEvent is generated on the device.
+If the property does not exist, this request does nothing.</p></div>
+<div class="literalblock" id="requests-getproperty">
+<div class="content">
+<pre><tt>┌───
+    XIGetProperty
+        deviceid:        DEVICEID
+        property:        ATOM
+        type:            Atom or AnyPropertyType
+        offset:          CARD32
+        len:             CARD32
+        delete:          BOOL
+        ▶
+        type:            Atom
+        bytes_after:     CARD32
+        num_items:       CARD32
+        format:          { 8, 16, 32 }
+        data:            LISTofINT8, or LISTofINT16, or LISTofINT32
+└───</tt></pre>
+</div></div>
+<div class="paragraph"><p>Get the data for the given property on the given device.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>deviceid
+    The device to retrieve the property data from.
+property
+    The property to retrieve the data from..
+type
+    The property type to retrieve or AnyPropertyType
+offset
+    The offset in 4-byte units.
+len
+    Number of bytes to receive in 4-byte units.
+delete
+    Delete the property after retrieving the data.
+bytes_after
+    Number of unread bytes in the stored property
+num_items
+    Number of items in data
+format
+    8, 16, or 32
+data
+    Property data (nitems * format/8 bytes)</tt></pre>
+</div></div>
+<div class="paragraph"><p>If the specified property does not exist for the specified device, then
+the return type is None, the format and bytes-after are zero, and the value is
+empty. The delete argument is ignored in this case. If the specified property
+exists but its type does not match the specified type, then the return
+type is the actual type of the property, the format is the actual format of the
+property (never zero), the bytes-after is the length of the property in bytes
+(even if the format is 16 or 32), and the value is empty. The delete
+argument is ignored in this case. If the specified property exists and
+either AnyPropertyType is specified or the specified type matches the actual
+type of the property, then the return type is the actual type of the property,
+the format is the actual format of the property
+(never zero), and the bytes-after and value are as follows, given:
+         N = actual length of the stored property in bytes
+            (even if the format is 16 or 32)
+         I = 4 * long-offset
+         T = N−I
+         L = MINIMUM(T, 4 * long-length)
+         A = N − (I + L)
+The returned value starts at byte index I in the property (indexing
+from 0), and its length in bytes is L. However, it is a Value error if
+offset is given such that L is negative. The value of bytes_after is A,
+giving the number of trailing unread bytes in the stored property. If
+delete is True and the bytes_after is zero, the property is also
+deleted from the device, and a XIPropertyNotify event is generated on
+the device.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="events">13. Events</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>An event specifies its length in 4-byte units after the initial 32 bytes.
+Future versions of the protocol may provide additional information
+in the same event, thus increasing the event size. Clients are required to
+always read the number of bytes specified by the event, not the size of the
+event they may have been compiled against.</p></div>
+<div class="paragraph"><p>The following event types are available in XI2.</p></div>
+<div class="paragraph"><p>Version 2.0:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+HierarchyChanged
+</p>
+</li>
+<li>
+<p>
+DeviceChanged
+</p>
+</li>
+<li>
+<p>
+KeyPress
+</p>
+</li>
+<li>
+<p>
+KeyRelease
+</p>
+</li>
+<li>
+<p>
+ButtonPress
+</p>
+</li>
+<li>
+<p>
+ButtonRelease
+</p>
+</li>
+<li>
+<p>
+Motion
+</p>
+</li>
+<li>
+<p>
+RawKeyPress
+</p>
+</li>
+<li>
+<p>
+RawKeyRelease
+</p>
+</li>
+<li>
+<p>
+RawButtonPress
+</p>
+</li>
+<li>
+<p>
+RawButtonRelease
+</p>
+</li>
+<li>
+<p>
+RawMotion
+</p>
+</li>
+<li>
+<p>
+Enter
+</p>
+</li>
+<li>
+<p>
+Leave
+</p>
+</li>
+<li>
+<p>
+FocusIn
+</p>
+</li>
+<li>
+<p>
+FocusOut
+</p>
+</li>
+<li>
+<p>
+PropertyEvent
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Version 2.2:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+TouchBegin
+</p>
+</li>
+<li>
+<p>
+TouchUpdate
+</p>
+</li>
+<li>
+<p>
+TouchOwnership
+</p>
+</li>
+<li>
+<p>
+TouchEnd
+</p>
+</li>
+<li>
+<p>
+RawTouchBegin
+</p>
+</li>
+<li>
+<p>
+RawTouchUpdate
+</p>
+</li>
+<li>
+<p>
+RawTouchEnd
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>All events have a set of common fields specified as EVENTHEADER.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>EVENTHEADER { type:                       BYTE
+              extension:                  BYTE
+              sequenceNumber:             CARD16
+              length:                     CARD32
+              evtype:                     CARD16
+              deviceid:                   DEVICEID
+              time:                       Time }</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>type
+    Always GenericEvent.
+extension
+    Always the X Input extension offset.
+sequenceNumber
+    Sequence number of last request processed by the server.
+length
+    Length in 4-byte units after the initial 32 bytes.
+evtype
+    XI-specific event type.
+deviceid
+    Numerical device id for a device.
+time
+    Time in ms when the event occurred.</tt></pre>
+</div></div>
+<div class="sect2">
+<h3 id="events-xi20">13.1. Events introduced in version 2.0</h3>
+<div class="literalblock" id="events-hierachyevent">
+<div class="content">
+<pre><tt>┌───
+    HierarchyEvent:
+        EVENTHEADER
+        flags:                      SETofHIERARCHYMASK
+        num_info:                   CARD16
+        info:                       LISTofHIERARCHYINFO
+└───</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>HIERARCHYMASK { MasterAdded, MasterRemoved, SlaveAttached, SlaveDetached,
+                SlaveAdded, SlaveRemoved, DeviceEnabled, DeviceDisabled }</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>HIERARCHYINFO { deviceid:           DEVICEID,
+                attachment:         DEVICEID,
+                type:               DEVICEUSE
+                enabled:            BOOL
+                flags:              SETofHIERARCHYMASK}</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>flags
+    Set of the changes that have occured, causing this event.
+num_info
+    The number of device info structs following the request.
+info:
+    The current hierarchy information.</tt></pre>
+</div></div>
+<div class="paragraph"><p>An XIHierarchyEvent is sent whenever the device hierarchy been
+changed. The flags specify all types of hierarchy modifiations that have
+occured.
+For all devices, info details the hierarchy information after the
+modification of the hierarchy has occured. For each device specified with
+deviceid:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+if type is MasterPointer or MasterKeyboard, attachment decribes the
+  pairing of this device.
+</p>
+</li>
+<li>
+<p>
+if type is SlavePointer or SlaveKeyboard, attachment describes the
+  master device this device is attached to.
+</p>
+</li>
+<li>
+<p>
+if type is FloatingSlave device, attachment is undefined.
+</p>
+<div class="literalblock">
+<div class="content">
+<pre><tt>enabled
+     True if the device is enabled and can send events. A disabled master
+     device will not forward events from an attached, enabled slave
+     device.</tt></pre>
+</div></div>
+</li>
+</ul></div>
+<div class="paragraph"><p>Note: Multiple devices may be affected in one hierarchy change,
+deviceid in an XIHierarchyEvent is always the first affected
+device. Clients should ignore deviceid and instead use the devices list.</p></div>
+<div class="literalblock" id="events-devicechangedevent">
+<div class="content">
+<pre><tt>┌───
+    DeviceChangedEvent:
+        EVENTHEADER
+        reason:                CHANGEREASON
+        source:                DEVICEID
+        num_classes:           CARD16
+        classes:               LISTofCLASS
+└───</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>CHANGEREASON { SlaveSwitch, DeviceChange }</tt></pre>
+</div></div>
+<div class="paragraph"><p>A DeviceChangeEvent is sent whenever a device changes it&#8217;s capabilities.
+This can happen either by a new slave device sending events through a
+master device, or by a physical device changing capabilities at runtime.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>reason
+    The reason for generating this event.
+    If reason is SlaveSwitch, the slave device sending events through
+    this device has changed and source specifies the new slave device.
+    A SlaveSwitch reason can only occur on a master device.
+    If reason is DeviceChange, the device itself has changed through
+    other means (e.g. a physical device change) and source is
+    the device itself.
+source
+    The source of the new classes.
+num_classes
+    Number of classes provided.
+classes
+    Details the available classes provided by the device.  The order the
+    classes are provided in is undefined.</tt></pre>
+</div></div>
+<div class="paragraph"><p>For a detailed description of classes, see the XIQueryDevice request.</p></div>
+<div class="literalblock" id="events-deviceevent">
+<div class="content">
+<pre><tt>┌───
+    DeviceEvent:
+        EVENTHEADER
+        detail:                     CARD32
+        root:                       Window
+        event:                      Window
+        child:                      Window
+        root_x:                     FP1616
+        root_y:                     FP1616
+        event_x:                    FP1616
+        event_y:                    FP1616
+        buttons_len:                CARD16
+        valuators_len:              CARD16
+        sourceid:                   DEVICEID
+        mods:                       MODIFIERINFO
+        group:                      GROUPINFO
+        flags:                      DEVICEEEVENTFLAGS
+        buttons:                    SETofBUTTONMASK
+        valuators:                  SETofVALUATORMASK
+        axisvalues:                 LISTofFP3232
+└───</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>BUTTONBIT { (1 &lt;&lt; Button1), (1 &lt;&lt; Button2), ... , (1 &lt;&lt; ButtonN) }
+VALUATORBIT { (1 &lt;&lt; 1), ( 1 &lt;&lt; 2), ... ( 1 &lt;&lt; n) }</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>MODIFIERINFO  { base_mods:           CARD32,
+                latched_mods:        CARD32,
+                locked_mods:         CARD32,
+                effective_mods:      CARD32}
+GROUPINFO     { base_group:          CARD8,
+                latched_group:       CARD8,
+                locked_group:        CARD8,
+                effective_group:     CARD8}</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>DEVICEEVENTFLAGS (all events): none
+DEVICEEVENTFLAGS (key events only): { KeyRepeat }
+DEVICEEVENTFLAGS (pointer events only): { PointerEmulated }
+DEVICEEVENTFLAGS (touch events only): { TouchPendingEnd,
+                                        TouchEmulatingPointer }</tt></pre>
+</div></div>
+<div class="paragraph"><p>An XIDeviceEvent is generated whenever the logical state of a device
+changes in response to a button press, a button release, a motion, a key
+press or a key release. The event type may be one of KeyPress,
+KeyRelease, ButtonPress, ButtonRelease, Motion.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>XI 2.2: The event type may also be TouchBegin, TouchUpdate, or TouchEnd.</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>detail
+    The button number, key code, touch ID, or 0.
+root
+event
+child
+    The root window, event window or subwindow, respectively. See core
+    protocol specification for more detail.
+root_x
+root_y
+    The position of the pointer in screen coordinates (16.16 fixed point).
+event_x
+event_y
+    The position of the pointer in screen coordinates relative to the
+    event window (16.16 fixed point).</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>buttons_len
+    The length of buttons in 4 byte units.
+valuators_len
+    The length of valuators in 4 byte units.
+sourceid
+    The source device that originally generated the event.
+mods
+    XKB modifier state before the event occured.
+group
+    XKB group state before the event.
+buttons
+    Button state before the event.
+valuators
+    Bitmask of valuators provided in axisvalues.
+axisvalues
+    Valuator data in device-native resolution.
+flags
+    Miscellaneous information about this event; the union of the
+    common flag set and either the key or pointer flag set,
+    depending on the event type.
+    KeyRepeat means that this event is for repeating purposes, and
+    the physical state of the key has not changed.  This is only
+    valid for KeyPress events.
+    PointerEmulated signals that the event has been emulated from another
+    XI 2.x event for legacy client support, and that this event should
+    be ignored if the client listens for these events.  This flag is
+    set on scroll ButtonPress and RawButtonPress events (buttons 4, 5, 6
+    and 7) if a smooth-scrolling event on the Rel Vert Scroll or
+    Rel Horiz Scroll axes was also generated. It is also set on Motion,
+    ButtonPress, and ButtonRelease events generated by direct touch devices.
+    TouchPendingEnd (for touch events only) means that the touch
+    has physically ended, however another client still holds a grab, so the
+    touch should be considered alive until all grabbing clients have
+    accepted or passed on ownership.  The touch will not generate any
+    further TouchUpdate events once an event with TouchPendingEnd has been
+    received.
+    TouchEmulatingPointer is set on touch events that emulate pointer
+    events.</tt></pre>
+</div></div>
+<div class="paragraph"><p>Modifier state in mods is detailed as follows:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>base_mods
+    XKB base modifier state.
+latched_mods
+    XKB latched modifier state.
+locked_mods
+    XKB locked modifier state.</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>Group state in group is detailed as follows:
+base_group
+    XKB base group state.
+latched_group
+    XKB latched group state.
+locked_group
+    XKB locked group state.</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>XI 2.2:</tt></pre>
+</div></div>
+<div class="paragraph"><p>A TouchBegin event is generated whenever a new touch sequence initializes
+A TouchEnd event is generated whenever a touch sequence ceases. A
+TouchUpdate event is generated whenever a valuator value changes, or a flag
+flag (e.g. pending end) has changed for that touch sequence; this may result
+in a TouchUpdate event being sent with zero valuators. A TouchOwnership event
+is sent when a client becomes the owner of a touch.</p></div>
+<div class="paragraph"><p>The average finger size is significantly larger than one pixel. The
+selection of the hotspot of a touchpoint is implementation dependent and
+may not be the logical center of the touch.</p></div>
+<div class="paragraph"><p>Touch tracking IDs are provided in the detail field of touch events. Its
+value is always provided in every touch event. Tracking IDs are
+represented as unsigned 32-bit values and increase strictly monotonically in
+value for each new touch, wrapping back to 0 upon reaching the numerical limit
+of IDs. The increment between two touch IDs is indeterminate. Clients may not
+assume that any future touches will have specific touch IDs. IDs are globally
+unique.</p></div>
+<div class="paragraph"><p>The button state in touch events represents the state of the device&#8217;s
+physical buttons only, even if that sequence is emulating pointer events.</p></div>
+<div class="paragraph"><p>Touch events do not generate enter/leave events.</p></div>
+<div class="literalblock" id="events-rawevent">
+<div class="content">
+<pre><tt>┌───
+    RawEvent
+        EVENTHEADER
+        detail:                    CARD32
+        sourceid*:                 DEVICEID
+        flags:                     DEVICEEVENTFLAGS
+        valuators_len:             CARD16
+        valuators:                 SETofVALUATORMASK
+        axisvalues:                LISTofFP3232
+        axisvalues_raw:            LISTofFP3232
+└───</tt></pre>
+</div></div>
+<div class="ulist"><ul>
+<li>
+<p>
+since XI 2.1
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>A RawEvent provides the information provided by the driver to the
+client. RawEvent provides both the raw data as supplied by the driver and
+transformed data as used in the server. Transformations include, but are
+not limited to, axis clipping and acceleration.
+Transformed valuator data may be equivalent to raw data. In this case,
+both raw and transformed valuator data is provided.
+RawEvents are sent exclusively to all root windows.
+Clients supporting XI 2.0 receive raw events when the device is not grabbed,
+or when the device is grabbed by the client but not when the device is
+grabbed by another client.
+Clients supporting XI 2.1 or later receive raw events at all times, even
+when the device is grabbed by another client.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>eventtype
+    The type of event that occured on the device.
+detail
+    The button number, keycode or touch ID*.
+sourceid
+    The source device that originally generated the event. The sourceid
+    is undefined for clients not supporting XI 2.1.
+flags
+    Flags as described in DeviceEvent.
+valuators_len
+    The length of valuators in 4 byte units.
+valuators
+    Bitmask of valuators provided in axisvalues and axisvalues_raw.
+axisvalues
+    Valuator data in device-native resolution.
+axisvalues_raw
+    Untransformed valuator data in device-native resolution.</tt></pre>
+</div></div>
+<div class="ulist"><ul>
+<li>
+<p>
+since XI 2.2
+</p>
+<div class="literalblock" id="events-enterleave">
+<div class="content">
+<pre><tt>┌───
+    Enter or Leave or FocusIn or FocusOut
+        EVENTHEADER
+        root:               Window
+        event:              Window
+        child:              Window
+        sourceid:           DEVICEID
+        root_x:             FP1616
+        root_y:             FP1616
+        event_x             FP1616
+        event_y:            FP1616
+        mode:               NOTIFYMODE
+        detail:             NOTIFYDETAIL
+        same_screen:        BOOL
+        focus:              BOOL
+        mods:               MODIFIERINFO
+        group:              GROUPINFO
+        buttons_len:        CARD16
+        buttons:            SETofBUTTONMASK
+└───</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>NOTIFYMODE { Normal, Grab, Ungrab }
+NOTIFYDETAIL { Ancestor, Virtual, Inferior, Nonlinear, NonlinearVirtual,
+               Pointer, PointerRoot, None }</tt></pre>
+</div></div>
+</li>
+</ul></div>
+<div class="paragraph"><p>Enter or Leave events are sent whenever a device&#8217;s pointer enters or
+leaves a window.
+FocusIn or FocusOut events are sent whenever a device&#8217;s focus is set to or
+away from a window.
+The enter/leave and focus in/out model is described in the core protocol
+specification, Section 11. (EnterNotify, LeaveNotify events).</p></div>
+<div class="paragraph"><p>For enter and leave events, the modifier and group state is the state of
+the paired master device if the device is a master device, or the state of
+the attached master keyboard if the device is an attached slave device, or
+zero if the device is a floating slave device.</p></div>
+<div class="paragraph"><p>For focus in and out events, the button state is the state of the paired
+master device if the device is a master device, or the state of the
+attached master keyboard if the device is an attached slave device, or
+zero if the device is a floating slave device.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>root
+event
+child
+    The root window, event window, and child window, respectively. See the
+    core protocol specification for more detail.
+sourceid
+    The device that caused the pointer to move.
+root_x
+root_y
+    The pointer coordinates relative to the root window.
+event_x
+event_y
+    The pointer coordinates relative to the event window.
+mode
+    Normal pointer motion events have mode Normal. Pseudo-motion events
+    when a grab activates have mode Grab, and pseudo-motion events when a
+    grab deactivates have mode Ungrab. Pseudo-motion events caused by the
+    activation or deactivation of a passive enter or focus in grab have mode
+    XIPassiveGrabNotify or XIPassiveUngrabNotify.
+detail
+    Specifies the relation of the event window to the window the pointer
+    entered or left. See the core protocol spec for details.
+same_screen
+    True if the event window is on the same screen as the pointer's root
+    window.
+focus
+    If the event window is the focus window or an inferior of the focus
+    window, then focus is True. Otherwise, focus is False. This field is
+    unspecified for focus in/out events.
+mods
+    XKB modifier state before the event occured.
+group
+    XKB group state before the event.
+buttons_len
+    The length of buttons in 4 byte units.
+buttons
+    Button state before the event.</tt></pre>
+</div></div>
+<div class="literalblock" id="events-propertyevent">
+<div class="content">
+<pre><tt>┌───
+    XIPropertyEvent
+        EVENTHEADER
+        property:           ATOM
+        what:               { PropertyCreated, PropertyDeleted, PropertyModified }
+└───</tt></pre>
+</div></div>
+<div class="paragraph"><p>XIPropertyEvents are sent whenever a device property is created, deleted or
+modified by a client.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>property
+    The property that has been created, deleted, or modified
+what
+    Specifies what has been changed.</tt></pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="events-xi22">13.2. Events introduced in version 2.2</h3>
+<div class="literalblock" id="events-touchownershipevent">
+<div class="content">
+<pre><tt>┌───
+    TouchOwnershipEvent (since XI 2.2):
+        EVENTHEADER
+        touchid:                    CARD32
+        root:                       Window
+        event:                      Window
+        child:                      Window
+        sourceid:                   DEVICEID
+        flags:                      SETofTOUCHOWNERSHIPFLAGS
+└───</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>TOUCHOWNERSHIPFLAGS:    (none currently defined)</tt></pre>
+</div></div>
+<div class="paragraph"><p>A TouchOwnershipEvent indicates that ownership has changed, and the client
+is now the owner of the touch sequence specified by touchid.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>touchid
+    The identifier of the touch sequence.
+root
+event
+child
+    The root window, event window, and child window, respectively. See the
+    core protocol specification for more detail.
+sourceid
+    The source device that originally generated the event.
+flags
+    A bitmask of flags for this event.</tt></pre>
+</div></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="xi22-usecases">Appendix A: XI 2.2 Use-cases</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>All use-cases that include the receiving and processing of touch events
+require the client to announce XI 2.2 support in the XIQueryVersion request.</p></div>
+<div class="sect2">
+<h3 id="_client_c_wants_to_process_touch_events_from_a_device_d_on_window_w">Client C wants to process touch events from a device D on window W.</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+C calls XISelectEvent for XI_Touch{Begin|Update|End} from D on W.
+</p>
+</li>
+<li>
+<p>
+C receives TouchBegin whenever a touch sequence starts within W&#8217;s borders.
+</p>
+</li>
+<li>
+<p>
+C receives TouchUpdate events whenever an axis valuator value changes for a
+   touch sequence it received a TouchBegin event for.
+</p>
+</li>
+<li>
+<p>
+C receives TouchEnd whenever a touch it received a TouchBegin event for
+   ceases.
+</p>
+</li>
+</ul></div>
+<div class="sect3">
+<h4 id="_while_client_i_wants_to_pre_process_touch_events_from_device_d_on_the_parent_window_of_w">While client I wants to pre-process touch events from device D on the parent window  of W.</h4>
+<div class="ulist"><ul>
+<li>
+<p>
+C calls XISelectEvent for XI_Touch{Begin|Update|Ownership|End} from D on W.
+</p>
+</li>
+<li>
+<p>
+I calls XIPassiveGrab for XI_Touch{Begin|Update|Ownership|End} from D on a
+   parent window of W.
+</p>
+</li>
+<li>
+<p>
+I receives TouchBegin whenever a touch begins within window W, as well as a
+   TouchOwnership event indicating that it currently owns the touch sequence.
+   C receives a TouchBegin event as well, but without TouchOwnership.
+</p>
+</li>
+<li>
+<p>
+When an axis valuator changes in this touch sequence, both I and C receive a
+   TouchUpdate event.  I may process the event to determine if it is going to
+   accept or reject the touch, whereas C may perform reversible processing.
+</p>
+</li>
+<li>
+<p>
+If I decides it is going to claim the touch sequence for its exclusive
+   processing, it calls XIAllowEvents with an event mode of XIAcceptTouch; at
+   this point, C receives a TouchEnd event, and undoes any processing it has
+   already performed due to the touch sequence.  Further TouchUpdate events are
+   delivered only to I.
+</p>
+</li>
+<li>
+<p>
+Alternatively, if I decides it does not want to receive further events
+   from this touch sequence, it calls XIAllowEvents with an event mode of
+   XIRejectTouch; at this point, I receives a TouchEnd event confirming that it
+   has rejected the touch.  C receives a TouchOwnership event confirming that it
+   is now the new owner of the touch, and further TouchUpdate events are
+   delivered only to C.  As C now owns the touch, it is free to perform
+   irreversible processing of the sequence.
+</p>
+</li>
+<li>
+<p>
+When the touch physically ceases, a TouchEnd event is sent to C.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect3">
+<h4 id="_while_client_i_wants_to_process_pointer_events_on_window_w_8217_s_parent_window_y">While client I wants to process pointer events on window W&#8217;s parent, window Y.</h4>
+<div class="ulist"><ul>
+<li>
+<p>
+I calls XIPassiveGrab for XI_{ButtonPress,MotionNotify,ButtonRelease} to
+   create a synchronous pointer grab from D on Y.
+</p>
+</li>
+<li>
+<p>
+C calls XISelectEvent for XI_Touch{Begin|Update|Ownership|End} from D on W.
+</p>
+</li>
+<li>
+<p>
+I receives a ButtonPress event whenever a touch begins within W, and is
+   considered the owner of the event.  C receives a TouchBegin event, but does
+   not receive a TouchOwnership event.
+</p>
+</li>
+<li>
+<p>
+When the touchpoint moves, C will receive a TouchUpdate event.  Event
+   delivery to I is subject to the synchronous delivery mechanism. The
+   emulated motion notify event is queued in the server while the device is
+   frozen.
+</p>
+</li>
+<li>
+<p>
+I may assert ownership by calling XIAllowEvents on Y with any mode other
+   than ReplayDevice, which will cause all further events to be sent only to I,
+   with a TouchEnd event being sent to C.
+</p>
+</li>
+<li>
+<p>
+Alternatively, I may reject the touch sequence by calling XIAllowEvents on
+   Y with mode ReplayDevice, which will cause no further events from that touch
+   to be sent to I, and a TouchOwnership event to be sent to C, with subsequent
+   motion events being sent as TouchUpdate events.
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_driver_drv_provides_touch_support_from_tracked_device_d">Driver DRV provides touch support from tracked device D:</h3>
+<div class="ulist"><ul>
+<li>
+<p>
+DRV initializes a TouchClass for the device.
+</p>
+</li>
+<li>
+<p>
+DRV parses D&#8217;s device protocol and selects one touch sequence to be emulated
+   as pointer event.
+</p>
+</li>
+<li>
+<p>
+DRV calls the respective input driver API with the touch sequence data. The
+   touch sequence emulating a pointer has the respective flag set. DRV does not
+   submit pointer data for any touchpoint.
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2012-02-07 07:26:19 UTC
+</div>
+</div>
+</body>
+</html>

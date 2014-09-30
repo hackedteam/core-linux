@@ -1,0 +1,4 @@
+# License says GPL 2 or subsequent, so pointing to the latest version is fine
+libnspr4-dev: copyright-refers-to-versionless-license-file usr/share/common-licenses/GPL
+# ubuntu
+libnspr4-dev: binary-without-manpage usr/bin/nspr-config

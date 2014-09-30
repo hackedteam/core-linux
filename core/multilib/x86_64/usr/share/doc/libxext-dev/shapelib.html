@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>X Nonrectangular Window Shape Extension Library</title><link rel="stylesheet" type="text/css" href="/usr/share/sgml/X11/xorg.css" /><meta name="generator" content="DocBook XSL Stylesheets V1.76.1" /><style xmlns="" type="text/css">/*
+ * Copyright (c) 2011 Gaetan Nadon
+ * Copyright (c) 2010, Oracle and/or its affiliates. All rights reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice (including the next
+ * paragraph) shall be included in all copies or substantial portions of the
+ * Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+
+/*
+ * Shared stylesheet for X.Org documentation translated to HTML format
+ * http://www.sagehill.net/docbookxsl/UsingCSS.html
+ * http://www.w3schools.com/css/default.asp
+ * https://addons.mozilla.org/en-US/firefox/addon/web-developer/developers
+ * https://addons.mozilla.org/en-US/firefox/addon/font-finder/
+ */
+
+/*
+ * The sans-serif fonts are considered more legible on a computer screen
+ * http://dry.sailingissues.com/linux-equivalents-verdana-arial.html
+ *
+ */
+body {
+  font-family: "Bitstream Vera Sans", "DejaVu Sans", Tahoma, Geneva, Arial, Sans-serif;
+  /* In support of using "em" font size unit, the w3c recommended method */
+  font-size: 100%;
+}
+
+/*
+ * Selection: all elements requiring mono spaced fonts.
+ *
+ * The family names attempt to match the proportionally spaced font
+ * family names such that the same font name is used for both.
+ * We'd like to use Bitstream, for example, in both proportionally and
+ * mono spaced font text.
+ */
+.command,
+.errorcode,
+.errorname,
+.errortype,
+.filename,
+.funcsynopsis,
+.function,
+.parameter,
+.programlisting,
+.property,
+.screen,
+.structname,
+.symbol,
+.synopsis,
+.type
+{
+  font-family:  "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Courier, "Liberation Mono", Monospace;
+}
+
+/*
+ * Books have a title page, a preface, some chapters and appendices,
+ * a glossary, an index and a bibliography, in that order.
+ *
+ * An Article has no preface and no chapters. It has sections, appendices,
+ * a glossary, an index and a bibliography.
+ */
+
+/*
+ * Selection: book main title and subtitle
+ */
+div.book>div.titlepage h1.title,
+div.book>div.titlepage h2.subtitle {
+  text-align: center;
+}
+
+/*
+ * Selection: article main title and subtitle
+ */
+div.article>div.titlepage h2.title,
+div.article>div.titlepage h3.subtitle,
+div.article>div.sect1>div.titlepage h2.title,
+div.article>div.section>div.titlepage h2.title {
+  text-align: center;
+}
+
+/*
+ * Selection: various types of authors and collaborators, individuals or corporate
+ *
+ * These authors are not always contained inside an authorgroup.
+ * They can be contained inside a lot of different parent types where they might
+ * not be centered.
+ * Reducing the margin at the bottom makes a visual separation between authors
+ * We specify here the ones on the title page, others may be added based on merit.
+ */
+div.titlepage .authorgroup,
+div.titlepage .author,
+div.titlepage .collab,
+div.titlepage .corpauthor,
+div.titlepage .corpcredit,
+div.titlepage .editor,
+div.titlepage .othercredit {
+  text-align: center;
+  margin-bottom: 0.25em;
+}
+
+/*
+ * Selection: the affiliation of various types of authors and collaborators,
+ * individuals or corporate.
+ */
+div.titlepage .affiliation {
+  text-align: center;
+}
+
+/*
+ * Selection: product release information (X Version 11, Release 7)
+ *
+ * The releaseinfo element can be contained inside a lot of different parent
+ * types where it might not be centered.
+ * We specify here the one on the title page, others may be added based on merit.
+ */
+div.titlepage p.releaseinfo {
+  font-weight: bold;
+  text-align: center;
+}
+
+/*
+ * Selection: publishing date
+ */
+div.titlepage .pubdate {
+  text-align: center;
+}
+
+/*
+ * The legal notices are displayed in smaller sized fonts
+ * Justification is only supported in IE and therefore not requested.
+ *
+ */
+.legalnotice {
+  font-size: small;
+  font-style: italic;
+}
+
+/*
+ * Selection: book or article main ToC title
+ * A paragraph is generated for the title rather than a level 2 heading.
+ * We do not want to select chapters sub table of contents, only the main one
+ */
+div.book>div.toc>p,
+div.article>div.toc>p {
+  font-size: 1.5em;
+  text-align: center;
+}
+
+/*
+ * Selection: major sections of a book or an article
+ *
+ * Unlike books, articles do not have a titlepage element for appendix.
+ * Using the selector "div.titlepage h2.title" would be too general.
+ */
+div.book>div.preface>div.titlepage h2.title,
+div.book>div.chapter>div.titlepage h2.title,
+div.article>div.sect1>div.titlepage h2.title,
+div.article>div.section>div.titlepage h2.title,
+div.book>div.appendix>div.titlepage h2.title,
+div.article>div.appendix h2.title,
+div.glossary>div.titlepage h2.title,
+div.index>div.titlepage h2.title,
+div.bibliography>div.titlepage h2.title {
+   /* Add a border top over the major parts, just like printed books */
+   /* The Gray color is already used for the ruler over the main ToC. */
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: Gray;
+  /* Put some space between the border and the title */
+  padding-top: 0.2em;
+  text-align: center;
+}
+
+/*
+ * A Screen is a verbatim environment for displaying text that the user might
+ * see on a computer terminal. It is often used to display the results of a command.
+ *
+ * http://www.css3.info/preview/rounded-border/
+ */
+.screen {
+  background: #e0ffff;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #B0C4DE;
+  border-radius: 1.0em;
+  /* Browser's vendor properties prior to CSS 3 */
+  -moz-border-radius: 1.0em;
+  -webkit-border-radius: 1.0em;
+  -khtml-border-radius: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 1.0em;
+  padding: 0.5em;
+}
+
+/*
+ * Emphasis program listings with a light shade of gray similar to what
+ * DocBook XSL guide does: http://www.sagehill.net/docbookxsl/ProgramListings.html
+ * Found many C API docs on the web using like shades of gray.
+ */
+.programlisting {
+  background: #F4F4F4;
+  border-width: 1px;
+  border-style: solid;
+  border-color: Gray;
+  padding: 0.5em;
+}
+
+/*
+ * Emphasis functions synopsis using a darker shade of gray.
+ * Add a border such that it stands out more.
+ * Set the padding so the text does not touch the border.
+ */
+.funcsynopsis, .synopsis {
+  background: #e6e6fa;
+  border-width: 1px;
+  border-style: solid;
+  border-color: Gray;
+  clear: both;
+  margin: 0.5em;
+  padding: 0.25em;
+}
+
+/*
+ * Selection: paragraphs inside synopsis
+ *
+ * Removes the default browser margin, let the container set the padding.
+ * Paragraphs are not always used in synopsis
+ */
+.funcsynopsis p,
+.synopsis p {
+  margin: 0;
+  padding: 0;
+}
+
+/*
+ * Selection: variable lists, informal tables and tables
+ *
+ * Note the parameter name "variablelist.as.table" in xorg-xhtml.xsl
+ * A table with rows and columns is constructed inside div.variablelist
+ *
+ * Set the left margin so it is indented to the right
+ * Display informal tables with single line borders
+ */
+table {
+  margin-left: 0.5em;
+  border-collapse: collapse;
+}
+
+/*
+ * Selection: paragraphs inside tables
+ *
+ * Removes the default browser margin, let the container set the padding.
+ * Paragraphs are not always used in tables
+ */
+td p {
+  margin: 0;
+  padding: 0;
+}
+
+/*
+ * Add some space between the left and right column.
+ * The vertical alignment helps the reader associate a term
+ * with a multi-line definition.
+ */
+td, th {
+  padding-left: 1.0em;
+  padding-right: 1.0em;
+  vertical-align: top;
+}
+
+.warning {
+  border: 1px solid red;
+  background: #FFFF66;
+  padding-left: 0.5em;
+}
+</style></head><body><div class="book" title="X Nonrectangular Window Shape Extension Library"><div class="titlepage"><div><div><h1 class="title"><a id="shapelib"></a>X Nonrectangular Window Shape Extension Library</h1></div><div><h2 class="subtitle">X Consortium Standard</h2></div><div><div class="authorgroup"><div class="author"><h3 class="author"><span class="firstname">Keith</span> <span class="surname">Packard</span></h3></div></div></div><div><p class="releaseinfo">X Version 11, Release 6.4</p></div><div><p class="releaseinfo">Version 1.0</p></div><div><p class="copyright">Copyright © 1989 X Consortium</p></div><div><div class="legalnotice" title="Legal Notice"><a id="idp2438624"></a><p>
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files
+(the “Software”), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of the Software, and
+to permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+</p><p>
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+</p><p>
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY
+KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE X CONSORTIUM BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+</p><p>
+Except as contained in this notice, the name of the X Consortium shall not be
+used in advertising or otherwise to promote the sale, use or other dealings
+in this Software without prior written authorization from the X Consortium.
+</p></div></div></div><hr /></div><div class="toc"><p><strong>Table of Contents</strong></p><dl><dt><span class="chapter"><a href="#overview">1. Overview</a></span></dt><dt><span class="chapter"><a href="#description">2. Description</a></span></dt><dt><span class="chapter"><a href="#c_language_binding">3. C Language Binding</a></span></dt><dt><span class="glossary"><a href="#glossary">Glossary</a></span></dt></dl></div><div class="chapter" title="Chapter 1. Overview"><div class="titlepage"><div><div><h2 class="title"><a id="overview"></a>Chapter 1. Overview</h2></div></div></div><p>This extension provides arbitrary window and border shapes within
+the X11 protocol.
+</p><p>
+The restriction of rectangular windows within the X protocol is a significant
+limitation in the implementation of many styles of user interface.  For
+example, many transient windows would like to display a
+“drop shadow” to give the illusion of 3 dimensions.  As
+another example, some user interface style guides call for buttons with
+rounded corners; the full simulation of a nonrectangular shape,
+particularly with respect to event distribution and cursor shape, is not
+possible within the core X protocol.  As a final example, round clocks
+and nonrectangular icons are desirable visual addition to the desktop.
+</p><p>
+This extension provides mechanisms for changing the visible shape of a
+window to an arbitrary, possibly disjoint, nonrectangular form.  The intent
+of the extension is to supplement the existing semantics, not replace them.
+In particular, it is desirable for clients that are unaware of the
+extension to still be able to cope reasonably with shaped windows.  For
+example, window managers should still be able to negotiate screen
+real estate in rectangular pieces.  Toward this end, any shape specified for
+a window is clipped by the bounding rectangle for the window as specified by
+the window's geometry in the core protocol.  An expected convention would be
+that client programs expand their shape to fill the area offered by the
+window manager.
+</p></div><div class="chapter" title="Chapter 2. Description"><div class="titlepage"><div><div><h2 class="title"><a id="description"></a>Chapter 2. Description</h2></div></div></div><p>
+Each window (even with no shapes specified) is defined by two regions:  the
+<span class="emphasis"><em>bounding region</em></span> and the
+<span class="emphasis"><em>clip region</em></span>.  The bounding region is the
+area of the parent window that the window will occupy (including border).
+The clip region is the subset of the bounding region that is available for
+subwindows and graphics.  The area between the bounding region and the
+clip region is defined to be the border of the window.
+</p><p>
+A nonshaped window will have a bounding region that is a rectangle spanning
+the window, including its border; the clip region will be a rectangle
+filling the inside dimensions (not including the border).  In this document,
+these areas are referred to as the
+<span class="emphasis"><em>default bounding region</em></span> and the
+<span class="emphasis"><em>default clip region</em></span>.  For a window with
+inside size of <span class="emphasis"><em>width</em></span> by
+<span class="emphasis"><em>height</em></span> and border width
+<span class="emphasis"><em>bwidth</em></span>, the default bounding and clip
+regions are the rectangles (relative to the window origin):
+</p><div class="literallayout"><p><br />
+bounding.x = -<span class="emphasis"><em>bwidth</em></span><br />
+bounding.y = -<span class="emphasis"><em>bwidth</em></span><br />
+bounding.width = <span class="emphasis"><em>width</em></span> + 2 * <span class="emphasis"><em>bwidth</em></span><br />
+bounding.height = <span class="emphasis"><em>height</em></span> + 2 * <span class="emphasis"><em>bwidth</em></span><br />
+<br />
+clip.x = 0<br />
+clip.y = 0<br />
+clip.width = <span class="emphasis"><em>width</em></span><br />
+clip.height = <span class="emphasis"><em>height</em></span><br />
+</p></div><p>
+This extension allows a client to modify either or both of the bounding or
+clip regions by specifying new regions that combine with the default
+regions.  These new regions are called the
+<span class="emphasis"><em>client bounding region</em></span> and the
+<span class="emphasis"><em>client clip region</em></span>.  They are specified
+relative to the origin of the window and are always defined by offsets
+relative to the window origin (that is, region adjustments are not
+required when the window is moved).  Three mechanisms for specifying
+regions are provided:  a list of rectangles, a bitmap, and an existing
+bounding or clip region from a window.  This is modeled on the specification
+of regions in graphics contexts in the core protocol and allows a variety
+of different uses of the extension.
+</p><p>
+When using an existing window shape as an operand in specifying a new shape,
+the client region is used, unless none has been set, in which case the
+default region is used instead.
+</p><p>
+The <span class="emphasis"><em>effective bounding region</em></span> of a window is
+defined to be the intersection of the client bounding region with the default
+bounding region.  Any portion of the client bounding region that is not
+included in the default bounding region will not be included in the
+effective bounding region on the screen.  This means that window managers
+(or other geometry managers) used to dealing with rectangular client windows
+will be able to constrain the client to a rectangular area of the screen.
+</p><p>
+Construction of the effective bounding region is dynamic; the client bounding
+region is not mutated to obtain the effective bounding region.  If a client
+bounding region is specified that extends beyond the current default bounding
+region, and the window is later enlarged, the effective bounding region will
+be enlarged to include more of the client bounding region.
+</p><p>
+The <span class="emphasis"><em>effective clip region</em></span> of a window is
+defined to be the intersection of the client clip region with both the
+default clip region and the client bounding region.  Any portion of the
+client clip region that is not included in both the default clip region
+and the client bounding region will not be included in the effective clip
+region on the screen.
+</p><p>
+Construction of the effective clip region is dynamic; the client clip region is
+not mutated to obtain the effective clip region.  If a client clip region is
+specified that extends beyond the current default clip region and the
+window or its bounding region is later enlarged, the effective clip region will
+be enlarged to include more of the client clip region if it is included in
+the effective bounding region.
+</p><p>
+The border of a window is defined to be the difference between the effective
+bounding region and the effective clip region.  If this region is empty, no
+border is displayed.  If this region is nonempty, the border is filled
+using the border-tile or border-pixel of the window as specified in the core
+protocol.  Note that a window with a nonzero border width will never be able
+to draw beyond the default clip region of the window.  Also note that a zero
+border width does not prevent a window from having a border, since the clip
+shape can still be made smaller than the bounding shape.
+</p><p>
+All output to the window and visible regions of any subwindows will be
+clipped to the effective clip region.  The server must not retain window
+contents beyond the effective bounding region with backing store.  The window's
+origin (for graphics operations, background tiling, and subwindow placement)
+is not affected by the existence of a bounding region or clip region.
+</p><p>
+Areas that are inside the default bounding region but outside the effective
+bounding region are not part of the window; these areas of the screen will
+be occupied by other windows.  Input events that occur within the default
+bounding region but outside the effective bounding region will be delivered as
+if the window was not occluding the event position.  Events that occur in
+a nonrectangular border of a window will be delivered to that window, just
+as for events that occur in a normal rectangular border.
+</p><p>An
+<code class="function">InputOnly</code>
+window can have its bounding region set, but it is a
+<code class="function">Match</code>
+error to attempt to set a clip region on an
+<code class="function">InputOnly</code>
+window or to specify its clip region as a source to a request
+in this extension.
+</p><p>
+The server must accept changes to the clip region of a root window, but
+the server is permitted to ignore requested changes to the bounding region
+of a root window.  If the server accepts bounding region changes, the contents
+of the screen outside the bounding region are implementation dependent.
+</p></div><div class="chapter" title="Chapter 3. C Language Binding"><div class="titlepage"><div><div><h2 class="title"><a id="c_language_binding"></a>Chapter 3. C Language Binding</h2></div></div></div><p>
+The C functions provide direct access to the protocol and add no additional
+semantics.
+</p><p>The include file for this extension is
+&lt;<span class="symbol">X11/extensions/shape.h</span>&gt;.
+The defined shape kinds are
+<code class="function">ShapeBounding</code>
+and
+<code class="function">ShapeClip</code>
+The defined region operations are
+<code class="function">ShapeSet</code>
+<code class="function">ShapeUnion</code>
+<code class="function">ShapeIntersect</code>
+<code class="function">ShapeSubtract</code>
+and
+<code class="function">ShapeInvert</code>.</p><div class="funcsynopsis"><p><code class="funcdef">Bool<strong>fsfunc XShapeQueryExtension</strong>(</code>Display <var class="pdparam">*display</var>, int <var class="pdparam">*event_base</var>, int <var class="pdparam">*error_base</var><code>)</code>;</p></div><p>
+<code class="function">XShapeQueryExtension</code>
+returns
+<code class="function">True</code>
+if the specified display supports the SHAPE extension else
+<code class="function">False</code>
+If the extension is supported, *event_base is set to the event number for
+<code class="function">ShapeNotify</code>
+events and *error_base would be set to the error number for the first error for
+this extension.  Because no errors are defined for this version of
+the extension, the value returned here is not defined (nor useful).
+</p><div class="funcsynopsis"><p><code class="funcdef">Status<strong>fsfunc XShapeQueryVersion</strong>(</code>Display<var class="pdparam"> *display</var>, int<var class="pdparam"> *major_version</var>, int<var class="pdparam"> *minor_version</var><code>)</code>;</p></div><p>
+If the extension is supported,
+<code class="function">XShapeQueryVersion</code>
+sets the major and minor version numbers of the
+extension supported by the display and returns a nonzero value.
+Otherwise, the arguments are not set and zero is returned.
+</p><div class="funcsynopsis"><p><code class="funcdef"><strong>fsfuncXShapeCombineRegion</strong>(</code>Display<var class="pdparam"> *display</var>, Window<var class="pdparam"> dest</var>, int<var class="pdparam"> dest_kind</var>, int<var class="pdparam"> x_off</var>, int<var class="pdparam"> y_off</var>, int<var class="pdparam"> region</var>, int<var class="pdparam"> op</var>, REGION<var class="pdparam"> *region</var><code>)</code>;</p></div><p>
+<code class="function">XShapeCombineRegion</code>
+converts the specified region into a list of rectangles and calls
+<code class="function">XShapeCombineRectangles</code>
+</p><div class="funcsynopsis"><p><code class="funcdef"><strong>fsfuncXShapeCombineRectangles</strong>(</code>Display<var class="pdparam"> *display</var>, Window<var class="pdparam"> dest</var>, int<var class="pdparam"> dest_kind</var>, int<var class="pdparam"> x_off</var>, int<var class="pdparam"> y_off</var>, XRectangle<var class="pdparam"> *rectangles</var>, int<var class="pdparam"> n_rects</var>, int<var class="pdparam"> op</var>, int<var class="pdparam"> ordering</var><code>)</code>;</p></div><p>
+If the extension is supported,
+<code class="function">XShapeCombineRectangles</code>
+performs a
+<code class="function">ShapeRectangles</code>
+operation; otherwise, the request is ignored.
+</p><div class="funcsynopsis"><p><code class="funcdef"><strong>fsfuncXShapeCombineMask</strong>(</code>Display<var class="pdparam"> *display</var>, int<var class="pdparam"> dest</var>, int<var class="pdparam"> dest_kind</var>, int<var class="pdparam"> x_off</var>, int<var class="pdparam"> y_off</var>, Pixmap<var class="pdparam"> src</var>, int<var class="pdparam"> op</var><code>)</code>;</p></div><p>
+If the extension is supported,
+<code class="function">XShapeCombineMask</code>
+performs a
+<code class="function">ShapeMask</code>
+operation; otherwise, the request is ignored.
+</p><div class="funcsynopsis"><p><code class="funcdef"><strong>fsfuncXShapeCombineShape</strong>(</code>Display<var class="pdparam"> *display</var>, Window<var class="pdparam"> dest</var>, int<var class="pdparam"> dest_kind</var>, int<var class="pdparam"> x_off</var>, int<var class="pdparam"> y_off</var>, Window<var class="pdparam"> src</var>, int<var class="pdparam"> src_kind</var>, int<var class="pdparam"> op</var><code>)</code>;</p></div><p>
+If the extension is supported,
+<code class="function">XShapeCombineShape</code>
+performs a
+<code class="function">ShapeCombine</code>
+operation; otherwise, the request is ignored.
+</p><div class="funcsynopsis"><p><code class="funcdef"><strong>fsfuncXShapeOffsetShape</strong>(</code><var class="pdparam">display</var>, <var class="pdparam">dest</var>, <var class="pdparam">dest_kind</var>, <var class="pdparam">x_off</var>, <var class="pdparam">y_off</var><code>)</code>;</p></div><p>
+If the extension is supported,
+<code class="function">XShapeOffsetShape</code>
+performs a
+<code class="function">ShapeOffset</code>
+operation; otherwise, the request is ignored.
+</p><div class="funcsynopsis"><p><code class="funcdef">Status <strong>fsfuncXShapeQueryExtents</strong>(</code>Display<var class="pdparam"> *display</var>, Window<var class="pdparam"> window</var>, Bool<var class="pdparam"> *bounding_shaped</var>, int<var class="pdparam"> *x_bounding</var>, int<var class="pdparam"> *y_bounding</var>, unsigned int<var class="pdparam"> *w_bounding</var>, unsigned int<var class="pdparam"> *h_bounding</var>, Bool<var class="pdparam"> *clip_shaped</var>, int<var class="pdparam"> *x_clip</var>, int<var class="pdparam"> *y_clip</var>, unsigned int<var class="pdparam"> *w_clip</var>, unsigned int<var class="pdparam"> *h_clip</var><code>)</code>;</p></div><p>
+If the extension is supported,
+<code class="function">XShapeQueryExtents</code>
+sets x_bounding, y_bounding, w_bounding, h_bounding to the extents of the
+bounding shape and sets x_clip, y_clip, w_clip, h_clip to the extents of
+the clip shape.  For unspecified client regions, the extents of the
+corresponding default region are used.
+</p><p>
+If the extension is supported, a nonzero value is returned; otherwise,
+zero is returned.
+</p><div class="funcsynopsis"><p><code class="funcdef"><strong>fsfuncXShapeSelectInput</strong>(</code>Display<var class="pdparam"> *display</var>, Window<var class="pdparam"> window</var>, unsigned long<var class="pdparam"> mask</var><code>)</code>;</p></div><p>
+To make this extension more compatible with other interfaces, although
+only one event type can be selected via the extension,
+<code class="function">XShapeSelectInput</code>
+provides a general mechanism similar to the standard Xlib binding for
+window events.  A mask value has been defined,
+<code class="function">ShapeNotifyMask</code>
+that is the only valid bit in mask that may be specified.
+The structure for this event is defined as follows:
+</p><div class="literallayout"><p><br />
+typedef struct {<br />
+    int type;     /* of event */<br />
+    unsigned long serial;     /* # of last request processed by server */<br />
+    Bool send_event;     /* true if this came frome a SendEvent request */<br />
+    Display *display;     /* Display the event was read from */<br />
+    Window window;     /* window of event */<br />
+    int kind;     /* ShapeBounding or ShapeClip */<br />
+    int x, y;     /* extents of new region */<br />
+    unsigned width, height;<br />
+    Time time;     /* server timestamp when region changed */<br />
+    Bool shaped;     /* true if the region exists */<br />
+} XShapeEvent;<br />
+</p></div><div class="funcsynopsis"><p><code class="funcdef">unsigned long <strong>fsfuncXShapeInputSelected</strong>(</code>Display<var class="pdparam"> *display</var>, Window<var class="pdparam"> window</var><code>)</code>;</p></div><p>
+<code class="function">XShapeInputSelected</code>
+returns the current input mask for extension events on the specified
+window; the value returned if
+<code class="function">ShapeNotify</code>
+is selected for is
+<code class="function">ShapeNotifyMask</code>
+otherwise, it returns zero.
+If the extension is not supported, it returns zero.
+</p><div class="funcsynopsis"><p><code class="funcdef">XRectangle<strong>fsfunc *XShapeGetRectangles</strong>(</code>Display<var class="pdparam"> *display</var>, Window<var class="pdparam"> window</var>, int<var class="pdparam"> kind</var>, int<var class="pdparam"> *count</var>, int<var class="pdparam"> *ordering</var><code>)</code>;</p></div><p>
+If the extension is not supported,
+<code class="function">XShapeGetRectangles</code>
+returns NULL.  Otherwise, it returns a list of rectangles that describe the
+region specified by kind.
+</p></div><div class="glossary" title="Glossary"><div class="titlepage"><div><div><h2 class="title"><a id="glossary"></a>Glossary</h2></div></div></div><dl><dt><a id="bounding_region"></a>bounding region</dt><dd><p>The area of the parent window that this window will occupy.
+This area is divided into two parts:  the border and the interior.</p></dd><dt><a id="clip_region"></a>clip region</dt><dd><p>The interior of the window, as a subset of the bounding
+region.  This region describes the area that will be painted with the
+window background when the window is cleared, will contain all graphics
+output to the window, and will clip any subwindows.</p></dd><dt><a id="default_bounding_region"></a>default bounding region</dt><dd><p>The rectangular area, as described by the core protocol
+window size, that covers the interior of the window and its border.</p></dd><dt><a id="default_clip_region"></a>default clip region</dt><dd><p>The rectangular area, as described by the core protocol
+window size, that covers the interior of the window and excludes the border.
+  </p></dd><dt><a id="client_bounding_region"></a>client bounding region</dt><dd><p>The region associated with a window that is directly
+modified via this extension when specified by
+<code class="function">ShapeBounding</code>
+This region is used in conjunction with the default bounding region
+to produce the effective bounding region.</p></dd><dt><a id="client_clip_region"></a>client clip region</dt><dd><p>The region associated with a window that is directly
+modified via this extension when specified by
+<code class="function">ShapeClip</code>
+This region is used in conjunction with the default clip region
+and the client bounding region to produce the effective clip region.</p></dd><dt><a id="effective_bounding_region"></a>effective bounding region</dt><dd><p>The actual shape of the window on the screen, including
+border and interior (but excluding the effects of overlapping windows).
+When a window has a client bounding region, the effective bounding region
+is the intersection of the default bounding region and the client bounding
+region.  Otherwise, the effective bounding region is the same as the
+default bounding region.</p></dd><dt><a id="effective_clip_region"></a>effective clip region</dt><dd><p>The actual shape of the interior of the window on the
+screen (excluding the effects of overlapping windows).  When a window
+has a client clip region or a client bounding region, the effective
+clip region is the intersection of the default clip region, the client
+clip region (if any) and the client bounding region (if any).  Otherwise,
+the effective clip region is the same as the default clip region.</p></dd></dl></div></div></body></html>

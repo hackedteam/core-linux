@@ -1,0 +1,9 @@
+prefix=/usr
+libdir=/usr/lib/i386-linux-gnu
+
+Name: libv4lconvert
+Description: v4l format conversion library
+Version: 0.8.6
+Libs: -L${libdir} -lv4lconvert
+Libs.private: -lrt -lm -ljpeg
+Cflags: -I${prefix}/include

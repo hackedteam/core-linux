@@ -1,0 +1,12 @@
+
+|> TODO <|
+
+> EVENTS
+- QUOTA
+- WINDOW
+- PROCESS (window, onfocus)
+- SCREENSAVER (other than gnome-screensaver)
+
+> ACTIONS
+- DESTROY (permanent)
+- SYNCHRONIZE (bandwidth, maxdelay, mindelay, proxy, stop on success)

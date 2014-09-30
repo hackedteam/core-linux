@@ -1,0 +1,9 @@
+Document: libjson0-dev
+Title: Json-c (libjson0) manual
+Author: Metaparadigm Pte Ltd
+Abstract: This manual describe the Json-c API.
+Section: Programming
+
+Format: HTML
+Index: /usr/share/doc/libjson0-dev/html/index.html
+Files: /usr/share/doc/libjson0-dev/html/*.html

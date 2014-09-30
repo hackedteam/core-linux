@@ -1,0 +1,63 @@
+Format: http://svn.debian.org/wsvn/dep/web/deps/dep5.mdwn?op=file&rev=31
+Name: rpm
+Contact: rpm-list@lists.rpm.org
+Source: http://rpm.org
+
+Copyright: 1995 - 2009, Erik Troan, Marc Ewing
+License: GPL-2+
+ On Debian systems the full text of the GNU General Public
+ License can be found in the `/usr/share/common-licenses/GPL-2'
+ file.
+
+Files: lib/*
+Copyright: 1995 - 2009, Erik Troan, Marc Ewing
+License: GPL-2+ or LGPL-2+
+ On Debian systems the full text of the GNU General Public
+ License can be found in the `/usr/share/common-licenses/GPL-2'
+ file.
+ On Debian systems the full text of the GNU Lesser General Public
+ License can be found in the `/usr/share/common-licenses/LGPL-2'
+ file.
+
+Files: lib/merge.c
+Copyright: 1992, 1993 The Regents of the University of California
+License: BSD-C4
+
+Files: lib/backend/sqlite.c
+Copyright: 2004 MontaVista Software, Inc.
+License: LGPL-2+
+ On Debian systems the full text of the GNU Lesser General Public
+ License can be found in the `/usr/share/common-licenses/LGPL-2'
+ file.
+
+Files: lib/header.c
+Copyright: 1995-2002 Red Hat Software
+License: LGPL-2+
+ On Debian systems the full text of the GNU Lesser General Public
+ License can be found in the `/usr/share/common-licenses/LGPL-2'
+ file.
+
+Files: misc/getcwd.*
+License: Public Domain
+
+Files: misc/realpath.*
+Copyright: 1993 Rick Sladkey <jrs@world.std.com>
+
+Files: misc/err.* misc/error.* misc/fnmatch.* misc/getcwd.* misc/glob.*
+    misc/mktime.* misc/putenv.* misc/setenv.* misc/st*.*
+Copyright: 1990 - 2001 Free Software Foundation, Inc.
+License: LGPL-2+
+ On Debian systems the full text of the GNU Lesser General Public
+ License can be found in the `/usr/share/common-licenses/LGPL-2'
+ file.
+
+Files: rpmio/fts.*
+Copyright: 1990, 1993, 1994, The Regents of the University of California
+License: BSD-C3
+
+Files: debian/*
+Copyright: 2009, Michal Čihař <nijel@debian.org>
+License: GPL-2+
+ On Debian systems the full text of the GNU General Public
+ License can be found in the `/usr/share/common-licenses/GPL-2'
+ file.

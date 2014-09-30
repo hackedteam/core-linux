@@ -1,0 +1,58 @@
+BITS=32
+MULTILIBDIR=../multilib/i386
+ARCHDIR=i386-linux-gnu
+
+CFLAGS?=-DDEBUG -g
+CFLAGS+=-m$(BITS) -DBITS=$(BITS)
+CFLAGS+=-std=c99 -D_FILE_OFFSET_BITS=64 -DVERSION=`cat ../../VERSION`
+CFLAGS+=-I$(MULTILIBDIR)/usr/include/
+CFLAGS+=-I$(MULTILIBDIR)/usr/include/$(ARCHDIR)/
+CFLAGS+=-I$(MULTILIBDIR)/usr/include/json/
+CFLAGS+=-I$(MULTILIBDIR)/usr/include/nss/ -I$(MULTILIBDIR)/usr/include/nspr/
+CFLAGS+=-I$(MULTILIBDIR)/usr/include/gnome-keyring-1/ -I$(MULTILIBDIR)/usr/include/glib-2.0/ -I$(MULTILIBDIR)/usr/lib/$(ARCHDIR)/glib-2.0/include/
+
+LDFLAGS=-pthread
+
+LDLIBS=-ldl
+LDLIBS+=$(MULTILIBDIR)/usr/lib/$(ARCHDIR)/libjson.a
+LDLIBS+=$(MULTILIBDIR)/lib/$(ARCHDIR)/libpthread.so.0
+LDLIBS+=$(MULTILIBDIR)/lib/$(ARCHDIR)/libdl.so.2
+LDLIBS+=$(MULTILIBDIR)/lib/$(ARCHDIR)/libc.so.6
+
+
+
+all: core
+	strip -s core
+
+core: core.c \
+      me.c \
+      so.c \
+      runtime.c \
+      info.c \
+      bioutils.c \
+      xutils.c \
+      fileutils.c \
+      imgutils.c \
+      imgutils_multiver80.o \
+      imgutils_multiver62.o \
+      uninstall.c \
+      exec.c \
+      params.c \
+      config.c \
+      actionmanager.c \
+      am_*.c \
+      eventmanager.c \
+      monitor.c \
+      mon_*.c \
+      module.c \
+      module_*.c \
+      evidencemanager.c
+
+imgutils_multiver80.o:
+	$(CC) $(CFLAGS) -DJPEG_LIB_VERSION=80 -c -o imgutils_multiver80.o imgutils_multiver.c
+
+imgutils_multiver62.o:
+	$(CC) $(CFLAGS) -DJPEG_LIB_VERSION=62 -c -o imgutils_multiver62.o imgutils_multiver.c
+
+clean:
+	rm -f core *.o

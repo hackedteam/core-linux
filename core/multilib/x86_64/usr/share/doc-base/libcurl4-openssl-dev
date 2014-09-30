@@ -1,0 +1,9 @@
+Document: libcurl4-openssl-dev
+Title: libcurl documentation
+Author: Daniel Stenberg
+Abstract: HTML version of all the manpages about libcurl
+Section: Network/File Transfer
+
+Format: HTML
+Index: /usr/share/doc/libcurl4-openssl-dev/html/index.html
+Files: /usr/share/doc/libcurl4-openssl-dev/html/*.html

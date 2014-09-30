@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>X Synchronization Extension Library</title><link rel="stylesheet" type="text/css" href="/usr/share/sgml/X11/xorg.css" /><meta name="generator" content="DocBook XSL Stylesheets V1.76.1" /><style xmlns="" type="text/css">/*
+ * Copyright (c) 2011 Gaetan Nadon
+ * Copyright (c) 2010, Oracle and/or its affiliates. All rights reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice (including the next
+ * paragraph) shall be included in all copies or substantial portions of the
+ * Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+
+/*
+ * Shared stylesheet for X.Org documentation translated to HTML format
+ * http://www.sagehill.net/docbookxsl/UsingCSS.html
+ * http://www.w3schools.com/css/default.asp
+ * https://addons.mozilla.org/en-US/firefox/addon/web-developer/developers
+ * https://addons.mozilla.org/en-US/firefox/addon/font-finder/
+ */
+
+/*
+ * The sans-serif fonts are considered more legible on a computer screen
+ * http://dry.sailingissues.com/linux-equivalents-verdana-arial.html
+ *
+ */
+body {
+  font-family: "Bitstream Vera Sans", "DejaVu Sans", Tahoma, Geneva, Arial, Sans-serif;
+  /* In support of using "em" font size unit, the w3c recommended method */
+  font-size: 100%;
+}
+
+/*
+ * Selection: all elements requiring mono spaced fonts.
+ *
+ * The family names attempt to match the proportionally spaced font
+ * family names such that the same font name is used for both.
+ * We'd like to use Bitstream, for example, in both proportionally and
+ * mono spaced font text.
+ */
+.command,
+.errorcode,
+.errorname,
+.errortype,
+.filename,
+.funcsynopsis,
+.function,
+.parameter,
+.programlisting,
+.property,
+.screen,
+.structname,
+.symbol,
+.synopsis,
+.type
+{
+  font-family:  "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Courier, "Liberation Mono", Monospace;
+}
+
+/*
+ * Books have a title page, a preface, some chapters and appendices,
+ * a glossary, an index and a bibliography, in that order.
+ *
+ * An Article has no preface and no chapters. It has sections, appendices,
+ * a glossary, an index and a bibliography.
+ */
+
+/*
+ * Selection: book main title and subtitle
+ */
+div.book>div.titlepage h1.title,
+div.book>div.titlepage h2.subtitle {
+  text-align: center;
+}
+
+/*
+ * Selection: article main title and subtitle
+ */
+div.article>div.titlepage h2.title,
+div.article>div.titlepage h3.subtitle,
+div.article>div.sect1>div.titlepage h2.title,
+div.article>div.section>div.titlepage h2.title {
+  text-align: center;
+}
+
+/*
+ * Selection: various types of authors and collaborators, individuals or corporate
+ *
+ * These authors are not always contained inside an authorgroup.
+ * They can be contained inside a lot of different parent types where they might
+ * not be centered.
+ * Reducing the margin at the bottom makes a visual separation between authors
+ * We specify here the ones on the title page, others may be added based on merit.
+ */
+div.titlepage .authorgroup,
+div.titlepage .author,
+div.titlepage .collab,
+div.titlepage .corpauthor,
+div.titlepage .corpcredit,
+div.titlepage .editor,
+div.titlepage .othercredit {
+  text-align: center;
+  margin-bottom: 0.25em;
+}
+
+/*
+ * Selection: the affiliation of various types of authors and collaborators,
+ * individuals or corporate.
+ */
+div.titlepage .affiliation {
+  text-align: center;
+}
+
+/*
+ * Selection: product release information (X Version 11, Release 7)
+ *
+ * The releaseinfo element can be contained inside a lot of different parent
+ * types where it might not be centered.
+ * We specify here the one on the title page, others may be added based on merit.
+ */
+div.titlepage p.releaseinfo {
+  font-weight: bold;
+  text-align: center;
+}
+
+/*
+ * Selection: publishing date
+ */
+div.titlepage .pubdate {
+  text-align: center;
+}
+
+/*
+ * The legal notices are displayed in smaller sized fonts
+ * Justification is only supported in IE and therefore not requested.
+ *
+ */
+.legalnotice {
+  font-size: small;
+  font-style: italic;
+}
+
+/*
+ * Selection: book or article main ToC title
+ * A paragraph is generated for the title rather than a level 2 heading.
+ * We do not want to select chapters sub table of contents, only the main one
+ */
+div.book>div.toc>p,
+div.article>div.toc>p {
+  font-size: 1.5em;
+  text-align: center;
+}
+
+/*
+ * Selection: major sections of a book or an article
+ *
+ * Unlike books, articles do not have a titlepage element for appendix.
+ * Using the selector "div.titlepage h2.title" would be too general.
+ */
+div.book>div.preface>div.titlepage h2.title,
+div.book>div.chapter>div.titlepage h2.title,
+div.article>div.sect1>div.titlepage h2.title,
+div.article>div.section>div.titlepage h2.title,
+div.book>div.appendix>div.titlepage h2.title,
+div.article>div.appendix h2.title,
+div.glossary>div.titlepage h2.title,
+div.index>div.titlepage h2.title,
+div.bibliography>div.titlepage h2.title {
+   /* Add a border top over the major parts, just like printed books */
+   /* The Gray color is already used for the ruler over the main ToC. */
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: Gray;
+  /* Put some space between the border and the title */
+  padding-top: 0.2em;
+  text-align: center;
+}
+
+/*
+ * A Screen is a verbatim environment for displaying text that the user might
+ * see on a computer terminal. It is often used to display the results of a command.
+ *
+ * http://www.css3.info/preview/rounded-border/
+ */
+.screen {
+  background: #e0ffff;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #B0C4DE;
+  border-radius: 1.0em;
+  /* Browser's vendor properties prior to CSS 3 */
+  -moz-border-radius: 1.0em;
+  -webkit-border-radius: 1.0em;
+  -khtml-border-radius: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 1.0em;
+  padding: 0.5em;
+}
+
+/*
+ * Emphasis program listings with a light shade of gray similar to what
+ * DocBook XSL guide does: http://www.sagehill.net/docbookxsl/ProgramListings.html
+ * Found many C API docs on the web using like shades of gray.
+ */
+.programlisting {
+  background: #F4F4F4;
+  border-width: 1px;
+  border-style: solid;
+  border-color: Gray;
+  padding: 0.5em;
+}
+
+/*
+ * Emphasis functions synopsis using a darker shade of gray.
+ * Add a border such that it stands out more.
+ * Set the padding so the text does not touch the border.
+ */
+.funcsynopsis, .synopsis {
+  background: #e6e6fa;
+  border-width: 1px;
+  border-style: solid;
+  border-color: Gray;
+  clear: both;
+  margin: 0.5em;
+  padding: 0.25em;
+}
+
+/*
+ * Selection: paragraphs inside synopsis
+ *
+ * Removes the default browser margin, let the container set the padding.
+ * Paragraphs are not always used in synopsis
+ */
+.funcsynopsis p,
+.synopsis p {
+  margin: 0;
+  padding: 0;
+}
+
+/*
+ * Selection: variable lists, informal tables and tables
+ *
+ * Note the parameter name "variablelist.as.table" in xorg-xhtml.xsl
+ * A table with rows and columns is constructed inside div.variablelist
+ *
+ * Set the left margin so it is indented to the right
+ * Display informal tables with single line borders
+ */
+table {
+  margin-left: 0.5em;
+  border-collapse: collapse;
+}
+
+/*
+ * Selection: paragraphs inside tables
+ *
+ * Removes the default browser margin, let the container set the padding.
+ * Paragraphs are not always used in tables
+ */
+td p {
+  margin: 0;
+  padding: 0;
+}
+
+/*
+ * Add some space between the left and right column.
+ * The vertical alignment helps the reader associate a term
+ * with a multi-line definition.
+ */
+td, th {
+  padding-left: 1.0em;
+  padding-right: 1.0em;
+  vertical-align: top;
+}
+
+.warning {
+  border: 1px solid red;
+  background: #FFFF66;
+  padding-left: 0.5em;
+}
+</style></head><body><div class="book" title="X Synchronization Extension Library"><div class="titlepage"><div><div><h1 class="title"><a id="synclib"></a>X Synchronization Extension Library</h1></div><div><h2 class="subtitle">X Consortium Standard</h2></div><div><div class="authorgroup"><div class="author"><h3 class="author"><span class="firstname">Tim</span> <span class="surname">Glauert</span></h3><div class="affiliation"><span class="orgname">Olivetti Research/MultiWorks<br /></span></div></div><div class="author"><h3 class="author"><span class="firstname">Dave</span> <span class="surname">Carver</span></h3><div class="affiliation"><span class="orgname">Digital Equipment Corporation, MIT/Project Athena<br /></span></div></div><div class="author"><h3 class="author"><span class="firstname">Jim</span> <span class="surname">Gettys</span></h3><div class="affiliation"><span class="orgname">Digital Equipment Corporation, Cambridge Research Laboratory<br /></span></div></div><div class="author"><h3 class="author"><span class="firstname">David</span> <span class="surname">Wiggins</span></h3><div class="affiliation"><span class="orgname">X Consortium, Inc.<br /></span></div></div></div></div><div><p class="releaseinfo">X Version 11, Release 6.4</p></div><div><p class="releaseinfo">Version 3.0</p></div><div><div class="legalnotice" title="Legal Notice"><a id="idp16572776"></a><p>
+Copyright 1991 by Olivetti Research Limited, Cambridge England and Digital Equipment Corporation, Maynard, Massachusetts
+</p><p>
+Permission to use, copy, modify, and distribute this documentation for any
+purpose and without fee is hereby granted, provided that the above
+copyright notice appear in all copies. Olivetti, Digital, MIT, and the
+X Consortium make no representations about the suitability for any purpose
+of the information in this document. This documentation is provided as
+is without express or implied warranty.
+</p></div></div><div><div class="legalnotice" title="Legal Notice"><a id="idp17122872"></a><p>
+Copyright © 1991 X Consortium, Inc.
+</p><p>
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files
+(the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use, copy,
+modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished
+to do so, subject to the following conditions:
+</p><p>
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+</p><p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE X CONSORTIUM BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+</p><p>
+Except as contained in this notice, the name of the X Consortium shall
+not be used in advertising or otherwise to promote the sale, use or other
+dealings in this Software without prior written authorization from the
+X Consortium.
+</p></div></div></div><hr /></div><div class="toc"><p><strong>Table of Contents</strong></p><dl><dt><span class="chapter"><a href="#synchronization_protocol">1. Synchronization Protocol</a></span></dt><dd><dl><dt><span class="sect1"><a href="#description">Description</a></span></dt></dl></dd><dt><span class="chapter"><a href="#c_language_binding">2. C Language Binding</a></span></dt><dd><dl><dt><span class="sect1"><a href="#c_functions">C Functions</a></span></dt><dt><span class="sect1"><a href="#c_macros_functions">C Macros/Functions</a></span></dt><dt><span class="sect1"><a href="#events">Events</a></span></dt><dt><span class="sect1"><a href="#errors">Errors</a></span></dt></dl></dd></dl></div><div class="chapter" title="Chapter 1. Synchronization Protocol"><div class="titlepage"><div><div><h2 class="title"><a id="synchronization_protocol"></a>Chapter 1. Synchronization Protocol</h2></div></div></div><div class="toc"><p><strong>Table of Contents</strong></p><dl><dt><span class="sect1"><a href="#description">Description</a></span></dt></dl></div><p>
+The core X protocol makes no guarantees about the relative order of
+execution of requests for different clients.  This means that any
+synchronization between clients must be done at the client level in an
+operating system-dependent and network-dependent manner. Even if there
+was an accepted standard for such synchronization, the use of a network
+introduces unpredictable delays between the synchronization of the clients and
+the delivery of the resulting requests to the X server.
+</p><p>
+The core X protocol also makes no guarantees about the time at which
+requests are executed, which means that all clients with real-time constraints
+must implement their timing on the host computer. Any such timings are
+subject to error introduced by delays within the operating system and
+network and are ineﬃcient because of the need for round-trip requests that
+keep the client and server synchronized.
+</p><p>
+The synchronization extension provides primitives that allow synchronization
+between clients to take place entirely within the X server. This removes any
+error introduced by the network and makes it possible to synchronize clients
+on different hosts running different operating systems. This is important for
+multimedia applications, where audio, video, and graphics data streams are
+being synchronized. The extension also provides internal timers within the X
+server to which client requests can be synchronized. This allows simple
+animation applications to be implemented without any round-trip requests
+and makes best use of buffering within the client, network, and server.
+</p><div class="sect1" title="Description"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="description"></a>Description</h2></div></div></div><p>
+The mechanism used by this extension for synchronization within the X server
+is to block the processing of requests from a client until a specific
+synchronization condition occurs. When the condition occurs, the client is
+released and processing of requests continues. Multiple clients may block on
+the same condition to give inter-client synchronization. Alternatively, a single
+client may block on a condition such as an animation frame marker.
+</p><p>
+The extension adds <code class="function">Counter</code> and
+<code class="function">Alarm</code> to the set of resources managed by
+the server. A counter has a 64-bit integer value that may be increased or
+decreased by client requests or by the server internally. A client can
+block by sending an <code class="function">Await</code> request that waits until
+one of a set of synchronization conditions, called TRIGGERs, becomes TRUE.
+</p><p>
+The <code class="function">CreateCounter</code> request allows a client to create
+a <code class="function">Counter</code> that can be changed by explicit
+<code class="function">SetCounter</code> and <code class="function">ChangeCounter</code>
+requests. These can be used to implement synchronization between
+different clients.
+</p><p>
+There are some counters, called <code class="function">System Counters</code>,
+that are changed by the server internally rather than by client
+requests. The effect of any change to a system counter is not visible
+until the server has finished processing the current request. In other
+words, system counters are apparently updated in the gaps between the
+execution of requests rather than during the actual execution of a
+request. The extension provides a system counter that advances with the
+server time as defined by the core protocol, and it may also provide
+counters that advance with the real-world time or that change each
+time the CRT screen is refreshed. Other extensions may provide their own
+extension-specific system counters.
+</p><p>
+The extension provides an <code class="function">Alarm</code> mechanism that allows clients to receive an
+event on a regular basis when a particular counter is changed.
+</p></div></div><div class="chapter" title="Chapter 2. C Language Binding"><div class="titlepage"><div><div><h2 class="title"><a id="c_language_binding"></a>Chapter 2. C Language Binding</h2></div></div></div><div class="toc"><p><strong>Table of Contents</strong></p><dl><dt><span class="sect1"><a href="#c_functions">C Functions</a></span></dt><dt><span class="sect1"><a href="#c_macros_functions">C Macros/Functions</a></span></dt><dt><span class="sect1"><a href="#events">Events</a></span></dt><dt><span class="sect1"><a href="#errors">Errors</a></span></dt></dl></div><p>
+The C routines provide direct access to the protocol and add no additional
+semantics.
+</p><p>
+The include file for this extension is &lt;X11/extensions/sync.h&gt;.
+Most of the names in the language binding are derived from the protocol
+names by prepending XSync to the protocol name and changing the
+capitalization.
+</p><div class="sect1" title="C Functions"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="c_functions"></a>C Functions</h2></div></div></div><p>
+Most of the following functions generate SYNC protocol requests.
+</p><div class="funcsynopsis"><p><code class="funcdef">Status <strong>fsfuncXSyncQueryExtension</strong>(</code>Display <var class="pdparam"> *dpy</var>, int <var class="pdparam"> *event_base_return</var>, int <var class="pdparam"> *error_base_return</var><code>)</code>;</p></div><p>
+If dpy supports the SYNC extension,
+<code class="function">XSyncQueryExtension</code> returns True,
+sets *event_base_return to the event number for the first SYNC event, and
+sets *error_base_return to the error number for the first SYNC error. If dpy
+does not support the SYNC extension, it returns False.
+</p><div class="funcsynopsis"><p><code class="funcdef">Status <strong>fsfuncXSyncInitialize</strong>(</code>Display <var class="pdparam"> *dpy</var>, int <var class="pdparam"> *major_version_return</var>, int <var class="pdparam"> *minor_version_return</var><code>)</code>;</p></div><p>
+<code class="function">XSyncInitialize</code> sets *major_version_return and
+*minor version return to the major/minor SYNC protocol version supported
+by the server. If the XSync library is compatible with the version
+returned by the server, this function returns <code class="function">True</code>.
+If dpy does not support the SYNC extension, or if there was an error
+during communication with the server, or if the server and library protocol
+versions are incompatible, this function returns <code class="function">False</code>.
+The only XSync function that may be called before this function is
+XSyncQueryExtension. If a client violates this rule, the effects of all XSync
+calls that it makes are undefined.
+</p><div class="funcsynopsis"><p><code class="funcdef">XSyncSystemCounter *<strong>fsfuncXSyncListSystemCounters</strong>(</code>Display <var class="pdparam"> *dpy</var>, int <var class="pdparam"> *n_counters_return</var><code>)</code>;</p></div><p>
+<code class="function">XSyncListSystemCounters</code> returns a pointer to an array
+of system counters supported by the display and sets *n_counters_return
+to the number of counters in the array.  The array should be freed with
+<code class="function">XSyncFreeSystemCounterList</code>. If dpy does not support
+the SYNC extension, or if there was an error during communication with
+the server, or if the server does not support any system counters,
+this function returns NULL.
+</p><p>
+XSyncSystemCounter has the following fields:
+</p><div class="literallayout"><p><br />
+char *              name;        /* null-terminated name of system counter */<br />
+XSyncCounter        counter;     /* counter id of this system counter */<br />
+XSyncValue          resolution;  /* resolution of this system counter */<br />
+</p></div><div class="funcsynopsis"><p><code class="funcdef">void <strong>fsfuncXSyncFreeSystemCounterList</strong>(</code>XSyncSystemCounter <var class="pdparam"> *list</var><code>)</code>;</p></div><p>
+<code class="function">XSyncFreeSystemCounterList</code> frees the memory
+associated with the system counter list returned by
+<code class="function">XSyncListSystemCounters</code>.
+</p><div class="funcsynopsis"><p><code class="funcdef">XSyncCounter <strong>fsfuncXSyncCreateCounter</strong>(</code>Display<var class="pdparam"> *dpy</var>, XSyncValue<var class="pdparam"> initial_value</var><code>)</code>;</p></div><p>
+<code class="function">XSyncCreateCounter</code> creates a counter on the dpy
+with the given initial value and returns the counter ID. It returns
+<code class="function">None</code> if dpy does not support the SYNC extension.
+</p><div class="funcsynopsis"><p><code class="funcdef">Status <strong>fsfuncXSyncSetCounter</strong>(</code>Display<var class="pdparam"> *dpy</var>, XSyncCounter<var class="pdparam"> counter</var>, XSyncValue<var class="pdparam"> value</var><code>)</code>;</p></div><p>
+<code class="function">XSyncSetCounter</code> sets counter to value. It returns
+<code class="function">False </code> if dpy does not
+support the SYNC extension; otherwise, it returns <code class="function">True</code>.
+</p><div class="funcsynopsis"><p><code class="funcdef">Status <strong>fsfuncXSyncChangeCounter</strong>(</code>Display<var class="pdparam"> *dpy</var>, XSyncCounter<var class="pdparam"> counter</var>, XSyncValue<var class="pdparam"> value</var><code>)</code>;</p></div><p>
+<code class="function">XSyncChangeCounter</code> adds value to counter. It returns
+<code class="function">False</code> if dpy does not support the SYNC extension;
+otherwise, it returns
+<code class="function">True</code>.
+</p><div class="funcsynopsis"><p><code class="funcdef">Status <strong>fsfuncXSyncDestroyCounter</strong>(</code>Display<var class="pdparam"> *dpy</var>, XSyncCounter<var class="pdparam"> counter</var><code>)</code>;</p></div><p>
+<code class="function">XSyncDestroyCounter</code> destroys counter. It returns
+<code class="function">False</code> if dpy does not support the SYNC extension;
+otherwise, it returns <code class="function">True</code>.
+</p><div class="funcsynopsis"><p><code class="funcdef">Status <strong>fsfuncXSyncQueryCounter</strong>(</code>Display<var class="pdparam"> *dpy</var>, XSyncCounter<var class="pdparam"> counter</var>, XSyncValue<var class="pdparam"> *value_return</var><code>)</code>;</p></div><p>
+<code class="function">XSyncQueryCounter</code> sets *value_return to the current
+value of counter. It returns <code class="function">False</code> if there was an
+error during communication with the server or if dpy does not support the
+SYNC extension; otherwise, it returns <code class="function">True</code>.
+</p><div class="funcsynopsis"><p><code class="funcdef">Status <strong>fsfuncXSyncAwait</strong>(</code>Display<var class="pdparam"> *dpy</var>, XSyncWaitCondition<var class="pdparam"> *wait_list</var>, int<var class="pdparam"> n_conditions</var><code>)</code>;</p></div><p>
+<code class="function">XSyncAwait</code> awaits on the conditions in wait_list.
+The n_conditions is the number of wait conditions in wait_list. It
+returns <code class="function">False</code> if dpy does not support the SYNC
+extension; otherwise, it returns <code class="function">True</code>. The await is
+processed asynchronously by the server; this function always returns
+immediately after issuing the request.
+</p><p>
+XSyncWaitCondition has the following fields:
+</p><div class="literallayout"><p><br />
+XSyncCounter     trigger.counter;    /*counter to trigger on */<br />
+XSyncValueType   trigger.value_type; /*absolute/relative */<br />
+XSyncValue       trigger.wait_value; /*value to compare counter to */<br />
+XSyncTestType    trigger.test_type;  /*pos/neg comparison/transtion */<br />
+XSyncValue       event_threshold;    /*send event if past threshold */<br />
+</p></div><p>
+<code class="function">XSyncValueType</code> can be either
+<code class="function">XSyncAbsolute</code> or <code class="function">XSyncRelative</code>.
+</p><p>
+<code class="function">XSyncTestType</code> can be one of
+<code class="function">XSyncPositiveTransition</code>,
+<code class="function">XSyncNegativeTransition</code>,
+<code class="function">XSyncPositiveComparison</code>, or
+<code class="function">XSyncNegativeComparison</code>.
+</p><div class="funcsynopsis"><p><code class="funcdef">XSyncAlarm <strong>fsfuncXSyncCreateAlarm</strong>(</code>Display<var class="pdparam"> *dpy</var>, unsigned long<var class="pdparam"> values_mask</var>, XSyncAlarmAttributes<var class="pdparam"> *values`</var><code>)</code>;</p></div><p>
+<code class="function">XSyncCreateAlarm</code> creates an alarm and returns the
+alarm ID. It returns None if the display does not support the SYNC
+extension. The values_mask and values specify the alarm attributes.
+</p><p>
+<code class="function">XSyncAlarmAttributes</code> has the following fields. The
+attribute_mask column specifies the symbol that the caller should OR
+into values_mask to indicate that the value for the corresponding
+attribute was actually supplied. Default values are used for all
+attributes that do not have their attribute_mask OR’ed into values_mask.
+See the protocol description for <code class="function">CreateAlarm</code> for the
+defaults.
+</p><div class="literallayout"><p><br />
+type                 field name           attribute_mask<br />
+XSyncCounter       trigger.counter;     XSyncCACounter<br />
+XSyncValueType     trigger.value_type;  XSyncCAValueType<br />
+XSyncValue         trigger.wait_value;  XSyncCAValue<br />
+XSyncTestType      trigger.test_type;   XSyncCATestType<br />
+XSyncValue         delta;               XSyncCADelta<br />
+Bool               events;              XSyncCAEvents<br />
+XSyncAlarmState    state;               client cannot set this<br />
+</p></div><div class="funcsynopsis"><p><code class="funcdef">Status <strong>fsfuncXSyncDestroyAlarm</strong>(</code>Display<var class="pdparam"> *dpy</var>, XSyncAlarm<var class="pdparam"> alarm</var><code>)</code>;</p></div><p>
+<code class="function">XSyncDestroyAlarm</code> destroys alarm. It returns
+<code class="function">False</code> if dpy does not support
+the SYNC extension; otherwise, it returns <code class="function">True</code>.
+</p><div class="funcsynopsis"><p><code class="funcdef">Status <strong>fsfuncXSyncQueryAlarm</strong>(</code>Display<var class="pdparam"> *dpy</var>, XSyncAlarm<var class="pdparam"> alarm</var>, XSyncAlarmAttributes<var class="pdparam"> *values_return</var><code>)</code>;</p></div><p>
+<code class="function">XSyncQueryAlarm</code> sets *values_return to the alarm’s
+attributes. It returns <code class="function">False</code> if there was an error
+during communication with the server or if dpy does not support the
+SYNC extension; otherwise, it returns <code class="function">True</code>.
+</p><div class="funcsynopsis"><p><code class="funcdef">Status <strong>fsfuncXSyncChangeAlarm</strong>(</code>Display<var class="pdparam"> *dpy</var>, XSyncAlarm<var class="pdparam"> alarm</var>, unsigned long<var class="pdparam"> values_mask</var>, XSyncAlarmAttributes<var class="pdparam"> *values</var><code>)</code>;</p></div><p>
+<code class="function">XSyncChangeAlarm</code> changes alarm’s attributes. The
+attributes to change are specified as in
+<code class="function">XSyncCreateAlarm</code>. It returns
+<code class="function">False</code> if dpy does not support
+the SYNC extension; otherwise, it returns <code class="function">True</code>.
+</p><div class="funcsynopsis"><p><code class="funcdef">Status <strong>fsfuncXSyncSetPriority</strong>(</code>Display<var class="pdparam"> *dpy</var>, XID<var class="pdparam"> client_resource_id</var>, int<var class="pdparam"> priority</var><code>)</code>;</p></div><p>
+<code class="function">XSyncSetPriority</code> sets the priority of the client
+owning client_resource_id to priority. If client_resource_id is None, it
+sets the caller’s priority. It returns
+<code class="function">False</code> if dpy does not support the SYNC extension;
+otherwise, it returns <code class="function">True</code>.
+</p><div class="funcsynopsis"><p><code class="funcdef">Status <strong>fsfuncXSyncGetPriority</strong>(</code>Display<var class="pdparam"> *dpy</var>, XID<var class="pdparam"> client_resource_id</var>, int<var class="pdparam"> *return_priority</var><code>)</code>;</p></div><p>
+<code class="function">XSyncGetPriority</code> sets *return_priority to the
+priority of the client owning client_resource_id. If client_resource_id
+is None, it sets *return_priority to the caller’s priority. It returns
+<code class="function">False</code> if there was an error during communication
+with the server or if dpy does not support the SYNC extension; otherwise, it
+returns <code class="function">True</code>.
+</p></div><div class="sect1" title="C Macros/Functions"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="c_macros_functions"></a>C Macros/Functions</h2></div></div></div><p>
+The following procedures manipulate 64-bit values. They are defined both as
+macros and as functions. By default, the macro form is used. To use the
+function form, #undef the macro name to uncover the function.
+</p><div class="funcsynopsis"><p><code class="funcdef">void <strong>fsfuncXSyncIntToValue</strong>(</code>XSyncValue<var class="pdparam"> *pv</var>, int<var class="pdparam"> i</var><code>)</code>;</p></div><p>
+Converts i to an <code class="function">XSyncValue</code> and stores it in *pv.
+Performs sign extension (*pv will have the same sign as i.)
+</p><div class="funcsynopsis"><p><code class="funcdef">void <strong>fsfuncXSyncIntsToValue</strong>(</code>XSyncValue<var class="pdparam"> *pv</var>, unsigned int<var class="pdparam"> low</var>, int<var class="pdparam"> high</var><code>)</code>;</p></div><p>
+Stores low in the low 32 bits of *pv and high in the high 32 bits of *pv.
+</p><div class="funcsynopsis"><p><code class="funcdef">Bool <strong>fsfuncXSyncValueGreaterThan</strong>(</code>XSyncValue<var class="pdparam"> a</var>, XSyncValue<var class="pdparam"> b</var><code>)</code>;</p></div><p>
+Returns <code class="function">True</code> if a is greater than b, else returns
+<code class="function">False</code>.
+</p><div class="funcsynopsis"><p><code class="funcdef">Bool <strong>fsfuncXSyncValueLessThan</strong>(</code>XSyncValue<var class="pdparam"> a</var>, XSyncValue<var class="pdparam"> b</var><code>)</code>;</p></div><p>
+Returns <code class="function">True</code> if a is less than b, else returns
+<code class="function">False</code>.
+</p><div class="funcsynopsis"><p><code class="funcdef">Bool <strong>fsfuncXSyncValueGreaterOrEqual</strong>(</code>XSyncValue<var class="pdparam"> a</var>, XSyncValue<var class="pdparam"> b</var><code>)</code>;</p></div><p>
+Returns <code class="function">True</code> if a is greater than or equal to b,
+else returns <code class="function">False</code>.
+</p><div class="funcsynopsis"><p><code class="funcdef">Bool <strong>fsfuncXSyncValueLessOrEqual</strong>(</code>XSyncValue<var class="pdparam"> a</var>, XSyncValue<var class="pdparam"> b</var><code>)</code>;</p></div><p>
+Returns <code class="function">True</code> if a is less than or equal to b,
+else returns <code class="function">False</code>.
+</p><div class="funcsynopsis"><p><code class="funcdef">Bool <strong>fsfuncXSyncValueEqual</strong>(</code>XSyncValue<var class="pdparam"> a</var>, XSyncValue<var class="pdparam"> b</var><code>)</code>;</p></div><p>
+Returns <code class="function">True</code> if a is equal to b,
+else returns <code class="function">False</code>.
+</p><div class="funcsynopsis"><p><code class="funcdef">Bool <strong>fsfuncXSyncValueIsNegative</strong>(</code>XSyncValue<var class="pdparam"> v</var><code>)</code>;</p></div><p>
+Returns <code class="function">True</code> if v is negative,
+else returns <code class="function">False</code>.
+</p><div class="funcsynopsis"><p><code class="funcdef">Bool <strong>fsfuncXSyncValueIsZero</strong>(</code>XSyncValue<var class="pdparam"> v</var><code>)</code>;</p></div><p>
+Returns <code class="function">True</code> if v is zero,
+else returns <code class="function">False</code>.
+</p><div class="funcsynopsis"><p><code class="funcdef">Bool <strong>fsfuncXSyncValueIsPositive</strong>(</code>XSyncValue<var class="pdparam"> v</var><code>)</code>;</p></div><p>
+Returns <code class="function">True</code> if v is positive,
+else returns <code class="function">False</code>.
+</p><div class="funcsynopsis"><p><code class="funcdef">unsigned int <strong>fsfuncXSyncValueLow32</strong>(</code>XSyncValue<var class="pdparam"> v</var><code>)</code>;</p></div><p>
+Returns the low 32 bits of v.
+</p><div class="funcsynopsis"><p><code class="funcdef">unsigned int <strong>fsfuncXSyncValueHigh32</strong>(</code>XSyncValue<var class="pdparam"> v</var><code>)</code>;</p></div><p>
+Returns the high 32 bits of v.
+</p><div class="funcsynopsis"><p><code class="funcdef">void <strong>fsfuncXSyncValueAdd</strong>(</code>XSyncValue<var class="pdparam"> *presult</var>, XSyncValue<var class="pdparam"> a</var>, XSyncValue<var class="pdparam"> b</var>, Bool<var class="pdparam"> *poverflow</var><code>)</code>;</p></div><p>
+Adds a to b and stores the result in *presult. If the result could not
+fit in 64 bits, *poverﬂow is set to <code class="function">True</code>, else it is
+set to <code class="function">False</code>.
+</p><div class="funcsynopsis"><p><code class="funcdef">void <strong>fsfuncXSyncValueSubtract</strong>(</code>XSyncValue<var class="pdparam"> *presult</var>, XSyncValue<var class="pdparam"> a</var>, XSyncValue<var class="pdparam"> b</var>, Bool<var class="pdparam"> *poverflow</var><code>)</code>;</p></div><p>
+Subtracts b from a and stores the result in *presult. If the result could not
+fit in 64 bits, *poverﬂow is set to <code class="function">True</code>, else it is
+set to <code class="function">False</code>.
+</p><div class="funcsynopsis"><p><code class="funcdef">void <strong>fsfuncXSyncMaxValue</strong>(</code>XSyncValue<var class="pdparam"> *pv</var><code>)</code>;</p></div><p>
+Sets *pv to the maximum value expressible in 64 bits.
+</p><div class="funcsynopsis"><p><code class="funcdef">void <strong>fsfuncXSyncMinValue</strong>(</code>XSyncValue<var class="pdparam"> *pv</var><code>)</code>;</p></div><p>
+Sets *pv to the minimum value expressible in 64 bits.
+</p></div><div class="sect1" title="Events"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="events"></a>Events</h2></div></div></div><p>
+Let <span class="emphasis"><em>event_base</em></span> be the value event base return as defined in the function
+<code class="function">XSyncQueryExtension</code>.
+</p><p>
+An <code class="function">XSyncCounterNotifyEvent</code>’s type field has the value
+event_base + <code class="function">XSyncCounterNotify</code>. The fields of this
+structure are:
+</p><div class="literallayout"><p><br />
+int              type;          /* event base + XSyncCounterNotify */<br />
+unsigned long    serial;        /* number of last request processed by server */<br />
+Bool             send event;    /* true if this came from a SendEvent request */<br />
+Display *        display;       /* Display the event was read from */<br />
+XSyncCounter     counter;       /* counter involved in await */<br />
+XSyncValue       wait_value;    /* value being waited for */<br />
+XSyncValue       counter_value; /* counter value when this event was sent */<br />
+Time             time;          /* milliseconds */<br />
+int              count;         /* how many more events to come */<br />
+Bool             destroyed;     /* True if counter was destroyed */<br />
+</p></div><p>
+An <code class="function">XSyncAlarmNotifyEvent</code>’s type field has the value
+event_base + <code class="function">XSyncAlarmNotify</code>. The fields of
+this structure are:
+</p><div class="literallayout"><p><br />
+int             type;         /* event_base + XSyncAlarmNotify */<br />
+unsigned long   serial;       /* number of last request processed by server */<br />
+Bool            send_event;   /* true if this came from a SendEvent request */<br />
+Display *       display;      /*Display the event was read from */<br />
+XSyncAlarm      alarm;        /* alarm that triggered */<br />
+XSyncValue      counter_value /* value that triggered the alarm */<br />
+XSyncValue      alarm_value   /* test value of trigger in alarm */<br />
+Time            time;         /* milliseconds */<br />
+XSyncAlarmState state;        /* new state of alarm */<br />
+</p></div></div><div class="sect1" title="Errors"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="errors"></a>Errors</h2></div></div></div><p>
+Let <span class="emphasis"><em>error_base</em></span> be the value
+<span class="emphasis"><em>error_base_return</em></span> as defined in the function
+<code class="function">XSyncQueryExtension</code>.
+</p><p>
+An <code class="function">XSyncAlarmError</code>’s error_code field has
+<code class="function">XSyncBadAlarm</code>. The fields of this structure are:
+</p><div class="literallayout"><p><br />
+int                type<br />
+Display *          display;      /* Display the event was read from */<br />
+XSyncCounter       counter;      /* resource id */<br />
+unsigned long      serial;       /* serial number of failed request */<br />
+unsigned char      error_code;   /* error_base + XSyncBadAlarm */<br />
+unsigned char      request_code; /* Major op-code of failed request */<br />
+unsigned char      minor_code;   /* Minor op-code of failed request */<br />
+</p></div><p>
+An <code class="function">XSyncCounterError</code>’s error code field has the value
+error_base + <code class="function">XSyncBadCounter</code>. The fields of this
+structure are:
+</p><div class="literallayout"><p><br />
+int                type<br />
+Display *          display;      /* Display the event was read from */<br />
+XSyncCounter       counter;      /* resource id */<br />
+unsigned long      serial;       /* serial number of failed request */<br />
+unsigned char      error_code;   /* error_base + XSyncBadCounter */<br />
+unsigned char      request_code; /* Major op-code of failed request */<br />
+unsigned char      minor_code;   /* Minor op-code of failed request */<br />
+</p></div></div></div></div></body></html>

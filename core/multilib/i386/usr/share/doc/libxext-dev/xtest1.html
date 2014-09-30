@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>X11 INPUT SYNTHESIS EXTENSION PROPOSAL</title><link rel="stylesheet" type="text/css" href="/usr/share/sgml/X11/xorg.css" /><meta name="generator" content="DocBook XSL Stylesheets V1.76.1" /><meta name="description" content="This is a proposal for an extension to the X11 server and Xlib." /><style xmlns="" type="text/css">/*
+ * Copyright (c) 2011 Gaetan Nadon
+ * Copyright (c) 2010, Oracle and/or its affiliates. All rights reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice (including the next
+ * paragraph) shall be included in all copies or substantial portions of the
+ * Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+
+/*
+ * Shared stylesheet for X.Org documentation translated to HTML format
+ * http://www.sagehill.net/docbookxsl/UsingCSS.html
+ * http://www.w3schools.com/css/default.asp
+ * https://addons.mozilla.org/en-US/firefox/addon/web-developer/developers
+ * https://addons.mozilla.org/en-US/firefox/addon/font-finder/
+ */
+
+/*
+ * The sans-serif fonts are considered more legible on a computer screen
+ * http://dry.sailingissues.com/linux-equivalents-verdana-arial.html
+ *
+ */
+body {
+  font-family: "Bitstream Vera Sans", "DejaVu Sans", Tahoma, Geneva, Arial, Sans-serif;
+  /* In support of using "em" font size unit, the w3c recommended method */
+  font-size: 100%;
+}
+
+/*
+ * Selection: all elements requiring mono spaced fonts.
+ *
+ * The family names attempt to match the proportionally spaced font
+ * family names such that the same font name is used for both.
+ * We'd like to use Bitstream, for example, in both proportionally and
+ * mono spaced font text.
+ */
+.command,
+.errorcode,
+.errorname,
+.errortype,
+.filename,
+.funcsynopsis,
+.function,
+.parameter,
+.programlisting,
+.property,
+.screen,
+.structname,
+.symbol,
+.synopsis,
+.type
+{
+  font-family:  "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Courier, "Liberation Mono", Monospace;
+}
+
+/*
+ * Books have a title page, a preface, some chapters and appendices,
+ * a glossary, an index and a bibliography, in that order.
+ *
+ * An Article has no preface and no chapters. It has sections, appendices,
+ * a glossary, an index and a bibliography.
+ */
+
+/*
+ * Selection: book main title and subtitle
+ */
+div.book>div.titlepage h1.title,
+div.book>div.titlepage h2.subtitle {
+  text-align: center;
+}
+
+/*
+ * Selection: article main title and subtitle
+ */
+div.article>div.titlepage h2.title,
+div.article>div.titlepage h3.subtitle,
+div.article>div.sect1>div.titlepage h2.title,
+div.article>div.section>div.titlepage h2.title {
+  text-align: center;
+}
+
+/*
+ * Selection: various types of authors and collaborators, individuals or corporate
+ *
+ * These authors are not always contained inside an authorgroup.
+ * They can be contained inside a lot of different parent types where they might
+ * not be centered.
+ * Reducing the margin at the bottom makes a visual separation between authors
+ * We specify here the ones on the title page, others may be added based on merit.
+ */
+div.titlepage .authorgroup,
+div.titlepage .author,
+div.titlepage .collab,
+div.titlepage .corpauthor,
+div.titlepage .corpcredit,
+div.titlepage .editor,
+div.titlepage .othercredit {
+  text-align: center;
+  margin-bottom: 0.25em;
+}
+
+/*
+ * Selection: the affiliation of various types of authors and collaborators,
+ * individuals or corporate.
+ */
+div.titlepage .affiliation {
+  text-align: center;
+}
+
+/*
+ * Selection: product release information (X Version 11, Release 7)
+ *
+ * The releaseinfo element can be contained inside a lot of different parent
+ * types where it might not be centered.
+ * We specify here the one on the title page, others may be added based on merit.
+ */
+div.titlepage p.releaseinfo {
+  font-weight: bold;
+  text-align: center;
+}
+
+/*
+ * Selection: publishing date
+ */
+div.titlepage .pubdate {
+  text-align: center;
+}
+
+/*
+ * The legal notices are displayed in smaller sized fonts
+ * Justification is only supported in IE and therefore not requested.
+ *
+ */
+.legalnotice {
+  font-size: small;
+  font-style: italic;
+}
+
+/*
+ * Selection: book or article main ToC title
+ * A paragraph is generated for the title rather than a level 2 heading.
+ * We do not want to select chapters sub table of contents, only the main one
+ */
+div.book>div.toc>p,
+div.article>div.toc>p {
+  font-size: 1.5em;
+  text-align: center;
+}
+
+/*
+ * Selection: major sections of a book or an article
+ *
+ * Unlike books, articles do not have a titlepage element for appendix.
+ * Using the selector "div.titlepage h2.title" would be too general.
+ */
+div.book>div.preface>div.titlepage h2.title,
+div.book>div.chapter>div.titlepage h2.title,
+div.article>div.sect1>div.titlepage h2.title,
+div.article>div.section>div.titlepage h2.title,
+div.book>div.appendix>div.titlepage h2.title,
+div.article>div.appendix h2.title,
+div.glossary>div.titlepage h2.title,
+div.index>div.titlepage h2.title,
+div.bibliography>div.titlepage h2.title {
+   /* Add a border top over the major parts, just like printed books */
+   /* The Gray color is already used for the ruler over the main ToC. */
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: Gray;
+  /* Put some space between the border and the title */
+  padding-top: 0.2em;
+  text-align: center;
+}
+
+/*
+ * A Screen is a verbatim environment for displaying text that the user might
+ * see on a computer terminal. It is often used to display the results of a command.
+ *
+ * http://www.css3.info/preview/rounded-border/
+ */
+.screen {
+  background: #e0ffff;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #B0C4DE;
+  border-radius: 1.0em;
+  /* Browser's vendor properties prior to CSS 3 */
+  -moz-border-radius: 1.0em;
+  -webkit-border-radius: 1.0em;
+  -khtml-border-radius: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 1.0em;
+  padding: 0.5em;
+}
+
+/*
+ * Emphasis program listings with a light shade of gray similar to what
+ * DocBook XSL guide does: http://www.sagehill.net/docbookxsl/ProgramListings.html
+ * Found many C API docs on the web using like shades of gray.
+ */
+.programlisting {
+  background: #F4F4F4;
+  border-width: 1px;
+  border-style: solid;
+  border-color: Gray;
+  padding: 0.5em;
+}
+
+/*
+ * Emphasis functions synopsis using a darker shade of gray.
+ * Add a border such that it stands out more.
+ * Set the padding so the text does not touch the border.
+ */
+.funcsynopsis, .synopsis {
+  background: #e6e6fa;
+  border-width: 1px;
+  border-style: solid;
+  border-color: Gray;
+  clear: both;
+  margin: 0.5em;
+  padding: 0.25em;
+}
+
+/*
+ * Selection: paragraphs inside synopsis
+ *
+ * Removes the default browser margin, let the container set the padding.
+ * Paragraphs are not always used in synopsis
+ */
+.funcsynopsis p,
+.synopsis p {
+  margin: 0;
+  padding: 0;
+}
+
+/*
+ * Selection: variable lists, informal tables and tables
+ *
+ * Note the parameter name "variablelist.as.table" in xorg-xhtml.xsl
+ * A table with rows and columns is constructed inside div.variablelist
+ *
+ * Set the left margin so it is indented to the right
+ * Display informal tables with single line borders
+ */
+table {
+  margin-left: 0.5em;
+  border-collapse: collapse;
+}
+
+/*
+ * Selection: paragraphs inside tables
+ *
+ * Removes the default browser margin, let the container set the padding.
+ * Paragraphs are not always used in tables
+ */
+td p {
+  margin: 0;
+  padding: 0;
+}
+
+/*
+ * Add some space between the left and right column.
+ * The vertical alignment helps the reader associate a term
+ * with a multi-line definition.
+ */
+td, th {
+  padding-left: 1.0em;
+  padding-right: 1.0em;
+  vertical-align: top;
+}
+
+.warning {
+  border: 1px solid red;
+  background: #FFFF66;
+  padding-left: 0.5em;
+}
+</style></head><body><div class="article" title="X11 INPUT SYNTHESIS EXTENSION PROPOSAL"><div class="titlepage"><div><div><h2 class="title"><a id="xtest1"></a>X11 INPUT SYNTHESIS EXTENSION PROPOSAL</h2></div><div><h3 class="subtitle"><em>X Consortium Standard</em></h3></div><div><div class="authorgroup"><div class="author"><h3 class="author"><span class="firstname">Larry</span> <span class="surname">Woestman</span></h3><div class="affiliation"><span class="jobtitle">Member of Technical Staff<br /></span><span class="orgname">Hewlett Packard<br /></span></div></div></div></div><div><p class="releaseinfo">Version 1.0</p></div><div><p class="copyright">Copyright © 1993 X Consortium</p></div><div><div class="abstract" title="Abstract"><p>
+This is a proposal for an extension to the X11 server and Xlib.
+</p></div></div></div><hr /></div><div class="toc"><p><strong>Table of Contents</strong></p><dl><dt><span class="sect1"><a href="#introduction">Introduction</a></span></dt><dt><span class="sect1"><a href="#conventions_used_in_this_document">Conventions Used In This Document</a></span></dt><dt><span class="sect1"><a href="#definition_of_terms">Definition Of Terms</a></span></dt><dd><dl><dt><span class="sect2"><a href="#input_actions">Input Actions</a></span></dt><dt><span class="sect2"><a href="#user_input_actions">User Input Actions</a></span></dt></dl></dd><dt><span class="sect1"><a href="#what_does_this_extension_do">What Does This Extension Do?</a></span></dt><dt><span class="sect1"><a href="#functions_in_this_extension">Functions In This Extension</a></span></dt><dd><dl><dt><span class="sect2"><a href="#high_level_functions">High Level Functions</a></span></dt><dt><span class="sect2"><a href="#low_level_functions">Low Level Functions</a></span></dt></dl></dd></dl></div><div class="sect1" title="Introduction"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="introduction"></a>Introduction</h2></div></div></div><p>
+This is a proposal for an extension to the X11 server and Xlib.
+It provides two capabilities:
+</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>
+It allows a client to generate user input actions in the server without
+requiring a user to be present.
+    </p></li><li class="listitem"><p>
+It also allows a client to control the
+handling of user input actions by the server.
+    </p></li></ul></div><p>
+The capability
+to allow a client to generate user input actions in the server
+will be used by some of the X Testing Consortium Xlib tests.
+Both capabilities will be used by the X Testing Consortium client exerciser
+program.
+These capabilities may also be useful in other programs.
+</p><p>
+This extension requires modification to device-dependent code in the
+server.  Therefore it is not a 'portable' extension as defined by the
+X11 Server Extensions document.  However, the majority of the code
+and functionality of this extension will be implementation-independent.
+</p></div><div class="sect1" title="Conventions Used In This Document"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="conventions_used_in_this_document"></a>Conventions Used In This Document</h2></div></div></div><p>
+The naming conventions used in the Xlib documentation are followed
+with these additions:
+</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>
+The names of all functions defined in this extension begin with 'XTest',
+with the first letter of each additional word capitalized.
+    </p></li><li class="listitem"><p>
+The names of the protocol request structures follow the Xlib convention
+of 'x&lt;name&gt;Req'.
+    </p></li><li class="listitem"><p>
+The names of the protocol request minor type codes follow the Xlib convention
+of 'X_&lt;name&gt;'.
+    </p></li><li class="listitem"><p>
+The names of all other constants defined in this extension begin with 'XTest',
+with the rest of the name in upper case letters.
+    </p></li><li class="listitem"><p>
+All constants and structures defined in this extension will have their
+values specified in the 'xtestext1.h' file (listed in section 5).
+    </p></li></ul></div></div><div class="sect1" title="Definition Of Terms"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="definition_of_terms"></a>Definition Of Terms</h2></div></div></div><div class="sect2" title="Input Actions"><div class="titlepage"><div><div><h3 class="title"><a id="input_actions"></a>Input Actions</h3></div></div></div><p>
+Input actions are pointer movements, button presses and releases,
+and key presses and releases.  They can be generated by a user or by a client
+(using functions in this extension).
+</p></div><div class="sect2" title="User Input Actions"><div class="titlepage"><div><div><h3 class="title"><a id="user_input_actions"></a>User Input Actions</h3></div></div></div><p>
+User input actions are input actions that are generated by the user
+moving a pointing device (typically a mouse), pressing and releasing buttons on
+the pointing device, and pressing and releasing keys on the keyboard.
+</p></div></div><div class="sect1" title="What Does This Extension Do?"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="what_does_this_extension_do"></a>What Does This Extension Do?</h2></div></div></div><p>
+Without this extension, user input actions are processed by the server,
+and are converted into normal X events that are sent to the
+appropriate client or clients.
+</p><p>
+This extension adds the following capabilities:
+</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>
+Input actions may be sent from a client to the server to be
+processed just as if the user had physically performed them.
+The input actions are provided to the server in the form of X protocol
+requests defined by this extension.
+The information provided to the server includes what action should be
+performed, and how long to delay before processing the action in the server.
+    </p></li><li class="listitem"><p>
+User input actions may be diverted to a client before being processed by the
+server.
+The effect on the server is as if the user had performed no input action.
+The user input actions are provided to the client in the form of X events
+defined by this extension.
+The information provided to the client includes what user input action
+occurred and the delay between this user input action and the previous user
+input action.
+The client may then do anything it wishes with this information.
+    </p></li><li class="listitem"><p>
+User input actions may be copied, with one copy going to the server in the
+normal way, and the other copy being sent to a client as described above.
+    </p></li></ul></div></div><div class="sect1" title="Functions In This Extension"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="functions_in_this_extension"></a>Functions In This Extension</h2></div></div></div><div class="sect2" title="High Level Functions"><div class="titlepage"><div><div><h3 class="title"><a id="high_level_functions"></a>High Level Functions</h3></div></div></div><p>
+These functions are built on top of the low level functions described later.
+</p><div class="sect3" title="XTestMovePointer"><div class="titlepage"><div><div><h4 class="title"><a id="xtestmovepointer"></a>XTestMovePointer</h4></div></div></div><div class="funcsynopsis"><p><code class="funcdef">int <strong>fsfuncXTestMovePointer</strong>(</code>Display <var class="pdparam">*display</var>, int <var class="pdparam">device_id</var>, unsigned long <var class="pdparam">delay</var>, int <var class="pdparam">x</var>, int <var class="pdparam">y</var>, unsigned int <var class="pdparam">count</var><code>)</code>;</p></div><div class="variablelist"><table border="0"><col align="left" valign="top" /><tbody><tr><td><p><span class="term">display</span></p></td><td><p>
+Specifies the connection to the X server.
+      </p></td></tr><tr><td><p><span class="term">device_id</span></p></td><td><p>
+Specifies which pointer device was supposed to have caused the input action.
+This is a provision for future support of multiple (distinguishable) pointer
+devices, and should always be set to 0 for now.
+      </p></td></tr><tr><td><p><span class="term">delay</span></p></td><td><p>
+Specifies the time (in milliseconds) to wait before each movement
+of the pointer.
+      </p></td></tr><tr><td><p><span class="term">x, y</span></p></td><td><p>
+Specifies the x and y coordinates to move the pointer to relative to the
+root window for the specified display.
+      </p></td></tr><tr><td><p><span class="term">count</span></p></td><td><p>
+Specifies the number of 'delay, x, y' triplets contained in the
+<span class="emphasis"><em>delay</em></span>,
+<span class="emphasis"><em>x</em></span> and
+<span class="emphasis"><em>y</em></span> arrays.
+      </p></td></tr></tbody></table></div><p>
+The
+<code class="function">XTestMovePointer</code>
+function creates input actions to be sent to the the server.
+The input actions will be accumulated in a request defined by this extension
+until the request is full or the XTestFlush function is called.
+They will then be sent to the server.
+When the input actions are sent to the server, the input actions will cause
+the server to think that the pointer was moved to the specified position(s),
+with the specified delay before each input action.
+</p><p>
+The
+<code class="function">XTestMovePointer</code>
+function will return -1 if there is an error, and 0 otherwise.
+</p></div><div class="sect3" title="XTestPressButton"><div class="titlepage"><div><div><h4 class="title"><a id="xtestpressbutton"></a>XTestPressButton</h4></div></div></div><div class="funcsynopsis"><p><code class="funcdef">int <strong>fsfuncXTestPressButton</strong>(</code>Display <var class="pdparam">*display</var>, int <var class="pdparam">device_id</var>, unsigned long <var class="pdparam">delay</var>, unsigned int <var class="pdparam">button_number</var>, unsigned int <var class="pdparam">button_action</var><code>)</code>;</p></div><div class="variablelist"><table border="0"><col align="left" valign="top" /><tbody><tr><td><p><span class="term">display</span></p></td><td><p>
+Specifies the connection to the X server.
+      </p></td></tr><tr><td><p><span class="term">device_id</span></p></td><td><p>
+Specifies which button device was supposed to have caused the input action.
+This is a provision for future support of multiple (distinguishable) button
+devices, and should always be set to 0 for now.
+      </p></td></tr><tr><td><p><span class="term">delay</span></p></td><td><p>
+Specifies the time (in milliseconds) to wait before the input action.
+      </p></td></tr><tr><td><p><span class="term">button_number</span></p></td><td><p>
+Specifies which button is being acted upon.
+      </p></td></tr><tr><td><p><span class="term">button_action</span></p></td><td><p>
+Specifies the action to be performed (one of
+<span class="emphasis"><em>XTestPRESS</em></span>,
+<span class="emphasis"><em>XTestRELEASE</em></span>, or
+<span class="emphasis"><em>XTestSTROKE</em></span>).
+      </p></td></tr></tbody></table></div><p>
+The
+<code class="function">XTestPressButton</code>
+function creates input actions to be sent to the the server.
+The input actions will be accumulated in a request defined by this extension
+until the request is full or the XTestFlush function is called.
+They will then be sent to the server.
+When the input actions are sent to the server, the input actions will cause
+the server to think that the specified button was moved as specified.
+</p><p>
+The
+<code class="function">XTestPressButton</code>
+function will return -1 if there is an error, and 0 otherwise.
+</p></div><div class="sect3" title="XTestPressKey"><div class="titlepage"><div><div><h4 class="title"><a id="xtestpresskey"></a>XTestPressKey</h4></div></div></div><div class="funcsynopsis"><p><code class="funcdef">int <strong>fsfuncXTestPressKey</strong>(</code>Display <var class="pdparam">*display</var>, int <var class="pdparam">device_id</var>, unsigned long <var class="pdparam">delay</var>, unsigned int <var class="pdparam">keycode</var>, unsigned int <var class="pdparam">key_action</var><code>)</code>;</p></div><div class="variablelist"><table border="0"><col align="left" valign="top" /><tbody><tr><td><p><span class="term">display</span></p></td><td><p>
+Specifies the connection to the X server.
+      </p></td></tr><tr><td><p><span class="term">device_id</span></p></td><td><p>
+Specifies which keyboard device was supposed to have caused the input action.
+This is a provision for future support of multiple (distinguishable) keyboard
+devices, and should always be set to 0 for now.
+      </p></td></tr><tr><td><p><span class="term">delay</span></p></td><td><p>
+Specifies the time (in milliseconds) to wait before the input action.
+      </p></td></tr><tr><td><p><span class="term">keycode</span></p></td><td><p>
+Specifies which keycode is being acted upon.
+      </p></td></tr><tr><td><p><span class="term">key_action</span></p></td><td><p>
+Specifies the action to be performed (one of
+<span class="emphasis"><em>XTestPRESS</em></span>,
+<span class="emphasis"><em>XTestRELEASE</em></span>, or
+<span class="emphasis"><em>XTestSTROKE</em></span>).
+      </p></td></tr></tbody></table></div><p>
+The
+<code class="function">XTestPressKey</code>
+function creates input actions to be sent to the the server.
+The input actions will be accumulated in a request defined by this extension
+until the request is full or the XTestFlush function is called.
+They will then be sent to the server.
+When the input actions are sent to the server, the input actions will cause
+the server to think that the specified key on the keyboard was moved as
+specified.
+</p><p>
+The
+<code class="function">XTestPressKey</code>
+function will return -1 if there is an error, and 0 otherwise.
+</p></div><div class="sect3" title="XTestFlush"><div class="titlepage"><div><div><h4 class="title"><a id="xtestflush"></a>XTestFlush</h4></div></div></div><div class="funcsynopsis"><p><code class="funcdef">int <strong>fsfuncXTestFlush</strong>(</code>Display <var class="pdparam">*display</var><code>)</code>;</p></div><div class="variablelist"><table border="0"><col align="left" valign="top" /><tbody><tr><td><p><span class="term">display</span></p></td><td><p>
+Specifies the connection to the X server.
+      </p></td></tr></tbody></table></div><p>
+The
+<code class="function">XTestFlush</code>
+will send any remaining input actions to the server.
+</p><p>
+The
+<code class="function">XTestFlush</code>
+function will return -1 if there is an error, and 0 otherwise.
+</p></div></div><div class="sect2" title="Low Level Functions"><div class="titlepage"><div><div><h3 class="title"><a id="low_level_functions"></a>Low Level Functions</h3></div></div></div><div class="sect3" title="XTestGetInput"><div class="titlepage"><div><div><h4 class="title"><a id="xtestgetinput"></a>XTestGetInput</h4></div></div></div><div class="funcsynopsis"><p><code class="funcdef">int <strong>fsfuncXTestGetInput</strong>(</code>Display <var class="pdparam">*display</var>, int <var class="pdparam">action_handling</var><code>)</code>;</p></div><div class="variablelist"><table border="0"><col align="left" valign="top" /><tbody><tr><td><p><span class="term">display</span></p></td><td><p>
+Specifies the connection to the X server.
+      </p></td></tr><tr><td><p><span class="term">action_handling</span></p></td><td><p>
+Specifies to the server what to do with the user input actions.  (one of
+0, <span class="emphasis"><em>XTestPACKED_MOTION</em></span> or
+<span class="emphasis"><em>XTestPACKED_ACTIONS</em></span>; optionally 'or'ed
+with <span class="emphasis"><em>XTestEXCLUSIVE</em></span>).
+      </p></td></tr></tbody></table></div><p>
+The
+<code class="function">XTestGetInput</code>
+function tells the server to begin putting information about user input actions
+into events to be sent to the client that called this function.  These events
+can be read via the Xlib <code class="function">XNextEvent</code>fR function.
+</p><p>
+The server assigns an event type of
+<span class="emphasis"><em>XTestInputActionType</em></span> to these events
+to distinguish them from other events.
+Since the actual value of the event type may vary depending on how many
+extensions are included with an X11 implementation,
+<span class="emphasis"><em>XTestInputActionType</em></span> is a variable that will be
+contained in the Xlib
+part of this extension.  It may be referenced as follows:
+</p><p>
+extern int XTestInputActionType;
+</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>
+An <span class="emphasis"><em>action_handling</em></span> value of 0 causes the server
+to send one user input action in each
+<span class="emphasis"><em>XTestInputActionType</em></span> event.
+This can sometimes cause performance problems.
+    </p></li><li class="listitem"><p>
+An <span class="emphasis"><em>action_handling</em></span> value of
+<span class="emphasis"><em>XTestPACKED_ACTIONS</em></span> causes the server
+to pack as many user input actions as possible into a
+<span class="emphasis"><em>XTestInputActionType</em></span> event.
+This is needed if user input actions are happening rapidly (such as
+when the user moves the pointer) to keep performance at a reasonable level.
+    </p></li><li class="listitem"><p>
+An <span class="emphasis"><em>action_handling</em></span> value of
+<span class="emphasis"><em>XTestPACKED_MOTION</em></span> causes the server
+to pack only user input actions associated with moving the pointer.
+This allows the
+client to receive button and key motions as they happen without waiting for the
+event to fill up, while still keeping performance at a reasonable level.
+    </p></li><li class="listitem"><p>
+An <span class="emphasis"><em>action_handling</em></span> value with
+<span class="emphasis"><em>XTestEXCLUSIVE</em></span> 'or'ed in
+causes the server to send user input actions only to the client.
+The effect on the server is as if the user had performed no input actions.
+    </p></li><li class="listitem"><p>
+An <span class="emphasis"><em>action_handling</em></span> value without
+<span class="emphasis"><em>XTestEXCLUSIVE</em></span>
+causes the server to copy user input actions, sending one copy to the
+client, and handling the other copy normally (as it would if this extension
+were not installed).
+    </p></li></ul></div><p>
+There are four types of input actions that are passed from the server
+to the client.  They are:
+</p><div class="variablelist"><table border="0"><col align="left" valign="top" /><tbody><tr><td><p><span class="term">key/button~state~change</span></p></td><td><p>
+This type of input action contains the keycode of the key or button that
+changed state;
+whether the key or button is up or down,
+and the time delay between this input action and the previous input action.
+      </p></td></tr><tr><td><p><span class="term">pointer~motions</span></p></td><td><p>
+This type of input action contains information about the motion of the
+pointer when the pointer has only moved a short distance.
+If the pointer has moved a long distance,
+the pointer jump input action is used.
+      </p></td></tr><tr><td><p><span class="term">pointer~jumps</span></p></td><td><p>
+This type of input action contains information about the motion of the
+pointer when the pointer has moved a long distance.
+      </p></td></tr><tr><td><p><span class="term">delays</span></p></td><td><p>
+This type of input action is used when the delay between input actions is too
+large to be held in the other input actions.
+      </p></td></tr></tbody></table></div><p>
+The
+<code class="function">XTestGetInput</code>
+function will return -1 if there is an error, and 0 otherwise.
+</p><p>
+An error code of <span class="emphasis"><em>BadAccess</em></span> means that another client
+has already requested that user input actions be sent to it.
+</p></div><div class="sect3" title="XTestStopInput"><div class="titlepage"><div><div><h4 class="title"><a id="xteststopinput"></a>XTestStopInput</h4></div></div></div><div class="funcsynopsis"><p><code class="funcdef">int <strong>fsfuncXTestStopInput</strong>(</code>Display <var class="pdparam">*display</var><code>)</code>;</p></div><div class="variablelist"><table border="0"><col align="left" valign="top" /><tbody><tr><td><p><span class="term">display</span></p></td><td><p>
+Specifies the connection to the X server.
+      </p></td></tr></tbody></table></div><p>
+The
+<code class="function">XTestStopInput</code>
+function tells the server to stop putting information about user input actions
+into events.
+The server will process user input actions normally (as it would
+if this extension were not in the server).
+</p><p>
+The
+<code class="function">XTestStopInput</code>
+function will return -1 if there is an error, and 0 otherwise.
+</p><p>
+An error code of <span class="emphasis"><em>BadAccess</em></span> means that a request
+was made to stop input when input has never been started.
+</p></div><div class="sect3" title="XTestFakeInput"><div class="titlepage"><div><div><h4 class="title"><a id="xtestfakeinput"></a>XTestFakeInput</h4></div></div></div><div class="funcsynopsis"><p><code class="funcdef">int <strong>fsfuncXTestFakeInput</strong>(</code>Display <var class="pdparam">*display</var>, char <var class="pdparam">*action_list_addr</var>, int <var class="pdparam">action_list_size</var>, int <var class="pdparam">ack_flag</var><code>)</code>;</p></div><div class="variablelist"><table border="0"><col align="left" valign="top" /><tbody><tr><td><p><span class="term">display</span></p></td><td><p>
+Specifies the connection to the X server.
+      </p></td></tr><tr><td><p><span class="term">action_list_addr</span></p></td><td><p>
+Specifies the address of an list of input actions to be sent to the server.
+      </p></td></tr><tr><td><p><span class="term">action_list_size</span></p></td><td><p>
+Specifies the size (in bytes) of the list of input actions.
+It may be no larger than <span class="emphasis"><em>XTestMAX_ACTION_LIST_SIZE</em></span> bytes.
+      </p></td></tr><tr><td><p><span class="term">ack_flag</span></p></td><td><p>
+Specifies whether the server needs to send an event to indicate that its
+input action buffer is empty (one of
+<span class="emphasis"><em>XTestFAKE_ACK_NOT_NEEDED</em></span> or
+<span class="emphasis"><em>XTestFAKE_ACK_REQUEST</em></span>).
+      </p></td></tr></tbody></table></div><p>
+The
+<code class="function">XTestFakeInput</code>
+function tells the server to take the specified user input actions and process
+them as if the user had physically performed them.
+</p><p>
+The server can only accept a limited number of input actions at one
+time.  This limit can be determined by the
+<code class="function">XTestQueryInputSize</code> function
+in this extension.
+</p><p>
+The client should set <span class="emphasis"><em>ack_flag</em></span> to
+<span class="emphasis"><em>XTestFAKE_ACK_NOT_NEEDED</em></span>
+on calls to <span class="emphasis"><em>XTestFakeInput</em></span> that do not reach this limit.
+</p><p>
+The client should set <span class="emphasis"><em>ack_flag</em></span> to
+<span class="emphasis"><em>XTestFAKE_ACK_REQUEST</em></span>
+on the call to <span class="emphasis"><em>XTestFakeInput</em></span> that reaches this limit.
+</p><p>
+When the server sees an <span class="emphasis"><em>ack_flag</em></span> value of
+<span class="emphasis"><em>XTestFAKE_ACK_REQUEST</em></span>
+it finishes processing its input action buffer, then sends an event with
+type <span class="emphasis"><em>XTestFakeAckType</em></span> to the client.
+When the client reads this event, it knows that it is safe to resume
+sending input actions to the server.
+</p><p>
+Since the actual value of the event type may vary depending on how many
+extensions are included with an X11 implementation,
+<span class="emphasis"><em>XTestFakeAckType</em></span> is a variable that is contained
+in the Xlib part of this extension.  It may be referenced as follows:
+</p><p>
+extern int XTestFakeAckType;
+</p><p>
+There are four types of input actions that are passed from the client
+to the server.  They are:
+</p><div class="variablelist"><table border="0"><col align="left" valign="top" /><tbody><tr><td><p><span class="term">key/button~state~change</span></p></td><td><p>
+This type of input action contains the keycode of the key or button that
+is to change state;
+whether the key or button is to be up or down,
+and the time to delay before changing the state of the key or button.
+      </p></td></tr><tr><td><p><span class="term">pointer~motions</span></p></td><td><p>
+This type of input action contains information about the motion of the
+pointer when the pointer is to be moved a short distance,
+and the time to delay before moving the pointer.
+If the pointer is to be moved a long distance,
+the pointer jump input action must be used.
+      </p></td></tr><tr><td><p><span class="term">pointer~jumps</span></p></td><td><p>
+This type of input action contains information about the motion of the
+pointer when the pointer is to be moved a long distance,
+and the time to delay before moving the pointer.
+      </p></td></tr><tr><td><p><span class="term">delays</span></p></td><td><p>
+This type of input action is used when the delay between input actions is too
+large to be held in the other input actions.
+      </p></td></tr></tbody></table></div><p>
+The
+<code class="function">XTestFakeInput</code>
+function will return -1 if there is an error, and 0 otherwise.
+</p><p>
+An error code of \fIBadAccess\fR means that another client has already
+sent user input actions to the server, and the server has not finished
+processing the user input actions.
+</p></div><div class="sect3" title="XTestQueryInputSize"><div class="titlepage"><div><div><h4 class="title"><a id="xtestqueryinputsize"></a>XTestQueryInputSize</h4></div></div></div><div class="funcsynopsis"><p><code class="funcdef">int <strong>fsfuncXTestQueryInputSize</strong>(</code>Display <var class="pdparam">*display</var>, unsigned long <var class="pdparam">size_return</var><code>)</code>;</p></div><div class="variablelist"><table border="0"><col align="left" valign="top" /><tbody><tr><td><p><span class="term">display</span></p></td><td><p>
+Specifies the connection to the X server.
+      </p></td></tr><tr><td><p><span class="term">size_return</span></p></td><td><p>
+Returns the number of input actions that the server's input action buffer can
+hold.
+      </p></td></tr></tbody></table></div><p>
+The
+<code class="function">XTestQueryInputSize</code>
+function asks the server to return the number of input actions that it can hold
+in its input action buffer in the unsigned long pointed to by \fIsize_return\fR.
+</p><p>
+The
+<code class="function">XTestQueryInputSize</code>
+function will return -1 if there is an error, and 0 otherwise.
+</p></div><div class="sect3" title="XTestReset"><div class="titlepage"><div><div><h4 class="title"><a id="xtestreset"></a>XTestReset</h4></div></div></div><div class="funcsynopsis"><p><code class="funcdef">int <strong>fsfuncXTestReset</strong>(</code>Display <var class="pdparam">*display</var><code>)</code>;</p></div><div class="variablelist"><table border="0"><col align="left" valign="top" /><tbody><tr><td><p><span class="term">display</span></p></td><td><p>
+Specifies the connection to the X server.
+      </p></td></tr></tbody></table></div><p>
+The
+<code class="function">XTestReset</code>
+function tells the server to set everything having to do with this extension
+back to its initial state.  After this call the server will act as if this
+extension were not installed until one of the extension functions is called by
+a client.  This function is not normally needed, but is included in case a
+client wishes to clean up the server state, such as after a serious error.
+</p><p>
+The
+<code class="function">XTestReset</code>
+function will return -1 if there is an error, and 0 otherwise.
+</p></div></div></div></div></body></html>

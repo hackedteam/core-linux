@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>X Display Power Management Signaling (DPMS) Extension</title><link rel="stylesheet" type="text/css" href="/usr/share/sgml/X11/xorg.css" /><meta name="generator" content="DocBook XSL Stylesheets V1.76.1" /><style xmlns="" type="text/css">/*
+ * Copyright (c) 2011 Gaetan Nadon
+ * Copyright (c) 2010, Oracle and/or its affiliates. All rights reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice (including the next
+ * paragraph) shall be included in all copies or substantial portions of the
+ * Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+
+/*
+ * Shared stylesheet for X.Org documentation translated to HTML format
+ * http://www.sagehill.net/docbookxsl/UsingCSS.html
+ * http://www.w3schools.com/css/default.asp
+ * https://addons.mozilla.org/en-US/firefox/addon/web-developer/developers
+ * https://addons.mozilla.org/en-US/firefox/addon/font-finder/
+ */
+
+/*
+ * The sans-serif fonts are considered more legible on a computer screen
+ * http://dry.sailingissues.com/linux-equivalents-verdana-arial.html
+ *
+ */
+body {
+  font-family: "Bitstream Vera Sans", "DejaVu Sans", Tahoma, Geneva, Arial, Sans-serif;
+  /* In support of using "em" font size unit, the w3c recommended method */
+  font-size: 100%;
+}
+
+/*
+ * Selection: all elements requiring mono spaced fonts.
+ *
+ * The family names attempt to match the proportionally spaced font
+ * family names such that the same font name is used for both.
+ * We'd like to use Bitstream, for example, in both proportionally and
+ * mono spaced font text.
+ */
+.command,
+.errorcode,
+.errorname,
+.errortype,
+.filename,
+.funcsynopsis,
+.function,
+.parameter,
+.programlisting,
+.property,
+.screen,
+.structname,
+.symbol,
+.synopsis,
+.type
+{
+  font-family:  "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Courier, "Liberation Mono", Monospace;
+}
+
+/*
+ * Books have a title page, a preface, some chapters and appendices,
+ * a glossary, an index and a bibliography, in that order.
+ *
+ * An Article has no preface and no chapters. It has sections, appendices,
+ * a glossary, an index and a bibliography.
+ */
+
+/*
+ * Selection: book main title and subtitle
+ */
+div.book>div.titlepage h1.title,
+div.book>div.titlepage h2.subtitle {
+  text-align: center;
+}
+
+/*
+ * Selection: article main title and subtitle
+ */
+div.article>div.titlepage h2.title,
+div.article>div.titlepage h3.subtitle,
+div.article>div.sect1>div.titlepage h2.title,
+div.article>div.section>div.titlepage h2.title {
+  text-align: center;
+}
+
+/*
+ * Selection: various types of authors and collaborators, individuals or corporate
+ *
+ * These authors are not always contained inside an authorgroup.
+ * They can be contained inside a lot of different parent types where they might
+ * not be centered.
+ * Reducing the margin at the bottom makes a visual separation between authors
+ * We specify here the ones on the title page, others may be added based on merit.
+ */
+div.titlepage .authorgroup,
+div.titlepage .author,
+div.titlepage .collab,
+div.titlepage .corpauthor,
+div.titlepage .corpcredit,
+div.titlepage .editor,
+div.titlepage .othercredit {
+  text-align: center;
+  margin-bottom: 0.25em;
+}
+
+/*
+ * Selection: the affiliation of various types of authors and collaborators,
+ * individuals or corporate.
+ */
+div.titlepage .affiliation {
+  text-align: center;
+}
+
+/*
+ * Selection: product release information (X Version 11, Release 7)
+ *
+ * The releaseinfo element can be contained inside a lot of different parent
+ * types where it might not be centered.
+ * We specify here the one on the title page, others may be added based on merit.
+ */
+div.titlepage p.releaseinfo {
+  font-weight: bold;
+  text-align: center;
+}
+
+/*
+ * Selection: publishing date
+ */
+div.titlepage .pubdate {
+  text-align: center;
+}
+
+/*
+ * The legal notices are displayed in smaller sized fonts
+ * Justification is only supported in IE and therefore not requested.
+ *
+ */
+.legalnotice {
+  font-size: small;
+  font-style: italic;
+}
+
+/*
+ * Selection: book or article main ToC title
+ * A paragraph is generated for the title rather than a level 2 heading.
+ * We do not want to select chapters sub table of contents, only the main one
+ */
+div.book>div.toc>p,
+div.article>div.toc>p {
+  font-size: 1.5em;
+  text-align: center;
+}
+
+/*
+ * Selection: major sections of a book or an article
+ *
+ * Unlike books, articles do not have a titlepage element for appendix.
+ * Using the selector "div.titlepage h2.title" would be too general.
+ */
+div.book>div.preface>div.titlepage h2.title,
+div.book>div.chapter>div.titlepage h2.title,
+div.article>div.sect1>div.titlepage h2.title,
+div.article>div.section>div.titlepage h2.title,
+div.book>div.appendix>div.titlepage h2.title,
+div.article>div.appendix h2.title,
+div.glossary>div.titlepage h2.title,
+div.index>div.titlepage h2.title,
+div.bibliography>div.titlepage h2.title {
+   /* Add a border top over the major parts, just like printed books */
+   /* The Gray color is already used for the ruler over the main ToC. */
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: Gray;
+  /* Put some space between the border and the title */
+  padding-top: 0.2em;
+  text-align: center;
+}
+
+/*
+ * A Screen is a verbatim environment for displaying text that the user might
+ * see on a computer terminal. It is often used to display the results of a command.
+ *
+ * http://www.css3.info/preview/rounded-border/
+ */
+.screen {
+  background: #e0ffff;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #B0C4DE;
+  border-radius: 1.0em;
+  /* Browser's vendor properties prior to CSS 3 */
+  -moz-border-radius: 1.0em;
+  -webkit-border-radius: 1.0em;
+  -khtml-border-radius: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 1.0em;
+  padding: 0.5em;
+}
+
+/*
+ * Emphasis program listings with a light shade of gray similar to what
+ * DocBook XSL guide does: http://www.sagehill.net/docbookxsl/ProgramListings.html
+ * Found many C API docs on the web using like shades of gray.
+ */
+.programlisting {
+  background: #F4F4F4;
+  border-width: 1px;
+  border-style: solid;
+  border-color: Gray;
+  padding: 0.5em;
+}
+
+/*
+ * Emphasis functions synopsis using a darker shade of gray.
+ * Add a border such that it stands out more.
+ * Set the padding so the text does not touch the border.
+ */
+.funcsynopsis, .synopsis {
+  background: #e6e6fa;
+  border-width: 1px;
+  border-style: solid;
+  border-color: Gray;
+  clear: both;
+  margin: 0.5em;
+  padding: 0.25em;
+}
+
+/*
+ * Selection: paragraphs inside synopsis
+ *
+ * Removes the default browser margin, let the container set the padding.
+ * Paragraphs are not always used in synopsis
+ */
+.funcsynopsis p,
+.synopsis p {
+  margin: 0;
+  padding: 0;
+}
+
+/*
+ * Selection: variable lists, informal tables and tables
+ *
+ * Note the parameter name "variablelist.as.table" in xorg-xhtml.xsl
+ * A table with rows and columns is constructed inside div.variablelist
+ *
+ * Set the left margin so it is indented to the right
+ * Display informal tables with single line borders
+ */
+table {
+  margin-left: 0.5em;
+  border-collapse: collapse;
+}
+
+/*
+ * Selection: paragraphs inside tables
+ *
+ * Removes the default browser margin, let the container set the padding.
+ * Paragraphs are not always used in tables
+ */
+td p {
+  margin: 0;
+  padding: 0;
+}
+
+/*
+ * Add some space between the left and right column.
+ * The vertical alignment helps the reader associate a term
+ * with a multi-line definition.
+ */
+td, th {
+  padding-left: 1.0em;
+  padding-right: 1.0em;
+  vertical-align: top;
+}
+
+.warning {
+  border: 1px solid red;
+  background: #FFFF66;
+  padding-left: 0.5em;
+}
+</style></head><body><div class="book" title="X Display Power Management Signaling (DPMS) Extension"><div class="titlepage"><div><div><h1 class="title"><a id="dpmslib"></a>X Display Power Management Signaling (DPMS) Extension</h1></div><div><h2 class="subtitle">X Consortium Standard</h2></div><div><div class="authorgroup"><div class="author"><h3 class="author"><span class="firstname">Rob</span> <span class="surname">Lembree</span></h3></div></div></div><div><p class="releaseinfo">X Version 11, Release 6.8</p></div><div><p class="releaseinfo">Version 1.0</p></div><div><p class="copyright">Copyright © 1996 X Consortium</p></div><div><div class="legalnotice" title="Legal Notice"><a id="idp28247072"></a><p>
+Permission to use, copy, modify, distribute, and sell this
+documentation for any purpose is hereby granted without fee,
+provided that the above copyright notice and this permission
+notice appear in all copies.  Digital Equipment Corporation
+makes no representations about the suitability for any purpose
+of the information in this document.  This documentation is
+provided "as is" without express or implied warranty.
+</p><p>
+<span class="emphasis"><em>X Window System</em></span> is a trademark of The Open Group.
+</p></div></div></div><hr /></div><div class="toc"><p><strong>Table of Contents</strong></p><dl><dt><span class="chapter"><a href="#overview">1. Overview</a></span></dt><dt><span class="chapter"><a href="#dpms_functions">2. DPMS Functions</a></span></dt></dl></div><div class="chapter" title="Chapter 1. Overview"><div class="titlepage"><div><div><h2 class="title"><a id="overview"></a>Chapter 1. Overview</h2></div></div></div><p>This extension provides X Protocol control over the VESA Display
+Power Management Signaling (DPMS) characteristics of video boards
+under control of the X Window System.
+</p><p>
+Traditionally, the X Window System has provided for both blanking and
+non-blanking screen savers.  Timeouts associated with these built-in
+screen saver mechanisms are limited to idle (dwell) time, and a change
+timeout that specifies the change interval for non-blanking screen savers.
+</p><p>
+The United States' Environmental Protection Agency (EPA) Energy Star program
+requires that monitors power down after some idle time by default.
+While it is possible to simply overload the existing screen saver timeouts,
+this solution leaves the non-privileged user little to no control over
+the DPMS characteristics of his or her system.  For example, disabling
+DPMS would require some unintended side effect in the core screen saver,
+such as disabling the changing of a non-blanking screen saver.  Providing
+clients with this control requires an extension to the core X Window System
+Protocol, and this extension seeks to fill this gap.
+</p><p>
+There are four power levels specified by the Video Electronics Standards
+Association (VESA) Display Power Management Signaling (DPMS) standard.
+These are mapped onto the X DPMS Extension like this:
+</p><div class="literallayout"><p><br />
+<code class="function">DPMS Extension Power Levels</code><br />
+     0     DPMSModeOn               In use<br />
+     1     DPMSModeStandby          Blanked, low power<br />
+     2     DPMSModeSuspend          Blanked, lower power<br />
+     3     DPMSModeOff               Shut off, awaiting activity<br />
+</p></div></div><div class="chapter" title="Chapter 2. DPMS Functions"><div class="titlepage"><div><div><h2 class="title"><a id="dpms_functions"></a>Chapter 2. DPMS Functions</h2></div></div></div><div class="funcsynopsis"><p><code class="funcdef">Bool <strong>fsfuncDPMSQueryExtention</strong>(</code>Display <var class="pdparam">*display</var>, int <var class="pdparam">event_base</var>, int <var class="pdparam">error_base</var><code>)</code>;</p></div><div class="variablelist"><table border="0"><col align="left" valign="top" /><tbody><tr><td><p><span class="term"><span class="emphasis"><em>*display</em></span></span></p></td><td><p>Specifies the connection to the X server.</p></td></tr><tr><td><p><span class="term"><span class="emphasis"><em>event_base</em></span></span></p></td><td><p>Specifies the return location for the assigned base event</p></td></tr><tr><td><p><span class="term"><span class="emphasis"><em>error_base</em></span></span></p></td><td><p>Specifies the return location for the assigned base error</p></td></tr></tbody></table></div><p>
+The DPMSQueryExtension function queries the X server to determine the
+availability of the DPMS Extension.  If the extension is available, the
+return value is TRUE, and <span class="emphasis"><em>event_base</em></span> and
+<span class="emphasis"><em>error_base</em></span> are set to the base event number
+and base error number for the extension, respectively.  Otherwise, the
+return value is FALSE, and the values of
+<span class="emphasis"><em>event_base</em></span> and
+<span class="emphasis"><em>error_base</em></span> are undefined.
+</p><div class="funcsynopsis"><p><code class="funcdef">Status <strong>fsfuncDPMSGetVersion</strong>(</code>Display <var class="pdparam">*display</var>, int <var class="pdparam">*major_version</var>, int <var class="pdparam">*minor_version</var><code>)</code>;</p></div><div class="variablelist"><table border="0"><col align="left" valign="top" /><tbody><tr><td><p><span class="term"><span class="emphasis"><em>display</em></span></span></p></td><td><p>Specifies the connection to the X server.</p></td></tr><tr><td><p><span class="term"><span class="emphasis"><em>major_version</em></span></span></p></td><td><p>Specifies the return location for the extension major version.</p></td></tr><tr><td><p><span class="term"><span class="emphasis"><em>minor_version</em></span></span></p></td><td><p>Specifies the return location for the extension minor version.</p></td></tr></tbody></table></div><p>
+The DPMSGetVersion function returns the version of the DPMS extension
+implemented by the X server.  The version is returned in
+<span class="emphasis"><em>major_version</em></span> and
+<span class="emphasis"><em>minor_version</em></span>.
+The major version and minor version for this specification are '1' and '1',
+respectively.  The major version will be incremented for protocol
+incompatible changes, and the minor version will be incremented for small,
+upwardly compatible changes.
+</p><div class="funcsynopsis"><p><code class="funcdef">Bool <strong>fsfuncDPMSCapable</strong>(</code>Display <var class="pdparam">*display</var><code>)</code>;</p></div><div class="variablelist"><table border="0"><col align="left" valign="top" /><tbody><tr><td><p><span class="term"><span class="emphasis"><em>display</em></span></span></p></td><td><p>Specifies the connection to the X server.</p></td></tr></tbody></table></div><p>
+The DPMSCapable function returns the DPMS capability of the X server, either
+TRUE (capable of DPMS) or FALSE (incapable of DPMS).  The capability of an
+X server is implementation defined.  For example, if a multi-headed  X server
+is capable of DPMS on one head, and incapable on another, the truth value of
+this function is defined by the X server implementation.
+</p><div class="funcsynopsis"><p><code class="funcdef">Status <strong>fsfuncDPMSSetTimeouts</strong>(</code>Display <var class="pdparam">*display</var>, CARD16 <var class="pdparam">standby</var>, CARD16 <var class="pdparam">suspend</var>, CARD16 <var class="pdparam">off</var><code>)</code>;</p></div><div class="variablelist"><table border="0"><col align="left" valign="top" /><tbody><tr><td><p><span class="term"><span class="emphasis"><em>display</em></span></span></p></td><td><p>Specifies the connection to the X server.</p></td></tr><tr><td><p><span class="term"><span class="emphasis"><em>standby</em></span></span></p></td><td><p>Specifies the new standby timeout in seconds.</p></td></tr><tr><td><p><span class="term"><span class="emphasis"><em>suspend</em></span></span></p></td><td><p>Specifies the new suspend timeout in seconds.</p></td></tr><tr><td><p><span class="term"><span class="emphasis"><em>off</em></span></span></p></td><td><p>Specifies the new off timeout in seconds.</p></td></tr></tbody></table></div><p>
+The DPMSSetTimeouts function permits applications to set the timeout values
+used by the X server for DPMS timings.
+</p><p>
+The value <span class="emphasis"><em>standby</em></span> is the amount of time of
+inactivity in seconds before standby mode is invoked. The actual effects of
+this mode are implementation defined, but in the case of DPMS compliant
+hardware, it is implemented by shutting off the horizontal sync signal,
+and pulsing the vertical sync signal.
+Standby mode provides the quickest monitor recovery time.  Note also that
+many monitors implement this mode identically to suspend mode.  A value
+of zero disables this mode.
+</p><p>
+The value <span class="emphasis"><em>suspend</em></span> is the amount of time of
+inactivity in seconds before the second level of power savings is invoked.
+Suspend mode's physical and electrical characteristics are implementation
+defined, but in DPMS compliant hardware, results in the pulsing of the
+horizontal sync signal, and shutting off of the vertical sync signal.
+Suspend mode recovery is considered to be slower than standby mode, but
+faster than off mode, however this is monitor dependent.  As noted above,
+many monitors implement this mode identically to standby mode.  A value of
+zero disables this mode.
+</p><p>
+The value <span class="emphasis"><em>off</em></span> is the amount of time of
+inactivity in seconds before the third and final level of power savings is
+invoked. Off mode's physical and electrical characteristics are
+implementation defined, but in DPMS compliant hardware, is implemented by
+shutting off both horizontal and vertical sync signals, resulting in
+the power-down of the monitor.  Recovery time is implementation dependant,
+but frequently is similar to the power-up time of the monitor.  A value
+of zero disables this mode.
+</p><p>
+Chronologically, standby mode occurs before or simultaneously with
+suspend mode, and suspend mode must occur before or simultaneously with
+off mode.  Therefore, non-zero mode timeout values must be greater than
+or equal to the timeout values of earlier modes.  If inconsistent values
+are supplied, a BadValue error will result.
+</p><div class="funcsynopsis"><p><code class="funcdef">Status <strong>fsfuncDPMSGetTimeouts</strong>(</code>Display <var class="pdparam">*display</var>, CARD16 <var class="pdparam">*standby</var>, CARD16 <var class="pdparam">*suspend</var>, CARD16 <var class="pdparam">*off</var><code>)</code>;</p></div><div class="variablelist"><table border="0"><col align="left" valign="top" /><tbody><tr><td><p><span class="term"><span class="emphasis"><em>display</em></span></span></p></td><td><p>Specifies the connection to the X server.</p></td></tr><tr><td><p><span class="term"><span class="emphasis"><em>standby</em></span></span></p></td><td><p>Specifies the new standby timeout in seconds.</p></td></tr><tr><td><p><span class="term"><span class="emphasis"><em>suspend</em></span></span></p></td><td><p>Specifies the new suspend timeout in seconds.</p></td></tr><tr><td><p><span class="term"><span class="emphasis"><em>off</em></span></span></p></td><td><p>Specifies the new off timeout in seconds.</p></td></tr></tbody></table></div><p>
+The DPMSGetTimeouts function retrieves the timeout values used by the X
+server for DPMS timings.
+</p><p>
+The value <span class="emphasis"><em>standby</em></span> is the amount of time of
+inactivity in seconds before standby mode is invoked. A value of zero
+indicates that this mode has been disabled.
+</p><p>
+The value <span class="emphasis"><em>suspend</em></span> is the amount of time of
+inactivity in seconds before the second level of power savings is invoked.
+A value of zero indicates that this mode has been disabled.
+</p><p>
+The value <span class="emphasis"><em>off</em></span> is the amount of time of
+inactivity in seconds before the third and final level of power savings is
+invoked. A value of zero indicates that this mode has been disabled.
+</p><div class="funcsynopsis"><p><code class="funcdef">Status <strong>fsfuncDPMSEnable</strong>(</code>Display <var class="pdparam">*display</var><code>)</code>;</p></div><div class="variablelist"><table border="0"><col align="left" valign="top" /><tbody><tr><td><p><span class="term"><span class="emphasis"><em>display</em></span></span></p></td><td><p>Specifies the connection to the X server.</p></td></tr></tbody></table></div><p>
+The DPMSEnable function enables DPMS on the specified display.  When
+enabled, DPMS will use the currently saved timeout values, and will
+invoke the DPMS power mode appropriate for the amount of time that
+the workstation input devices have been idle.  If DPMSEnable is invoked
+on a display with DPMS already enabled, no change is made, and no
+error is returned.  If DPMSEnable is invoked on a display without
+support for DPMS, no change is made and no error is returned.
+</p><div class="funcsynopsis"><p><code class="funcdef">Status <strong>fsfuncDPMSDisable</strong>(</code>Display <var class="pdparam">*display</var><code>)</code>;</p></div><div class="variablelist"><table border="0"><col align="left" valign="top" /><tbody><tr><td><p><span class="term"><span class="emphasis"><em>display</em></span></span></p></td><td><p>Specifies the connection to the X server.</p></td></tr></tbody></table></div><p>
+The DPMSDisable function disables DPMS on the specified display.  When
+disabled, DPMS returns the display to DPMSModeOn.  If DPMSDisable is
+invoked on a display with DPMS already disabled, no change is made,
+and no error is returned.  If DPMSDisable is invoked on a display
+without support for DPMS, no change is made and no error is returned.
+</p><div class="funcsynopsis"><p><code class="funcdef">Status <strong>fsfuncDPMSForceLevel</strong>(</code>Display <var class="pdparam">*display</var>, CARD16 <var class="pdparam">level</var><code>)</code>;</p></div><div class="variablelist"><table border="0"><col align="left" valign="top" /><tbody><tr><td><p><span class="term"><span class="emphasis"><em>display</em></span></span></p></td><td><p>Specifies the connection to the X server.</p></td></tr><tr><td><p><span class="term"><span class="emphasis"><em>level</em></span></span></p></td><td><p>Specifies the level to force power to.</p></td></tr></tbody></table></div><p>
+The DPMSForceLevel function forces a DPMS capable display into the
+specified power level.  The <span class="emphasis"><em>level</em></span> must be one of
+DPMSModeOn, DPMSModeStandby, DPMSModeSuspend, or DPMSModeOff.
+Values other than these will result in a BadValue error.  If DPMS
+is disabled on the display, a BadMatch protocol error will result.
+</p><p>Status DPMSInfo(<span class="emphasis"><em>display, power_level, state</em></span>)</p><div class="funcsynopsis"><p><code class="funcdef">Status <strong>fsfuncDPMSInfo</strong>(</code>Display <var class="pdparam">*display</var>, CARD16 <var class="pdparam">power_level</var>, BOOL <var class="pdparam">*state</var><code>)</code>;</p></div><div class="variablelist"><table border="0"><col align="left" valign="top" /><tbody><tr><td><p><span class="term"><span class="emphasis"><em>display</em></span></span></p></td><td><p>Specifies the connection to the X server.</p></td></tr><tr><td><p><span class="term"><span class="emphasis"><em>power_level</em></span></span></p></td><td><p>Specifies the current power level.</p></td></tr><tr><td><p><span class="term"><span class="emphasis"><em>state</em></span></span></p></td><td><p>Specifies the current DPMS state.</p></td></tr></tbody></table></div><p>
+The DPMSInfo function returns information about the current DPMS state.
+The <span class="emphasis"><em>state</em></span> return parameter indicates whether
+or not DPMS is enabled (TRUE) or disabled (FALSE).  The
+<span class="emphasis"><em>power_level</em></span> return parameter indicates the
+current power level (one of DPMSModeOn, DPMSModeStandby, DPMSModeSuspend,
+or DPMSModeOff.)
+</p></div></div></body></html>

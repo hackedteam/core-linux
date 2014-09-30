@@ -1,0 +1,45 @@
+This package was debianized by Sebastian Dröge <slomo@debian.org> on
+Mon, 12 Apr 2010 12:28:35 +0200.
+
+It was downloaded from http://ftp.gnome.org/pub/GNOME/sources/libgnome-keyring/
+
+Upstream Authors: Stef Walter <stef@memberwebs.com>
+
+Files: *
+Copyright: © 2007-2009 Stef Walter
+           © 2003 Red Hat, Inc
+License: LGPL-2+ (/usr/share/common-licenses/LGPL-2)
+   The Gnome Keyring Library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Library General Public License as
+   published by the Free Software Foundation; either version 2 of the
+   License, or (at your option) any later version.
+
+   The Gnome Keyring Library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Library General Public License for more details.
+
+   You should have received a copy of the GNU Library General Public
+   License along with the Gnome Library; see the file COPYING.LIB.  If not,
+   write to the Free Software Foundation, Inc., 51 Franklin Street, 
+   Fifth Floor, Boston, MA 02110-1301, USA.
+
+Files: egg/egg-dbus.*
+Copyright: © 2002, 2003 CodeFactory AB
+           © 2005 Red Hat, Inc.
+License: GPL-2+ (/usr/share/common-licenses/GPL-2)
+   Gnome keyring is free software; you can redistribute it and/or
+   modify it under the terms of the GNU General Public License as
+   published by the Free Software Foundation; either version 2 of the
+   License, or (at your option) any later version.
+
+   Gnome keyring is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   write to the Free Software Foundation, Inc., 51 Franklin Street,
+   Fifth Floor, Boston, MA 02110-1301, USA.
+

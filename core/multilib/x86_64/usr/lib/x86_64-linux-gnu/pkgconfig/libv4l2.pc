@@ -1,0 +1,10 @@
+prefix=/usr
+libdir=/usr/lib/x86_64-linux-gnu
+
+Name: libv4l2
+Description: v4l2 device access library
+Version: 0.8.6
+Requires.private: libv4lconvert
+Libs: -L${libdir} -lv4l2
+Libs.private: -lpthread
+Cflags: -I${prefix}/include

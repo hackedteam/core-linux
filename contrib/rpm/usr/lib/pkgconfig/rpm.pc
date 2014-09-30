@@ -1,0 +1,15 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+rpmhome=/usr/lib/rpm
+
+Name: RPM
+Description: RPM Package Manager
+Version: 4.9.1.1
+URL: http://rpm.org
+# Requires: 
+# Conflicts:
+Cflags: -I${includedir}
+Libs: -L${libdir} -lrpm -lrpmio
+Libs.private: -lpopt -lrt -lpthread  -llzma -ldb -lbz2 -lz -lnss3 @WITH_LUA_LIB@

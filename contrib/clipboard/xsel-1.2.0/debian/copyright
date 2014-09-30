@@ -1,0 +1,19 @@
+This package was originally debianized by Thom May <thom@debian.org> on
+Mon, 11 Feb 2002 08:54:01 +0000, and is now maintained by Joe Nahmias
+<jello@debian.org>.
+
+It was downloaded from http://www.vergenet.net/~conrad/software/xsel/
+
+Upstream Author: Conrad Parker <conrad@vergenet.net>
+
+Copyright:
+
+ Copyright (C) 2001 Conrad Parker <conrad@vergenet.net> 
+
+ Permission to use, copy, modify, distribute, and sell this software and
+ its documentation for any purpose is hereby granted without fee,
+ provided that the above copyright notice appear in all copies and that
+ both that copyright notice and this permission notice appear in
+ supporting documentation. No representations are made about the
+ suitability of this software for any purpose. It is provided "as is"
+ without express or implied warranty. 

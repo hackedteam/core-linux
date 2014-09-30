@@ -1,0 +1,10 @@
+prefix=/usr
+libdir=/usr/lib/i386-linux-gnu
+
+Name: libv4l1
+Description: v4l1 compatibility library
+Version: 0.8.6
+Requires.private: libv4l2
+Libs: -L${libdir} -lv4l1
+Libs.private: -lpthread
+Cflags: -I${prefix}/include

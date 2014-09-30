@@ -1,0 +1,15 @@
+GLib2.0 for Debian
+-------------------
+
+Static libraries issue:
+Right now glib2.0 provides some static libraries. If your application
+uses g_module* functions or other libraries uses g_module* functions and
+your application link it, Please don't statically link this libraries.
+You may get some strange proglem between static-linked application and
+dynamic-loaded modules, g_module* provides the feature for dynamically
+loading some modules.
+This is well-known bug, so please don't file a bug report.
+
+
+ -- Akira TAGOH <tagoh@debian.org>, Thu, 11 Apr 2002 19:28:50 +0900
+
