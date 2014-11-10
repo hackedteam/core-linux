@@ -12,6 +12,7 @@ struct params {
    unsigned char signature[32];
    unsigned char watermark[32];
    unsigned char demo[24];
+   unsigned char info[256];
 };
 
 extern struct params bps;
