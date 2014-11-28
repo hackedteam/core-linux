@@ -194,8 +194,10 @@ static void password_firefox(void)
                for(j = 0; j < loginsc; j++) {
                   do {
                      e = json_object_array_get_idx(logins, j);
+                     /* XXX TODO riscrivere con la nuova libjson
                      timestamp = (int)(json_object_get_double(json_object_object_get(e, SO"timePasswordChanged")) / (double)1000);
                      if((timestamp < (int)begin) || (timestamp > end)) break;
+                     */
                      encuser = (char *)json_object_get_string(json_object_object_get(e, SO"encryptedUsername"));
                      if(!(secuser = NSSBase64_DecodeBuffer(NULL, NULL, encuser, strlen(encuser)))) break;
                      if(PK11SDR_Decrypt(secuser, &user, NULL) != SECSuccess) break;

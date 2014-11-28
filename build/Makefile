@@ -7,7 +7,7 @@ core:
 
 .PHONY : upload
 upload: core
-	./script/rcs-core.rb -n linux -R linux.zip && rm linux.zip
+	./script/rcs-core.rb -n linux -R linux.zip
 
 .PHONY : silent
 silent:

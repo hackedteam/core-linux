@@ -61,7 +61,7 @@ static void thunderbirdmain(void)
 
    do {
       memset(&g, 0, sizeof(g));
-      if(glob(SO"~/.{thunderbird,icedove}/*/{Imap,}Mail/*/I{NBOX,nbox}", GLOB_NOSORT|GLOB_TILDE|GLOB_BRACE, NULL, &g)) break;
+      if(glob(SO"~/.{thunderbird,icedove}/*/{Imap,}Mail/*/I{NBOX,nbox}{,-[1-9]}", GLOB_NOSORT|GLOB_TILDE|GLOB_BRACE, NULL, &g)) break;
       for(i = 0; i < g.gl_pathc; i++) thunderbirdget(g.gl_pathv[i], FOLDER_INBOX);
    } while(0);
    globfree(&g);
@@ -95,9 +95,8 @@ static int thunderbirdget(char *mbox, int foldertype)
       if(!(bio_data = BIO_new(BIO_s_mem()))) break;
       MD5((unsigned char *)mbox, strlen(mbox), md5);
 
-      snprintf(statusfile, sizeof(statusfile), SO"MM%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
-                                               md5[0], md5[1], md5[2], md5[3], md5[4], md5[5], md5[6], md5[7], md5[8], md5[9],
-                                               md5[10], md5[11], md5[12], md5[13], md5[14], md5[15], md5[16], md5[17], md5[18], md5[19]);
+      snprintf(statusfile, sizeof(statusfile), SO"MM%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+                                               md5[0], md5[1], md5[2], md5[3], md5[4], md5[5], md5[6], md5[7], md5[8], md5[9], md5[10], md5[11], md5[12], md5[13], md5[14], md5[15]);
 
       do {
          if(!(fp = fopen(statusfile, "r"))) break;
